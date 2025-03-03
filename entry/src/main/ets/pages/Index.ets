@@ -30,7 +30,7 @@ struct Index {
   @StorageProp('topRectHeight') topRectHeight: number = 0
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
   @StorageProp(StorageConstants.DEVICE_TYPE) deviceType: resourceManager.DeviceType = resourceManager.DeviceType.DEVICE_TYPE_PHONE
-  @StorageProp(StorageConstants.DEFAULT_PAGE_INDEX) index: number = 0
+  @State index: number = AppStorage.get<number>(StorageConstants.DEFAULT_PAGE_INDEX) ?? 0;
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
   private menuItems: NavigationMenuItem[] = [
     {
@@ -54,13 +54,12 @@ struct Index {
   async build() {
     Navigation(this.pageInfos) {
       Stack({ alignContent: Alignment.Bottom }) {
-        if (this.index == 0) {
-          Explore()
-        } else if (this.index == 1) {
-          UserPlayLists()
-        } else if (this.index == 2) {
-          Me()
-        }
+        Explore()
+          .visibility(this.index == 0 ? Visibility.Visible : Visibility.None)
+        UserPlayLists()
+          .visibility(this.index == 1 ? Visibility.Visible : Visibility.None)
+        Me()
+          .visibility(this.index == 2 ? Visibility.Visible : Visibility.None)
 
         BottomBarComponent()
           .padding(Constants.PADDING_EDGE_DEFAULT)
