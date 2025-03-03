@@ -154,7 +154,7 @@ export struct Explore {
             }
 
             GridItem()
-              .height(px2vp(this.bottomRectHeight) + 80)
+              .height(px2vp(this.bottomRectHeight) + 115)
               .columnStart(0)
               .columnEnd(1)
           }

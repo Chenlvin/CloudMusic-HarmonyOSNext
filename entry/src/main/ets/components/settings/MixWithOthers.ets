@@ -22,6 +22,7 @@ export struct MixWithOthers {
           this.isActived = isOn
           AudioPlayUtils.setAudioSession()
         })
+        .selectedColor($r('app.color.app_red'))
     }
     .width('100%')
     .justifyContent(FlexAlign.SpaceBetween)

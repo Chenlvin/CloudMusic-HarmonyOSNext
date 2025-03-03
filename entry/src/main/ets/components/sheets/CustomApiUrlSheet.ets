@@ -45,9 +45,14 @@ export struct CustomApiUrlSheet {
               '(注意末尾不带\"/\")'
           })
         }
-        Toggle({ type: ToggleType.Switch, isOn: this.isCustomApiUrl }).height(24).width(48)
+        Toggle({ type: ToggleType.Switch, isOn: this.isCustomApiUrl })
+          .height(24)
+          .width(48)
+          .selectedColor($r('app.color.app_red'))
           .onChange((isOn) => {
-            this.toggleCustomApiUrl(isOn)
+            animateTo({ duration: 100, curve: Curve.EaseInOut }, () => {
+              this.toggleCustomApiUrl(isOn)
+            })
           })
       }
       .width('100%')
@@ -61,6 +66,7 @@ export struct CustomApiUrlSheet {
             .onChange((text) => this.customApiUrl = text)
             .borderRadius(Constants.RADIUS_IMG)
           Button('设置')
+            .backgroundColor($r('app.color.app_red'))
             .layoutWeight(1)
             .onClick(() => {
               this.setCustomApiUrl()
@@ -84,9 +90,14 @@ export struct CustomApiUrlSheet {
               '例如: MUSIC_U=XXXXX'
           })
         }
-        Toggle({ type: ToggleType.Switch, isOn: this.isCustomCookie }).height(24).width(48)
+        Toggle({ type: ToggleType.Switch, isOn: this.isCustomCookie })
+          .height(24)
+          .width(48)
+          .selectedColor($r('app.color.app_red'))
           .onChange((isOn) => {
-            this.toggleCustomCookie(isOn)
+            animateTo({ duration: 100, curve: Curve.EaseInOut }, () => {
+              this.toggleCustomCookie(isOn)
+            })
           })
       }
       .width('100%')
@@ -100,6 +111,7 @@ export struct CustomApiUrlSheet {
             .onChange((text) => this.customCookie = text)
             .borderRadius(Constants.RADIUS_IMG)
           Button('设置')
+            .backgroundColor($r('app.color.app_red'))
             .layoutWeight(1)
             .onClick(() => {
               this.setCustomCookie()

@@ -43,7 +43,18 @@ export async function initSettings() {
         : 0
       if (!exists) await PreferencesUtils.putPreferenceValue(SetPerf, StorageConstants.PLAY_QUALITY, 0)
       AppStorage.setOrCreate(StorageConstants.PLAY_QUALITY, value)
+    })(),
+
+    // 播放卡片操作
+    (async () => {
+      const exists = await PreferencesUtils.hasPreferenceValue(SetPerf, StorageConstants.SONG_CLICK_ACTION)
+      const value = exists
+        ? await PreferencesUtils.getPreferenceValue(SetPerf, StorageConstants.SONG_CLICK_ACTION, 0)
+        : 0
+      if (!exists) await PreferencesUtils.putPreferenceValue(SetPerf, StorageConstants.SONG_CLICK_ACTION, 0)
+      AppStorage.setOrCreate(StorageConstants.SONG_CLICK_ACTION, value)
     })()
+
   ])
 
   // 处理关联配置项（自定义API URL）

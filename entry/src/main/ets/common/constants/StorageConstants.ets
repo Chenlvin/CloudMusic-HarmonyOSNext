@@ -177,4 +177,10 @@ export class StorageConstants {
   static readonly IS_CUSTOM_API_URL: string = 'isCustomApiUrl'
   static readonly CUSTOM_COOKIE: string = 'customCookie'
   static readonly IS_CUSTOM_COOKIE: string = 'isCustomCookie'
+  /**
+   * 点击歌曲卡片时的操作
+   * 0 - 单击弹出菜单, 1 - 单击播放单曲长按弹出菜单
+   * @description AppStorage & Preference
+   */
+  static readonly SONG_CLICK_ACTION: string = 'songClickAction'
 }

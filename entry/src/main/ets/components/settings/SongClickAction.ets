@@ -1,18 +1,18 @@
 import { CircleImageButton } from '../buttons/CircleButton'
-import { CustomApiUrlSheet } from '../sheets/CustomApiUrlSheet'
 import Constants from '../../common/constants/Constants'
+import { SongClickActionSheet } from '../sheets/SongClickActionSheet'
 
 /**
- * 自定义API地址
+ * 歌曲卡片单击操作
  */
 @Component
-export struct CustomApiUrl {
+export struct SongClickAction {
   @State isShowSheet: boolean = false
   build() {
     Column({ space: 5 }) {
       Row() {
         Row({ space: 5 }) {
-          Text('API服务器与Cookie设置').LeftText()
+          Text('歌曲卡片点击模式').LeftText()
         }
         CircleImageButton({ imgUrl: $r('app.media.ic_public_arrow_right'), })
       }
@@ -36,7 +36,7 @@ export struct CustomApiUrl {
 
   @Builder
   Sheet() {
-    CustomApiUrlSheet({ isShowSheet: this.isShowSheet })
+    SongClickActionSheet({ isShowSheet: this.isShowSheet })
   }
 }
 

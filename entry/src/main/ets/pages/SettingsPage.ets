@@ -8,6 +8,7 @@ import {
 import Constants from '../common/constants/Constants'
 import { SetDefaultHomePage } from '../components/settings/SetDefaultHomePage'
 import { MixWithOthers } from '../components/settings/MixWithOthers'
+import { SongClickAction } from '../components/settings/SongClickAction'
 
 /**
  * 设置页面
@@ -31,7 +32,13 @@ export struct SettingsPage {
               }
               .padding(10)
             }.listItemStyle()
-            ListItem() { CustomApiUrl().padding({ left: 10, right: 10 }) }.listItemStyle()
+            ListItem() {
+              Column({ space: 20 }) {
+                SongClickAction()
+                CustomApiUrl()
+              }
+              .padding(10)
+            }.listItemStyle()
             ListItem() { RemoveCache().padding({ left: 10, right: 10 }) }.listItemStyle()
             ListItem() { Divider().padding({ left: 20, right: 20 }) }
             ListItem() { OtherContents() }.listItemStyle()

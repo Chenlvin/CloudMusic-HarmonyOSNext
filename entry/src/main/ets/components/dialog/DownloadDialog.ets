@@ -11,38 +11,52 @@ import { StorageConstants } from "../../common/constants/StorageConstants"
 
 @CustomDialog
 export struct DownloadDialog {
-  controller: CustomDialogController
-  @State isLoading:boolean = true
-
-  song: Song = SongClass
-  picUrl: string = ''
-  artists: string = ''
-  duration: string = ''
-  quality: number = 3 // Constants.QUALITY[quality] -> string
-  fileSize:number = -1
-
-  @State songDownload:SongDownload = SongDownloadClass
   @StorageProp(StorageConstants.IS_LOGGED) isLogged: boolean = false
+  @State isLoading:boolean = false
+  @State songDownload:SongDownload = SongDownloadClass
   @State succ:boolean = true
+  @State song: Song = SongClass
+  @State picUrl: string = ''
+  @State artists: string = ''
+  @State duration: string = ''
+  @State quality: number = 3 // Constants.QUALITY[quality] -> string
+  fileSize: number = -1
 
-  async aboutToAppear(): Promise<void> {
+  controller: CustomDialogController
+
+  async handleInfo() {
+    this.isLoading = true
     try {
-      const gotDownloadData: SongDownload = await getDownloadInfo(this.song.id, PlayConstants.QUALITY[this.quality], this.isLogged)
+      const gotDownloadData: SongDownload =
+        await getDownloadInfo(this.song.id, PlayConstants.QUALITY[this.quality], this.isLogged)
       this.songDownload = gotDownloadData
-      if(this.songDownload.data[0].url == null) { this.succ = false }
+      if (this.songDownload.data[0].url == null) {
+        this.succ = false
+      }
       this.fileSize = await convertSize(this.songDownload.data[0].size)
-      setTimeout(() => {
-        this.isLoading = false
-      },500)
     } catch (e) {
       this.succ = false
-      LogUtil.error('Download Dialog Error: ' + JSON.stringify(e.message))
+      LogUtil.error('Download Dialog Error: ' + e.message)
+    } finally {
+      this.isLoading = false
     }
+  }
+
+  async aboutToAppear(): Promise<void> {
+    await this.handleInfo()
   }
 
   build() {
     Column({ space: 10 }) {
-      Text('缓存').textStyle(24)
+      Select([{ value: '标准' }, { value: '高' }, { value: '极高' }, { value: '无损' }])
+        .selected(this.quality)
+        .value(this.quality ? PlayConstants.QUALITY_NAME[this.quality] : '标准')
+        .onSelect((index) => {
+          if(index != this.quality) {
+            this.quality = index
+            this.handleInfo()
+          }
+        })
       Divider()
       if(this.succ) {
         Stack() {
@@ -50,7 +64,15 @@ export struct DownloadDialog {
             LoadingProgress().width(Constants.SIZE_LOADING_PROGRESS_CARD)
           }
           Column({ space: 10 }) {
-            Image(this.picUrl).width(128)
+            Stack() {
+              LoadingProgress().width(40)
+              Image(this.picUrl)
+                .width(128)
+                .aspectRatio(1)
+            }
+            .width(128)
+            .aspectRatio(1)
+
             Text(this.song.name).textStyle(20)
             Text(this.artists).textStyle(14)
             Divider()

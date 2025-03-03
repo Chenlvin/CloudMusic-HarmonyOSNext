@@ -62,7 +62,7 @@ struct Index {
           .visibility(this.index == 2 ? Visibility.Visible : Visibility.None)
 
         BottomBarComponent()
-          .padding(Constants.PADDING_EDGE_DEFAULT)
+          .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT, bottom: px2vp(this.bottomRectHeight) + 35 })
           .backgroundColor(Color.Transparent)
       }
     }
@@ -77,7 +77,7 @@ struct Index {
     .hideBackButton(true)
     .backgroundColor($r('app.color.background'))
     .navDestination(this.PageMap)
-    .toolbarConfiguration(this.ToolBar(), { backgroundBlurStyle: BlurStyle.Regular })
+    .toolbarConfiguration(this.ToolBar(), { backgroundBlurStyle: BlurStyle.Regular, barStyle: BarStyle.STACK, backgroundColor: Color.Transparent })
   }
 
   @Builder PageMap(name: string, param: Object) {

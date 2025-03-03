@@ -81,7 +81,7 @@ export struct UserPlayLists {
               }
               .width('100%')
             }
-            ListItem().height( px2vp(this.bottomRectHeight) + 80 )
+            ListItem().height( px2vp(this.bottomRectHeight) + 115 )
           }
           .height('100%')
           .width('100%')

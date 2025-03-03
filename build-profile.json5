@@ -18,13 +18,13 @@
         "name": "cc",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_j1UsVXpZ2vHK-hwnEAHgdV0Kw-IAtSJW5SinBp5I6ME=.cer",
-          "storePassword": "0000001B105C33B913CEB7EE2870C74F8EED512DB168244E29C38048C6C56AF6D432EE5EF57A29ABE24053",
+          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
+          "storePassword": "0000001B27F2F45DFEFEAEB5F14EAF491A9412511B5A19F728B844CC03B347F05BD7C870924546A149FD94",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B53CFD44B0EEEC401ECAD9010FD0424C963B03C1CC205C2BE806379E0FDE6B0876A41E7078166C4",
-          "profile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_j1UsVXpZ2vHK-hwnEAHgdV0Kw-IAtSJW5SinBp5I6ME=.p7b",
+          "keyPassword": "0000001BF549C368E6327322E00B425CB3E142E3E1F51FF1113198A47A42C15AF5858DD6A3C5920A451DD3",
+          "profile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_j1UsVXpZ2vHK-hwnEAHgdV0Kw-IAtSJW5SinBp5I6ME=.p12"
+          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12"
         }
       }
     ],

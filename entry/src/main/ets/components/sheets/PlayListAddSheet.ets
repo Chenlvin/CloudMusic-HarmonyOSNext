@@ -53,7 +53,7 @@ export struct PlayListAddSheet {
               ListItem() {
                 Button() {
                   Row({ space: 15 }) {
-                    Image(`${item.coverImgUrl}?param=128y128`).width(50).borderRadius(15)
+                    Image(`${item.coverImgUrl}?param=256y256`).width(50).borderRadius(15)
                     Column({ space: 8 }) {
                       Text(item.name).textStyle(16)
                       Text(`${item.trackCount} 首歌曲`).textStyle(12)

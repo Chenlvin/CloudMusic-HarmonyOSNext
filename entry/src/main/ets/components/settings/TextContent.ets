@@ -15,7 +15,9 @@ function TextContent(title: string, text: string, action?: () => void) {
           .width(Constants.FONT_SIZE_COMMON)
           .fillColor($r('app.color.reverse'))
       } else {
-        Text(text).RightText()
+        Text(text)
+          .RightText()
+          .fontWeight(FontWeight.Bold)
       }
     }
     .width('100%')
