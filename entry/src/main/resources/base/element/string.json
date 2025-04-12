@@ -10,7 +10,111 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "云音汇"
+      "value": "Cloud Music"
+    },
+    {
+      "name": "Explore",
+      "value": "Explore"
+    },
+    {
+      "name": "Me",
+      "value": "Me"
+    },
+    {
+      "name": "Lists",
+      "value": "Lists"
+    },
+    {
+      "name": "Settings",
+      "value": "Settings"
+    },
+    {
+      "name": "LocalSongs",
+      "value": "Local Songs"
+    },
+    {
+      "name": "Login",
+      "value": "Login"
+    },
+    {
+      "name": "Logout",
+      "value": "Logout"
+    },
+    {
+      "name": "SET_DEFAULTHOMEPAGE",
+      "value": "Default HomePage"
+    },
+    {
+      "name": "SET_PLAYANDLYRIC",
+      "value": "Play & Lyric"
+    },
+    {
+      "name": "SET_CLOUDSERVICE",
+      "value": "Cloud Service"
+    },
+    {
+      "name": "SET_DATAANDCACHE",
+      "value": "App Data & Cache"
+    },
+    {
+      "name": "About",
+      "value": "About"
+    },
+    {
+      "name": "SET_FEEDBACK",
+      "value": "Suggestions & Feedback"
+    },
+    {
+      "name": "SET_SONGCARD",
+      "value": "Song Card"
+    },
+    {
+      "name": "New_version_found",
+      "value": "New Version"
+    },
+    {
+      "name": "Clean_temp_cache",
+      "value": "Clear temporary cache"
+    },
+    {
+      "name": "Clean_persistent_data",
+      "value": "Clear persistent data"
+    },
+    {
+      "name": "Playlist",
+      "value": "Play List"
+    },
+    {
+      "name": "Album",
+      "value": "Album"
+    },
+    {
+      "name": "Radio",
+      "value": "Radio"
+    },
+    {
+      "name": "Search_content",
+      "value": "Search something"
+    },
+    {
+      "name": "Daily_recommend",
+      "value": "Daily"
+    },
+    {
+      "name": "Personal_fm",
+      "value": "Personal FM"
+    },
+    {
+      "name": "Cloud",
+      "value": "Cloud"
+    },
+    {
+      "name": "Heart_list",
+      "value": "Heart PlayList"
+    },
+    {
+      "name": "Loading",
+      "value": "Loading..."
     }
   ]
 }

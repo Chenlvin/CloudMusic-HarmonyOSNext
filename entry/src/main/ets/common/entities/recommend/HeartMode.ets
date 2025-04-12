@@ -1,3 +1,5 @@
+import { Album } from "../song/Album"
+
 /**
  * 心动模式
  */
@@ -6,10 +8,11 @@ interface Artist {
   id: number
 }
 
-interface Album {
-  picUrl: string
-  name: string
-}
+// interface Album {
+//   id: number
+//   picUrl: string
+//   name: string
+// }
 
 interface SongInfo {
   id: number

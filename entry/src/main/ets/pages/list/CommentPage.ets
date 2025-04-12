@@ -1,4 +1,4 @@
-import { getComment } from "../../api/commentApi"
+import { getSongComment } from "../../api/commentApi"
 import Constants from "../../common/constants/Constants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
 import { CommentParam } from "../../common/entities/local/PageParams"
@@ -18,7 +18,7 @@ export struct CommentPage {
     try {
       if(this.param.songId !== 0) {
         this.isLoading = true
-        this.comments = (await getComment(this.param.songId)).hotComments
+        this.comments = (await getSongComment(this.param.songId)).hotComments
       }
     } catch (e) {
       throw new Error(e.stack)

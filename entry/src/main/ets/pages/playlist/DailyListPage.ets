@@ -1,5 +1,5 @@
 import { SongCard } from '../../components/cards/SongCard'
-import { EmitterUtil, LogUtil } from '@pura/harmony-utils'
+import { LogUtil } from '@pura/harmony-utils'
 import { DailySongRes } from '../../api/playListApi'
 import { BottomBarComponent } from '../../components/play/BottomBarComponent'
 import { getDailySongs } from '../../api/songApi'
@@ -8,8 +8,8 @@ import { StorageConstants } from '../../common/constants/StorageConstants'
 import { PlayQueue } from '../../common/entities/local/PlayQueue'
 import PlayQueueUtils from '../../common/utils/play/PlayQueueUtils'
 import { playQueue } from '../../common/functions/play/playControl'
-import { EmitterConstants } from '../../common/constants/EmitterConstants'
 import { PLAYMODE } from '../../common/model/Enum'
+import { PlayAllButton } from '../../components/buttons/PlayAllButton'
 
 /**
  * 每日推荐歌单页面
@@ -89,18 +89,11 @@ export struct DailyListPage {
                   this.Info()
                 }
                 ListItem() {
-                  Button() {
-                    Row({ space: 5 }) {
-                      Image($r('app.media.ic_play_fill')).width(Constants.FONT_SIZE_COMMON).fillColor(Color.Gray)
-                      Text('播放全部').fontSize(Constants.FONT_SIZE_COMMON)
+                  PlayAllButton({
+                    count: this.list.length,
+                    clickAction: () => {
+                      this.playSong(0)
                     }
-                    .height(Constants.HEIGHT_TEXT_BUTTON)
-                  }
-                  .type(ButtonType.Normal)
-                  .backgroundColor(Color.Transparent)
-                  .borderRadius(Constants.RADIUS_BUTTON)
-                  .onClick(async () => {
-                    this.playSong(0)
                   })
                 }
                 .padding({ left: 20, bottom: 10 })
@@ -158,7 +151,7 @@ export struct DailyListPage {
 
   @Builder
   Info() {
-    Column() {
+    Column({ space: 5 }) {
       Text(this.totayDate)
         .fontWeight(FontWeight.Bold)
         .fontSize(18)

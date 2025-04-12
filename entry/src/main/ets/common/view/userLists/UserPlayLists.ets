@@ -87,9 +87,10 @@ export struct UserPlayLists {
           }
 
           .barHeight(0)
-          .onAnimationStart((from, target) => {
-            this.playListTabIndex = target
+          .onChange((index) => {
+            this.playListTabIndex = index
           })
+          .scrollable(false)
         }
       }
       .height('100%')

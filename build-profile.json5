@@ -26,6 +26,19 @@
           "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
           "storePassword": "0000001BA320D07533ED161CD2BF807D8C39F92197D9076357B55CD8C3B1E58014EEF17FB527C7911649F2"
         }
+      },
+      {
+        "name": "2",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A97DCEB8B853B4F325B5AA9D06317423BC385519C19B2E285C8827A9F27B30ACA1C755B3AEFE9",
+          "profile": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
+          "storePassword": "0000001A060277B1D91C1BB4238983A50F40926AC0B20000C43CE61FE843A2C11B6DBBE172C2AC999724"
+        }
       }
     ],
     "products": [

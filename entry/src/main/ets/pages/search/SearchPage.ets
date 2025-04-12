@@ -7,6 +7,7 @@ import { StorageConstants } from '../../common/constants/StorageConstants';
 import { SearchHistoryComponent } from './SearchHistoryComponent';
 import { SearchArtistsList } from './SearchArtistsList';
 import { SearchDjRadioList } from './SearchDjRadioList';
+import { SearchAlbumList } from './SearchAlbumList';
 
 /**
  * 歌曲列表页（搜索结果）
@@ -36,11 +37,13 @@ export struct SearchPage {
             Column({ space: 10 }) {
               this.TabBar()
               Tabs({ index: this.tabPageIndex }) {
-                TabContent() { SearchSongsList({ searchKeyword: this.searchKeyword }) }.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-                TabContent() { SearchPlayListsList({ searchKeyword: this.searchKeyword }) }.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-                TabContent() { SearchArtistsList({ searchKeyword: this.keyword })}.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-                TabContent() { SearchDjRadioList({ searchKeyword: this.keyword })}.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
+                TabContent() { SearchSongsList({ searchKeyword: this.searchKeyword })}
+                TabContent() { SearchPlayListsList({ searchKeyword: this.searchKeyword })}
+                TabContent() { SearchArtistsList({ searchKeyword: this.keyword })}
+                TabContent() { SearchAlbumList({ searchKeyword: this.keyword })}
+                TabContent() { SearchDjRadioList({ searchKeyword: this.keyword })}
               }
+              .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
               .scrollable(false)
               .layoutWeight(1)
               .onChange((index) => {
@@ -105,7 +108,8 @@ export struct SearchPage {
       this.TabBarButton('单曲', 0)
       this.TabBarButton('歌单', 1)
       this.TabBarButton('歌手', 2)
-      this.TabBarButton('播客', 3)
+      this.TabBarButton('专辑', 3)
+      this.TabBarButton('播客', 4)
     }
     .width('80%')
     .justifyContent(FlexAlign.SpaceAround)
@@ -115,7 +119,7 @@ export struct SearchPage {
   Head() {
     Column() {
       Search({
-        placeholder: '搜索内容',
+        placeholder: $r('app.string.Search_content'),
         value: this.keyword,
         icon: '/resources/base/media/ic_public_search_filled.svg',
         controller: this.searchController

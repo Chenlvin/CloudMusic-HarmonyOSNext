@@ -1,4 +1,3 @@
-import { PasteboardUtil, ToastUtil } from "@pura/harmony-utils"
 import { AppConstants } from "../../common/constants/AppConstants"
 import Constants from "../../common/constants/Constants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
@@ -14,12 +13,12 @@ export struct VersionCard {
       Button() {
         Row() {
           Row({ space: 10 }) {
-            Text('关于应用')
+            Text($r('app.string.About'))
               .fontColor($r('app.color.reverse'))
               .fontSize(Constants.FONT_SIZE_COMMON)
               .fontWeight(Constants.FONT_WEIGHT_BOLD)
             if(this.appInfo.data.Version.currentVersionCode > AppConstants.VERSIONCODE) {
-              Text('发现新版本')
+              Text($r('app.string.New_version_found'))
                 .fontWeight(FontWeight.Medium)
                 .fontSize(12)
                 .fontColor($r('app.color.app_red'))

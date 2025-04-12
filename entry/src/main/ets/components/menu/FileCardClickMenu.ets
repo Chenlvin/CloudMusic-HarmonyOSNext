@@ -26,7 +26,11 @@ export struct FileCardClickMenu {
         name: this.localSong.name,
         artists: artists,
         album: {
-          id: 0, name: '', picUrl: ''
+          id: 0,
+          name: '',
+          picUrl: '',
+          artists: [],
+          size: 0
         },
         duration: metadata ? ((metadata.duration) ? parseInt(metadata.duration) : 0) : 0,
         alias: [],

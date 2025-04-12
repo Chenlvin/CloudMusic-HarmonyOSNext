@@ -1,17 +1,18 @@
 /**
  * 歌曲搜索结果
  */
+import { Album } from "./Album"
 
 export interface Artist {
   id: number
   name: string
 }
 
-export interface Album {
-  id: number
-  name: string
-  picUrl: string
-}
+// interface Album {
+//   id: number
+//   name: string
+//   picUrl: string
+// }
 
 export interface Song {
   id: number
@@ -45,7 +46,9 @@ export const SongItem: Song = {
   album: {
     id: 0,
     name: '',
-    picUrl: ''
+    picUrl: '',
+    size: 0,
+    artists: []
   },
   duration: 0,
   alias: [],

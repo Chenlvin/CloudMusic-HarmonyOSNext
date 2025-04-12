@@ -10,6 +10,7 @@ import { User, UserItem } from "../../common/entities/user/User"
 import { changeDuration } from "../../common/functions/common/convert"
 import { playQueue } from "../../common/functions/play/playControl"
 import { cleanLastPlayInfo } from "../../common/functions/play/playListOp"
+import { PLAYMODE } from "../../common/model/Enum"
 import PlayQueueUtils from "../../common/utils/play/PlayQueueUtils"
 import { DownloadDialog } from "../dialog/DownloadDialog"
 
@@ -21,6 +22,7 @@ export struct SongInfoSheet {
   playlist: PlayList = PlayListItem
   index: number = 0
   allowToArtist: boolean = true
+  allowToAlbum: boolean = true
   playmode: number = 1
   listAction: () => void = () => {}
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
@@ -120,12 +122,12 @@ export struct SongInfoSheet {
       ListItem() {
         this.Item($r('app.media.ic_public_play_norm'), '单曲播放', () => { this.playSingleSong() })
       }
-      if(this.playmode !== 3) {
-        if(this.playlist.id !== 0) {
-          ListItem() {
-            this.Item($r('app.media.ic_play_fill'), '随歌单播放', () => { this.playWithPlayList() })
-          }
+      if(this.playmode !== PLAYMODE.SINGLE) {
+        ListItem() {
+          this.Item($r('app.media.ic_play_fill'), '随列表播放', () => { this.playWithPlayList() })
         }
+      }
+      if(this.playmode !== 3) {
         if(this.song.id !== 0) {
           this.Item($r('app.media.ic_public_message'), '歌曲评论', () => {
             let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
@@ -140,7 +142,7 @@ export struct SongInfoSheet {
             this.Item($r('app.media.ic_user_portrait'), '查看歌手', () => { this.isShowArtistsSheet = true })
           }
         }
-        if(this.song.album?.id !== 0) {
+        if(this.song.album?.id !== 0 && this.allowToAlbum) {
           ListItem() {
             this.Item($r('app.media.ic_music_fill'), `查看专辑: ${this.song.album.name}`, () => {
               let param: CommonParam<AlbumParam> = {

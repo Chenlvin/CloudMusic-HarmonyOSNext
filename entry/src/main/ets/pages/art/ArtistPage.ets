@@ -8,7 +8,9 @@ import { ArtistParam } from "../../common/entities/local/PageParams"
 import { PlayListSong } from "../../common/entities/playlist/PlayListSongs"
 import { SongCard } from "../../components/cards/SongCard"
 import { BottomBarComponent } from "../../components/play/BottomBarComponent"
-import { Album } from "../../common/entities/song/Song"
+import { PLAYMODE } from "../../common/model/Enum"
+import { PlayAllButton } from "../../components/buttons/PlayAllButton"
+import { playListToQueue } from "../../common/functions/play/playListOp"
 
 @Component
 export struct ArtistPage {
@@ -100,19 +102,26 @@ export struct ArtistPage {
               .fontColor($r('app.color.reverse'))
               .padding({ left: 20, bottom: Constants.PADDING_EDGE_DEFAULT })
           }
-          LazyForEach(this.dataSource, (item: PlayListSong) => {
+          PlayAllButton({
+            count: this.artist.hotSongs.length,
+            clickAction: () => { playListToQueue(this.artist.hotSongs, 0) }
+          })
+          LazyForEach(this.dataSource, (item: PlayListSong, index) => {
             SongCard({
-              playmode: 1,
+              playmode: PLAYMODE.PLAYLIST,
               song: {
                 id: item.id,
                 artists: item.ar,
-                album: item.al as Album,
+                album: item.al,
                 name: item.name,
                 duration: item.dt,
                 alias: [],
                 fee: item.fee
               },
-              isShowArtistSheet: false
+              allowToArtist: false,
+              listPlayAction: () => {
+                playListToQueue(this.artist.hotSongs, index)
+              }
             })
           })
           ListItem()

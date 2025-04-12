@@ -24,7 +24,7 @@ export async function getArtistInfo(id: number): Promise<ArtistInfo> {
  * @param keyword
  * @returns
  */
-export async function getArtistsList(keyword: string): Promise<Array<ArtistItem>> {
+export async function searchArtists(keyword: string): Promise<Array<ArtistItem>> {
   const rootUrl = await getApiUrl()
   const url = `${rootUrl}/search?keywords=${encodeURIComponent(keyword)}&type=100`
   const request = new HttpRequest(url)

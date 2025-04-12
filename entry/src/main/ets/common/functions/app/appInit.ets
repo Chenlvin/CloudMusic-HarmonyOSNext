@@ -18,6 +18,7 @@ import Constants from "../../constants/Constants"
 import AudioCacheUtils from "../../utils/play/AudioCacheUtils"
 import { DjRadio } from "../../entities/dj/DjResult"
 import BreakpointUtils from "../../utils/system/BreakpointUtils"
+import { Album } from "../../entities/song/Album"
 
 /**
  * App初始化
@@ -76,7 +77,7 @@ async function initLocalData() {
     PreferencesUtils.getPreferenceValue<TopListItem[]>(StorageConstants.USER_PREF, StorageConstants.TOPLISTS, []),
     PreferencesUtils.getPreferenceValue<PersonalListItem[]>(StorageConstants.USER_PREF, StorageConstants.PERSONALIZED_LIST, []),
     PreferencesUtils.getPreferenceValue<string[]>(StorageConstants.USER_PREF, StorageConstants.SEARCH_HISTORY, []),
-    // PreferencesUtils.getPreferenceValue<RecommendDjRadio[]>(StorageConstants.USER_PREF, StorageConstants.RECOMMENDED_DJ, []),
+    PreferencesUtils.getPreferenceValue<Album[]>(StorageConstants.USER_PREF, StorageConstants.USER_SUB_ALBUM, []),
     PreferencesUtils.getPreferenceValue<DjRadio[]>(StorageConstants.USER_PREF, StorageConstants.USER_DJRADIO_LIST, [])
   ])
 
@@ -85,8 +86,8 @@ async function initLocalData() {
   AppStorage.setOrCreate(StorageConstants.TOPLISTS, results[2])
   AppStorage.setOrCreate(StorageConstants.PERSONALIZED_LIST, results[3])
   AppStorage.setOrCreate(StorageConstants.SEARCH_HISTORY, results[4])
-  // AppStorage.setOrCreate(StorageConstants.RECOMMENDED_DJ, results[5])
-  AppStorage.setOrCreate(StorageConstants.USER_DJRADIO_LIST, results[5])
+  AppStorage.setOrCreate(StorageConstants.USER_SUB_ALBUM, results[5])
+  AppStorage.setOrCreate(StorageConstants.USER_DJRADIO_LIST, results[6])
 }
 
 /**
@@ -106,7 +107,11 @@ async function loadSavedSong() {
     name: "暂无播放",
     artists: [],
     album: {
-      id: 0, name: '', picUrl: ''
+      id: 0,
+      name: '',
+      picUrl: '',
+      artists: [],
+      size: 0
     },
     duration: 0,
     alias: [],

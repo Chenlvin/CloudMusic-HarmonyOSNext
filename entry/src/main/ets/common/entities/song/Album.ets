@@ -1,4 +1,5 @@
 import { PlayListSong } from "../playlist/PlayListSongs"
+import { Artist } from "./Song"
 
 interface AlbumDetail {
   company: string
@@ -15,6 +16,26 @@ export interface AlbumResult {
   album: AlbumDetail
 }
 
+export interface Album {
+  artists: Artist[]
+  picUrl: string
+  name: string
+  id: number
+  size: number
+}
+
+export interface SubAlbumResult {
+  data: Album[]
+}
+
+interface SearchResult {
+  albums: Album[]
+}
+
+export interface AlbumSearchResult {
+  result: SearchResult
+}
+
 export const AlbumResultItem: AlbumResult = {
   code: 200,
   resourceState: false,
@@ -25,5 +46,23 @@ export const AlbumResultItem: AlbumResult = {
     description: '',
     name: '',
     id: 0
+  }
+}
+
+export const SubAlbumResultItem: SubAlbumResult = {
+  data: []
+}
+
+export const AlbumItem: Album = {
+  artists: [],
+  picUrl: "",
+  name: "",
+  id: 0,
+  size: 0
+}
+
+export const AlbumSearchResultItem: AlbumSearchResult = {
+  result: {
+    albums: []
   }
 }

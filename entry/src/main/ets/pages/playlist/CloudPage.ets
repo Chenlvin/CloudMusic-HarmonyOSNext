@@ -7,12 +7,9 @@ import { ClickToLoadButton, LoadingMoreButton, NoMoreButton } from '../../compon
 import { StorageConstants } from '../../common/constants/StorageConstants'
 import { PlayListSong } from '../../common/entities/playlist/PlayListSongs'
 import { LazyData } from '@pie/lazy-data'
-import { PlayList, PlayListItem } from '../../common/entities/playlist/PlayList'
-import { EmitterConstants } from '../../common/constants/EmitterConstants'
 import { PlayQueue } from '../../common/entities/local/PlayQueue'
 import PlayQueueUtils from '../../common/utils/play/PlayQueueUtils'
 import { playQueue } from '../../common/functions/play/playControl'
-import { Album } from '../../common/entities/song/Song'
 import { PLAYMODE } from '../../common/model/Enum'
 
 /**
@@ -87,7 +84,7 @@ export struct CloudPage {
         song: {
           id: item.id,
           artists: item.ar,
-          album: item.al as Album,
+          album: item.al,
           name: item.name,
           duration: item.dt,
           alias: [],
@@ -120,7 +117,7 @@ export struct CloudPage {
                     song: {
                       id: item.id,
                       artists: item.ar,
-                      album: item.al as Album,
+                      album: item.al,
                       name: item.name,
                       duration: item.dt,
                       alias: [],

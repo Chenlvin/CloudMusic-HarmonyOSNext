@@ -36,7 +36,7 @@ export struct PlaySettingsPage {
       .height('100%')
       .width('100%')
     }
-    .title('播放与歌词')
+    .title($r('app.string.SET_PLAYANDLYRIC'))
     .backgroundColor($r('app.color.background'))
   }
 

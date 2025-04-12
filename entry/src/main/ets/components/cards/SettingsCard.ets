@@ -2,8 +2,8 @@ import Constants from "../../common/constants/Constants"
 
 @Component
 export struct CommonSettingsCard {
-  @State title: string = ''
-  @State text: string = ''
+  @State title: string | ResourceStr = ''
+  @State text: string | ResourceStr = ''
   action: () => void = () => {}
 
   build() {

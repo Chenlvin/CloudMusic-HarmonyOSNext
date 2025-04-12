@@ -98,7 +98,7 @@ export struct LocalSongPage {
               Grid() {
                 GridItem() {
                   Search({
-                    placeholder: '搜索内容',
+                    placeholder: $r('app.string.Search_content'),
                     icon: '/resources/base/media/ic_public_search_filled.svg'
                   })
                     .id('search')
@@ -236,7 +236,7 @@ export struct LocalSongPage {
       .backgroundColor($r('app.color.background'))
       .height('100%')
     }
-    .title('本地曲库')
+    .title($r('app.string.LocalSongs'))
     .menus(this.menus)
     .backgroundColor($r('app.color.background'))
   }

@@ -11,7 +11,7 @@ export struct SetDefaultHomePage {
 
   build() {
     Row() {
-      Text('默认首页')
+      Text($r('app.string.SET_DEFAULTHOMEPAGE'))
         .fontSize(Constants.FONT_SIZE_COMMON)
         .fontWeight(FontWeight.Bold)
         .fontColor($r('app.color.reverse'))
@@ -22,17 +22,17 @@ export struct SetDefaultHomePage {
           .onClick(() => {
             changeSettings(StorageConstants.DEFAULT_PAGE_INDEX, 0)
           })
-        Text('发现')
+        Text($r('app.string.Explore'))
           .fontColor($r('app.color.reverse'))
           .fontSize(Constants.FONT_SIZE_COMMON)
           .padding({ right: 10 })
-        Radio({ value: '歌单', group: 'Radio' })
+        Radio({ value: '播单', group: 'Radio' })
           .checked(this.selected == 1)
           .radioStyle({ checkedBackgroundColor: $r('app.color.app_red') })
           .onClick(() => {
             changeSettings(StorageConstants.DEFAULT_PAGE_INDEX, 1)
           })
-        Text('歌单')
+        Text($r('app.string.Lists'))
           .fontColor($r('app.color.reverse'))
           .fontSize(Constants.FONT_SIZE_COMMON)
       }

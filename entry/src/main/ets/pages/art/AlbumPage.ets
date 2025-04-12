@@ -8,21 +8,36 @@ import Constants from "../../common/constants/Constants"
 import { BottomBarComponent } from "../../components/play/BottomBarComponent"
 import { AlbumResult, AlbumResultItem } from "../../common/entities/song/Album"
 import { playListToQueue } from "../../common/functions/play/playListOp"
+import { PLAYMODE } from "../../common/model/Enum"
+import { PlayAllButton } from "../../components/buttons/PlayAllButton"
+import { AlbumCommentSheet } from "../../components/sheets/AlbumCommentSheet"
 
 @Component
 export struct AlbumPage {
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
-  @StorageProp(StorageConstants.BREAKPOINT_WIDTH) breakpoint: string = 'sm'
+  @StorageProp(StorageConstants.BREAKPOINT_HEIGHT) heightBp: string = 'sm'
+  @StorageProp(StorageConstants.BREAKPOINT_WIDTH) breakpoint: string = ''
   @StorageLink(StorageConstants.IS_PLAYER_LOADING) isPlayerLoading: boolean = false
   @State songs: PlayListSong[] = []
   @State isLoading: boolean = true
   @State albumInfo: AlbumResult = AlbumResultItem
+  @State isShowComment: boolean = false
   @State param: AlbumParam = {
     album: {
       id: 0,
       name: '',
-      picUrl: ''
+      picUrl: '',
+      artists: [],
+      size: 0
     }
+  }
+  private commentSheetOptions: SheetOptions = {
+    preferType: SheetType.BOTTOM,
+    height: SheetSize.LARGE,
+    dragBar: false,
+    showClose: false,
+    backgroundColor: $r('app.color.background'),
+    onDisappear: () => { this.isShowComment = false }
   }
 
   async aboutToAppear(): Promise<void> {
@@ -55,7 +70,7 @@ export struct AlbumPage {
                 .padding({ left: Constants.PADDING_EDGE_DEFAULT })
               ForEach(this.songs, (item: PlayListSong, index) => {
                 SongCard({
-                  playmode: 1,
+                  playmode: PLAYMODE.ALBUM,
                   song: {
                     id: item.id,
                     artists: item.ar,
@@ -67,7 +82,10 @@ export struct AlbumPage {
                   },
                   index: index,
                   sid: index,
-                  isShowArtistSheet: false
+                  allowToAlbum: false,
+                  listPlayAction: () => {
+                    playListToQueue(this.songs, index)
+                  }
                 })
               })
               ListItem().height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
@@ -95,6 +113,13 @@ export struct AlbumPage {
     }
     .backgroundColor($r('app.color.background'))
     .title('专辑')
+    .menus([{
+      icon: $r('app.media.ic_public_message'),
+      value: 'Comment',
+      action: () => {
+        this.isShowComment = true
+      }
+    }])
   }
 
   @Builder PlayAllButton() {
@@ -107,27 +132,21 @@ export struct AlbumPage {
       .height(Constants.HEIGHT_TEXT_BUTTON)
       .justifyContent(FlexAlign.Center)
     } else {
-      Button() {
-        Row({ space: 5 }) {
-          Image($r('app.media.ic_play_fill')).width(Constants.FONT_SIZE_COMMON)
-            .fillColor(Color.Gray)
-          Row({ space: 5 }) {
-            Text(`播放全部 (${this.songs.length})`)
-              .fontSize(Constants.FONT_SIZE_COMMON)
-          }
+      PlayAllButton({
+        count: this.songs.length,
+        clickAction: () => {
+          this.isPlayerLoading = true
+          playListToQueue(this.songs, 0)
+          setTimeout(() => {
+            this.isPlayerLoading = false
+          }, 500)
         }
-        .padding({ left: 20, right: 20 })
-      }
-      .height(Constants.HEIGHT_TEXT_BUTTON)
-      .backgroundColor(Color.Transparent)
-      .onClick(() => {
-        this.isPlayerLoading = true
-        playListToQueue(this.songs, 0)
-        setTimeout(() => {
-          this.isPlayerLoading = false
-        }, 500)
       })
     }
+  }
+
+  @Builder CommentSheet() {
+    AlbumCommentSheet({ album: this.param.album })
   }
 
   @Builder AlbumInfo() {
@@ -146,6 +165,7 @@ export struct AlbumPage {
           .visibility(this.albumInfo.album.company ? Visibility.Visible : Visibility.None)
         Text(this.albumInfo.album.description)
           .textStyle(12)
+          .maxLines(3)
           .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.9 })
           .onClick(() => {
             DialogUtil.showConfirmDialog({
@@ -157,6 +177,7 @@ export struct AlbumPage {
       .layoutWeight(1)
     }
     .padding(Constants.PADDING_EDGE_DEFAULT)
+    .bindSheet(this.isShowComment, this.CommentSheet, this.commentSheetOptions)
   }
 }
 

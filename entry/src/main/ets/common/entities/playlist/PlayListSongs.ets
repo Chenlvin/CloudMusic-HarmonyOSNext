@@ -1,5 +1,5 @@
-import { Album, Artist } from "../song/Song"
-import { PlayList } from "./PlayList"
+import { Album } from "../song/Album"
+import { Artist } from "../song/Song"
 
 /**
  * 歌单内歌曲

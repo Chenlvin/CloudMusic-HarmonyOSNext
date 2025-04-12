@@ -1,6 +1,7 @@
 import { DjRadio } from "../dj/DjResult";
 import { PlayList } from "../playlist/PlayList";
-import { Album, Artist, Song } from "../song/Song";
+import { Album } from "../song/Album";
+import { Artist } from "../song/Song";
 
 /**
  * 歌单详情页参数

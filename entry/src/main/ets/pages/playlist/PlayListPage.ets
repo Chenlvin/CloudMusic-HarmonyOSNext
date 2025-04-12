@@ -17,8 +17,9 @@ import { EmitterConstants } from '../../common/constants/EmitterConstants'
 import PlayQueueUtils from '../../common/utils/play/PlayQueueUtils'
 import { PlayQueue } from '../../common/entities/local/PlayQueue'
 import { playQueue } from '../../common/functions/play/playControl'
-import { Album } from '../../common/entities/song/Song'
 import { PLAYMODE } from '../../common/model/Enum'
+import { PlayAllButton } from '../../components/buttons/PlayAllButton'
+import { BarLoading } from '../../components/cards/Loading'
 
 /**
  * 歌单二级页面
@@ -95,7 +96,7 @@ export struct PlayListPage {
           id: item.id,
           name: item.name,
           artists: item.ar,
-          album: item.al as Album,
+          album: item.al,
           duration: item.dt,
           fee: item.fee,
           alias: []
@@ -125,40 +126,24 @@ export struct PlayListPage {
 
             ListItem() {
               Row() {
-                Button() {
-                  Row({ space: 5 }) {
-                    if (this.isPlayerLoading) {
-                      LoadingProgress().height(35).padding({ left: 30 })
-                    } else {
-                      Image($r('app.media.ic_play_fill')).width(Constants.FONT_SIZE_COMMON)
-                        .fillColor(Color.Gray)
-                      Row({ space: 5 }) {
-                        Text(`播放全部 (${this.list.length})`)
-                          .fontSize(Constants.FONT_SIZE_COMMON)
-                        LoadingProgress()
-                          .width(Constants.FONT_SIZE_TITLE)
-                          .visibility(this.hasMore ? Visibility.Visible : Visibility.None)
+                if(this.isPlayerLoading) {
+                  BarLoading()
+                } else {
+                  PlayAllButton({
+                    count: this.list.length,
+                    clickAction: () => {
+                      if (this.isPlayerLoading) {
+                        ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
+                      } else {
+                        this.playSong(0)
                       }
                     }
-                  }
-                  .height(Constants.HEIGHT_TEXT_BUTTON)
-                  .padding({ left: 5, right: 5 })
+                  })
                 }
-                .type(ButtonType.Normal)
-                .backgroundColor(Color.Transparent)
-                .borderRadius(15)
-                .onClick(async () => {
-                  if (this.isPlayerLoading) {
-                    ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
-                  } else {
-                    this.playSong(0)
-                  }
-                })
               }
               .justifyContent(FlexAlign.SpaceBetween)
               .width('100%')
             }
-            .padding({ left: 20, right: 20 })
             if (this.isLoading) {
               ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
                 ListItem() {
@@ -249,7 +234,7 @@ export struct PlayListPage {
               song: {
                 id: item.id,
                 artists: item.ar,
-                album: item.al as Album,
+                album: item.al,
                 name: item.name,
                 duration: item.dt,
                 alias: [],
@@ -297,7 +282,7 @@ export struct PlayListPage {
         .justifyContent(FlexAlign.End)
       } else {
         Search({
-          placeholder: '搜索',
+          placeholder: $r('app.string.Search_content'),
           icon: '/resources/base/media/ic_public_search_filled.svg',
           value: this.searchKeyword
         })
@@ -481,15 +466,6 @@ export struct PlayListPage {
     } finally {
       this.isLoading = false
     }
-  }
-
-  private helpButtonAction() {
-    DialogUtil.showConfirmDialog({
-      title: '歌单操作',
-      message: '增删歌曲：左滑歌曲卡片\n\n' +
-        '收藏歌单：点击信息栏右边爱心图标\n\n' +
-        '歌单内搜索：本地搜索，仅支持搜索已加载的部分歌曲'
-    })
   }
 
   private selectButtonAction() {

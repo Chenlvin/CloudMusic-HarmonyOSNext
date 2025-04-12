@@ -54,7 +54,7 @@ export struct CacheManagePage {
         .itemStyle()
 
         ListItem() {
-          Button('清理临时缓存')
+          Button($r('app.string.Clean_temp_cache'))
             .fontSize(Constants.FONT_SIZE_COMMON)
             .fontColor(Color.Red)
             .backgroundColor(Color.Transparent)
@@ -67,7 +67,7 @@ export struct CacheManagePage {
         .itemStyle()
 
         ListItem() {
-          Button('清理持久化数据')
+          Button($r('app.string.Clean_persistent_data'))
             .fontSize(Constants.FONT_SIZE_COMMON)
             .fontColor(Color.Red)
             .backgroundColor(Color.Transparent)
@@ -83,7 +83,7 @@ export struct CacheManagePage {
       .width('100%')
       .height('100%')
     }
-    .title('应用数据与缓存')
+    .title($r('app.string.SET_DATAANDCACHE'))
     .backgroundColor($r('app.color.background'))
   }
 
@@ -116,7 +116,7 @@ export struct CacheManagePage {
   private showCleanDialog() {
     DialogUtil.showPrimaryDialog({
       title: '清理持久化数据',
-      message: '如果应用遇到异常状况导致部分功能无法使用，你可以尝试清理持久化数据。\n这将会清空：\n\n1.播放列表数据\n2.上一次播放歌曲数据\n3.用户歌单与播客数据',
+      message: '如果应用遇到异常状况导致部分功能无法使用，你可以尝试清理持久化数据。\n这将会清空：\n\n1.播放列表数据\n2.上一次播放歌曲数据\n3.本地用户歌单、专辑、播客数据 (不会影响云端)',
       primaryButton: "取消",
       secondaryButton: {
         fontColor: Color.Red,
@@ -137,13 +137,18 @@ export struct CacheManagePage {
     await PlayQueueUtils.cleanQueue()
     PreferencesUtils.putPreferenceValue('Play','hasCurrentSong', false)
     PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_PLAYLISTS, [])
+    PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_SUB_ALBUM, [])
     PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_DJRADIO_LIST, [])
     let song: Song = {
       id: 0,
       name: "暂无播放",
       artists: [],
       album: {
-        id: 0, name: '', picUrl: ''
+        id: 0,
+        name: '',
+        picUrl: '',
+        artists: [],
+        size: 0
       },
       duration: 0,
       alias: [],

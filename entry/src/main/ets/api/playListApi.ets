@@ -4,9 +4,8 @@ import { CloudResult,
   CloudResultItem,
   DailyListSongs, PlayListSong, PlayListSongs } from "../common/entities/playlist/PlayListSongs"
 import { PlayQueue } from "../common/entities/local/PlayQueue"
-import { Album, Artist, Song } from "../common/entities/song/Song"
+import { Song } from "../common/entities/song/Song"
 import { User, UserItem } from "../common/entities/user/User"
-import { getArtists } from "../common/functions/common/convert"
 import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
 import PlayQueueUtils from "../common/utils/play/PlayQueueUtils"
 import PreferencesUtils from "../common/utils/data/PreferencesUtils"
@@ -14,7 +13,6 @@ import { StorageConstants } from "../common/constants/StorageConstants"
 import { Personalized, PersonalListItem } from "../common/entities/recommend/Personalized"
 import { getApiUrl } from "../common/functions/common/get"
 import { JSON } from "@kit.ArkTS"
-import { http } from "@kit.NetworkKit"
 
 /**
  * 歌单类API
@@ -103,7 +101,7 @@ export async function putPlayListInQueue(listId: number, trackCount: number, lim
         name: item.name,
         artists: item.ar,
         duration: item.dt,
-        album: item.al as Album,
+        album: item.al,
         fee: item.fee,
         alias: []
       },
@@ -135,7 +133,7 @@ export async function PlayDailySongs(): Promise<void> {
         id: item.id,
         name: item.name,
         artists: item.ar,
-        album: item.al as Album,
+        album: item.al,
         duration: item.dt,
         alias: [],
         fee: item.fee
@@ -295,8 +293,8 @@ export async function createPlayList(name: string, isPrivacy: boolean) {
     const url: string = `${rootUrl}/playlist/create?name=${encodeURIComponent(name)}${isPrivacy ? '&privacy=10' : ''}&timestamp=${new Date().getTime()}`
     const request = new HttpRequest(url)
     const data = await request.Request()
+    LogUtil.info(TAG + JSON.stringify(data.result))
   } catch (e) {
     LogUtil.error(TAG + 'createPlayList Error: ' + e.message)
-
   }
 }

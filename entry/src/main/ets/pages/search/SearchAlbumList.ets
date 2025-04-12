@@ -1,32 +1,32 @@
 import { LogUtil } from "@pura/harmony-utils"
-import { searchArtists } from "../../api/artistApi"
+import { searchAlbums } from "../../api/albumApi"
 import Constants from "../../common/constants/Constants"
-import { ArtistItem } from "../../common/entities/song/ArtistsResult"
-import { ArtistCard } from "../../components/cards/ArtistCard"
+import { Album } from "../../common/entities/song/Album"
+import { AlbumCard } from "../../components/cards/AlbumCard"
 
 /**
- * 歌手搜索结果列表
+ * 专辑搜索结果列表
  */
-const TAG = "[SearchArtistsList] "
+const TAG = "[SearchAlbumList] "
 
 @Component
-export struct SearchArtistsList {
+export struct SearchAlbumList {
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
   @StorageProp('topRectHeight') topRectHeight: number = 0
-  @State artists: Array<ArtistItem> = []
+  @State albums: Array<Album> = []
   @Link @Watch('handleSearch') searchKeyword: string
-  @State hasArtistLoaded: boolean = false
+  @State hasLoaded: boolean = false
   @State isLoading: boolean = false
 
   async aboutToAppear(): Promise<void> {
     if(this.searchKeyword) {
-      await this.loadArtists()
+      await this.loadAlbums()
     }
   }
 
   async handleSearch() {
-    this.artists = []
-    await this.loadArtists()
+    this.albums = []
+    await this.loadAlbums()
   }
 
   build() {
@@ -40,9 +40,9 @@ export struct SearchArtistsList {
       .justifyContent(FlexAlign.Center)
     } else {
       List({ space: Constants.PADDING_EDGE_DEFAULT }) {
-        ForEach(this.artists, (item: ArtistItem) => {
+        ForEach(this.albums, (item: Album) => {
           ListItem() {
-            ArtistCard({ artistItem: item })
+            AlbumCard({ album: item })
           }
           .translate({ y: -40 })
           .animation({
@@ -67,16 +67,16 @@ export struct SearchArtistsList {
     }
   }
 
-  async loadArtists(): Promise<void> {
-    if(this.hasArtistLoaded) return
+  async loadAlbums(): Promise<void> {
+    if(this.hasLoaded) return
     this.isLoading = true
     try {
-      this.artists = await searchArtists(this.searchKeyword)
+      this.albums = await searchAlbums(this.searchKeyword)
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching artists: ', JSON.stringify(e));
+      LogUtil.error(TAG + 'Error fetching Albums: ', JSON.stringify(e))
     } finally {
       this.isLoading = false
-      this.hasArtistLoaded = true
+      this.hasLoaded = true
     }
   }
 }

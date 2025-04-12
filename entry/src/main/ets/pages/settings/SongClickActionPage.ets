@@ -27,7 +27,9 @@ export struct SongClickActionPage {
     album: {
       id: 0,
       name: '',
-      picUrl: ''
+      picUrl: '',
+      artists: [],
+      size: 0
     },
     duration: 0,
     alias: [],
@@ -109,13 +111,16 @@ export struct SongClickActionPage {
           top: Constants.PADDING_EDGE_DEFAULT
         })
         .width('100%')
-        .height('100%')
+        .height('auto')
         .justifyContent(FlexAlign.Start)
       }
+      .height('100%')
       .width('100%')
+      .layoutWeight(1)
+      .align(Alignment.Top)
       .scrollBar(BarState.Off)
     }
-    .title('歌曲卡片设置')
+    .title($r('app.string.SET_SONGCARD'))
     .backgroundColor($r('app.color.background'))
   }
 

@@ -12,13 +12,18 @@ import BreakpointUtils from '../common/utils/system/BreakpointUtils';
 import { EmitterUtil, LogUtil } from '@pura/harmony-utils';
 import { EmitterConstants } from '../common/constants/EmitterConstants';
 import { PageMap } from '../common/model/PageMap';
+import { AddPlayListDialog } from '../components/dialog/AddPlayListDialog';
 
 @Entry
 @Component
 struct Index {
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
 
-  tabController: TabsController = new TabsController()
+  // private addPlayListDialog: CustomDialogController = new CustomDialogController({
+  //   builder: AddPlayListDialog()
+  // })
+
+  private tabController: TabsController = new TabsController()
 
   @StorageProp('topRectHeight') topRectHeight: number = 0
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
@@ -27,6 +32,7 @@ struct Index {
   @State currentHour: number = 0
   @State tabCurrentIndex: number = 0
   @State categoryTabIndex: number = 0
+  @State contentTabIndex: number = 0
 
   async aboutToAppear(): Promise<void> {
     BreakpointUtils.register()
@@ -38,10 +44,11 @@ struct Index {
     //   PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, 'isFirstLaunch', false)
     // }
     EmitterUtil.onSubscribe(EmitterConstants.PUSH_PAGE, <T extends ArtistParam | AlbumParam>(param: CommonParam<T>) => {
-      if(param.remove) {
-        this.pageInfos.removeByName(param.pageName)
+      if(!this.pageInfos.getAllPathName().includes(param.pageName)) {
+        this.pageInfos.pushPathByName(param.pageName, param.param, this.pageInfos.size() === 0 && this.widBp === 'lg' ? false : true)
+      } else {
+        this.pageInfos.replacePath({ name: param.pageName, param: param.param }, { launchMode: LaunchMode.MOVE_TO_TOP_SINGLETON })
       }
-      this.pageInfos.pushPathByName(param.pageName, param.param)
     })
   }
 
@@ -55,7 +62,7 @@ struct Index {
 
   private getMenuItems(): NavigationMenuItem[] {
     let items: NavigationMenuItem[] = []
-    if(this.index === 0 || this.index === 1) {
+    if(this.index !== 2) {
       items.push({
         value: 'Search',
         icon: $r('app.media.ic_public_search_filled'),
@@ -65,6 +72,15 @@ struct Index {
         }
       })
     }
+    // if(this.index === 1) {
+    //   items.push({
+    //     value: 'AddPlayList',
+    //     icon: $r('app.media.ic_public_add_norm'),
+    //     action: () => {
+    //       this.addPlayListDialog.open()
+    //     }
+    //   })
+    // }
     if(this.index === 2) {
       items.push({
         value: 'Settings',
@@ -82,7 +98,7 @@ struct Index {
       Stack({ alignContent: Alignment.Bottom }) {
         Tabs({ controller: this.tabController, index: this.tabCurrentIndex }) {
           TabContent() { Explore({ currentHour: this.currentHour }) }
-          TabContent() { UserLists({ categoryTabIndex: this.categoryTabIndex }) }
+          TabContent() { UserLists({ categoryTabIndex: this.categoryTabIndex, contentTabIndex: this.contentTabIndex }) }
           TabContent() { Me({ breakpoint: this.widBp }) }
         }
         .height('100%')
@@ -111,7 +127,7 @@ struct Index {
     .mode((this.widBp == 'lg' && this.pageInfos.size() > 0) ? NavigationMode.Split : NavigationMode.Stack)
     .enableModeChangeAnimation(true)
     .titleMode(NavigationTitleMode.Mini)
-    .title(this.index === 1 ? this.CategoryTabBar : this.index === 0 ? '发现' : '我的')
+    .title(this.index === 1 ? this.CategoryTabBar : this.index === 0 ? $r('app.string.Explore') : $r('app.string.Me'))
     .menus(this.getMenuItems())
     .hideBackButton(true)
     .backgroundColor($r('app.color.background'))
@@ -122,16 +138,16 @@ struct Index {
 
   @Builder ToolBar() {
     Row() {
-      this.ToolBarItem(0, $r('app.media.ic_gallery_discover'), $r('app.media.ic_gallery_discover_filled'), '发现')
-      this.ToolBarItem(1, $r('app.media.ic_public_drawer'), $r('app.media.ic_public_drawer_filled'),'播单')
-      this.ToolBarItem(2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts_filled'), '我的')
+      this.ToolBarItem(0, $r('app.media.ic_gallery_discover'), $r('app.media.ic_gallery_discover_filled'), $r('app.string.Explore'))
+      this.ToolBarItem(1, $r('app.media.ic_public_drawer'), $r('app.media.ic_public_drawer_filled'), $r('app.string.Lists'))
+      this.ToolBarItem(2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts_filled'), $r('app.string.Me'))
     }
     .backgroundColor(Color.Transparent)
     .justifyContent(FlexAlign.SpaceEvenly)
     .width('100%')
   }
 
-  @Builder ToolBarItem(index: number, icon: ResourceStr, activeIcon: ResourceStr, text: string) {
+  @Builder ToolBarItem(index: number, icon: ResourceStr, activeIcon: ResourceStr, text: string | ResourceStr) {
     Column({ space: 3 }) {
       Image(this.index == index ? activeIcon : icon)
         .width(Constants.SIZE_ICON_BUTTON_BAR)
@@ -148,9 +164,10 @@ struct Index {
 
   @Builder CategoryTabBar() {
     Column() {
-      Row({ space: Constants.PADDING_EDGE_TEXT }) {
-        this.CategoryBarButtonItem('歌单', 0)
-        this.CategoryBarButtonItem('播客', 1)
+      Row({ space: Constants.PADDING_EDGE_DEFAULT }) {
+        this.CategoryBarButtonItem($r('app.string.Playlist'), 0)
+        this.CategoryBarButtonItem($r('app.string.Album'), 1)
+        this.CategoryBarButtonItem($r('app.string.Radio'), 2)
       }
       .backgroundColor($r('app.color.main'))
       .borderRadius(Constants.RADIUS_CARD)
@@ -162,17 +179,22 @@ struct Index {
     .justifyContent(FlexAlign.Center)
   }
 
-  @Builder CategoryBarButtonItem(title: string, index: number) {
+  @Builder CategoryBarButtonItem(title: string | ResourceStr, index: number) {
     Button() {
       Text(title)
-        .fontSize(18)
+        .maxFontSize(18)
+        .minFontSize(8)
         .fontColor(this.categoryTabIndex === index ? $r('app.color.app_red') : Color.Gray)
         .fontWeight(FontWeight.Bold)
+        .maxLines(1)
     }
     .width(50)
+    .height(30)
     .backgroundColor(Color.Transparent)
     .padding(5)
     .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
-    .onClick(() => { this.categoryTabIndex = index })
+    .onClick(() => {
+      this.contentTabIndex = this.categoryTabIndex = index
+    })
   }
 }

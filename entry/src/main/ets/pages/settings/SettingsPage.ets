@@ -66,7 +66,7 @@ export struct SettingsPage {
       .height('100%')
     }
     .backgroundColor($r('app.color.background'))
-    .title('设置')
+    .title($r('app.string.Settings'))
     .mode(NavigationMode.Stack)
     .titleMode(NavigationTitleMode.Mini)
     .navDestination(this.PageMap)
@@ -103,7 +103,7 @@ export struct SettingsPage {
   @Builder PlaySettings() {
     ListItem() {
       CommonSettingsCard({
-        title: '播放与歌词',
+        title: $r('app.string.SET_PLAYANDLYRIC'),
         action: () => {
           this.settingsPageInfos.pushPathByName('PlaySettingsPage', null)
         }
@@ -111,7 +111,7 @@ export struct SettingsPage {
     }
     ListItem() {
       CommonSettingsCard({
-        title: '歌曲卡片设置',
+        title: $r('app.string.SET_SONGCARD'),
         action: () => {
           this.settingsPageInfos.pushPathByName('SongClickActionPage', null)
         }
@@ -122,7 +122,7 @@ export struct SettingsPage {
   @Builder MainSettings() {
     ListItem() {
       CommonSettingsCard({
-        title: '云服务设置',
+        title: $r('app.string.SET_CLOUDSERVICE'),
         action: () => {
           this.settingsPageInfos.pushPathByName('ApiSetPage', null)
         }
@@ -130,7 +130,7 @@ export struct SettingsPage {
     }
     ListItem() {
       CommonSettingsCard({
-        title: '应用数据与缓存',
+        title: $r('app.string.SET_DATAANDCACHE'),
         action: () => {
           this.settingsPageInfos.pushPathByName('CacheManagePage', null)
         }
@@ -140,10 +140,10 @@ export struct SettingsPage {
 
   @Builder OtherItems() {
     CommonSettingsCard({
-      title: '建议反馈',
+      title: $r('app.string.SET_FEEDBACK'),
       action: () => {
         let param: WebPageParam = {
-          title: '建议反馈', url: 'https://www.wjx.cn/vm/PeLnYfc.aspx# '
+          title: `建议与反馈`, url: 'https://www.wjx.cn/vm/PeLnYfc.aspx# '
         }
         this.settingsPageInfos.pushPathByName('WebPage', param)
       }

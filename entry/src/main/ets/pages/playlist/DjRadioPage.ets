@@ -12,6 +12,8 @@ import { playQueue } from "../../common/functions/play/playControl"
 import { PLAYMODE } from "../../common/model/Enum"
 import PlayQueueUtils from "../../common/utils/play/PlayQueueUtils"
 import { ClickToLoadButton, LoadingMoreButton, NoMoreButton } from "../../components/buttons/LoadMoreButtons"
+import { PlayAllButton } from "../../components/buttons/PlayAllButton"
+import { BarLoading } from "../../components/cards/Loading"
 import { SongCard } from "../../components/cards/SongCard"
 import { BottomBarComponent } from "../../components/play/BottomBarComponent"
 
@@ -79,29 +81,21 @@ export struct DjRadioPage {
             ListItem()
               .height(px2vp(this.topRectHeight) + Constants.PADDING_EDGE_TEXT)
             ListItem() {
-              Button() {
-                Row({ space: 5 }) {
-                  if (this.isPlayerLoading) {
-                    LoadingProgress().height(35).padding({ left: 30 })
-                  } else {
-                    Image($r('app.media.ic_play_fill')).width(Constants.FONT_SIZE_COMMON).fillColor(Color.Gray)
-                    Text(this.param.djRadio.programCount > 500 ? `播放前 500 首` : `播放全部 (${this.param.djRadio.programCount})`).fontSize(Constants.FONT_SIZE_COMMON)
+              if(this.isPlayerLoading) {
+                BarLoading()
+              } else {
+                PlayAllButton({
+                  count: this.param.djRadio.programCount > 500 ? 500 : this.param.djRadio.programCount,
+                  clickAction: () => {
+                    if (this.isPlayerLoading) {
+                      ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
+                    } else {
+                      djRadioToQueue(this.param.djRadio.id, this.param.djRadio.programCount > 500 ? 500 : this.param.djRadio.programCount)
+                    }
                   }
-                }
-                .height(Constants.HEIGHT_TEXT_BUTTON)
+                })
               }
-              .type(ButtonType.Normal)
-              .backgroundColor(Color.Transparent)
-              .borderRadius(15)
-              .onClick(() => {
-                if (this.isPlayerLoading) {
-                  ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
-                } else {
-                  djRadioToQueue(this.param.djRadio.id, this.param.djRadio.programCount > 500 ? 500 : this.param.djRadio.programCount)
-                }
-              })
             }
-            .padding({ left: 20 })
             LazyForEach(this.dataSource, (item: DjRadioProgram, index) => {
               SongCard({
                 song: item.mainSong,
@@ -109,8 +103,7 @@ export struct DjRadioPage {
                 playmode: PLAYMODE.DJRADIO,
                 sid: index,
                 index: index,
-                djRadio: item.radio,
-                listPlayAction: async () => { await this.playSong(index) }
+                listPlayAction: async () => { this.playSong(index) }
               })
                 .translate({ y: this.translateY })
                 .animation({

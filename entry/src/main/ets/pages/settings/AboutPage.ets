@@ -135,7 +135,7 @@ export struct AboutPage {
       .scrollBar(BarState.Off)
       .padding(Constants.PADDING_EDGE_DEFAULT)
     }
-    .title('关于')
+    .title($r('app.string.About'))
     .backgroundColor($r('app.color.background'))
   }
 

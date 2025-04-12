@@ -49,14 +49,14 @@ export struct ApiSetPage {
       .scrollBar(BarState.Off)
     }
     .backgroundColor($r('app.color.background'))
-    .title('云服务配置')
+    .title($r('app.string.SET_CLOUDSERVICE'))
   }
 
   @Builder SetApiUrl() {
     Column({ space: 10 }) {
       Row() {
         Row({ space: 5 }) {
-          Text('云服务配置 (需要用户自搭建)').LeftText()
+          Text($r('app.string.SET_CLOUDSERVICE')).LeftText()
         }
       }
       .width('100%')

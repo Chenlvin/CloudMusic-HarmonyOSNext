@@ -7,6 +7,114 @@
     {
       "name": "EntryAbility_desc",
       "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "云音汇"
+    },
+    {
+      "name": "Explore",
+      "value": "发现"
+    },
+    {
+      "name": "Me",
+      "value": "我的"
+    },
+    {
+      "name": "Lists",
+      "value": "播单"
+    },
+    {
+      "name": "Settings",
+      "value": "应用设置"
+    },
+    {
+      "name": "LocalSongs",
+      "value": "本地曲库"
+    },
+    {
+      "name": "Login",
+      "value": "登录"
+    },
+    {
+      "name": "Logout",
+      "value": "退出登录"
+    },
+    {
+      "name": "SET_DEFAULTHOMEPAGE",
+      "value": "默认首页"
+    },
+    {
+      "name": "SET_PLAYANDLYRIC",
+      "value": "播放与歌词"
+    },
+    {
+      "name": "SET_CLOUDSERVICE",
+      "value": "云服务设置"
+    },
+    {
+      "name": "SET_DATAANDCACHE",
+      "value": "应用数据与缓存"
+    },
+    {
+      "name": "About",
+      "value": "关于"
+    },
+    {
+      "name": "SET_FEEDBACK",
+      "value": "建议与反馈"
+    },
+    {
+      "name": "SET_SONGCARD",
+      "value": "歌曲卡片设置"
+    },
+    {
+      "name": "New_version_found",
+      "value": "发现新版本"
+    },
+    {
+      "name": "Clean_temp_cache",
+      "value": "清理临时缓存"
+    },
+    {
+      "name": "Clean_persistent_data",
+      "value": "清理持久化数据"
+    },
+    {
+      "name": "Playlist",
+      "value": "歌单"
+    },
+    {
+      "name": "Album",
+      "value": "专辑"
+    },
+    {
+      "name": "Radio",
+      "value": "播客"
+    },
+    {
+      "name": "Search_content",
+      "value": "搜索内容"
+    },
+    {
+      "name": "Daily_recommend",
+      "value": "每日推荐"
+    },
+    {
+      "name": "Personal_fm",
+      "value": "私人FM"
+    },
+    {
+      "name": "Cloud",
+      "value": "音乐云盘"
+    },
+    {
+      "name": "Heart_list",
+      "value": "心动歌单"
+    },
+    {
+      "name": "Loading",
+      "value": "正在加载..."
     }
   ]
 }

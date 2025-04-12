@@ -7,13 +7,13 @@ import { PlayQueue } from "../common/entities/local/PlayQueue"
 import { SongDetail } from "../common/entities/song/SongDetail"
 import { QualityType } from "../common/entities/song/SongDownload"
 import { SongPlay } from "../common/entities/song/SongPlay"
-import { Album, Song, SongItem, SongsData } from "../common/entities/song/Song"
+import { Song, SongItem, SongsData } from "../common/entities/song/Song"
 import { User } from "../common/entities/user/User"
-import { getArtists } from "../common/functions/common/convert"
 import { getApiUrl } from "../common/functions/common/get"
 import PlayQueueUtils from "../common/utils/play/PlayQueueUtils"
 import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
 import { DailySongRes } from "./playListApi"
+import { Album } from "../common/entities/song/Album"
 
 const TAG = '[Song API - songApi] '
 
@@ -192,7 +192,7 @@ export async function setHeartMode(id: number, pid: number): Promise<void> {
       id: item.songInfo.id,
       name: item.songInfo.name,
       artists: item.songInfo.ar,
-      album: item.songInfo.al as Album,
+      album: item.songInfo.al,
       duration: item.songInfo.dt,
       alias: [],
       fee: item.songInfo.fee

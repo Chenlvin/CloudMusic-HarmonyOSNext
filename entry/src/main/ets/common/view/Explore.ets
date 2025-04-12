@@ -1,5 +1,4 @@
 import { DialogUtil, ToastUtil} from "@pura/harmony-utils";
-import { RecommendCards } from "../../components/cards/RecommendCards";
 import Constants from "../constants/Constants";
 import { TopListItem } from "../entities/recommend/TopList";
 import { getTopList } from "../../api/topListApi";
@@ -9,9 +8,8 @@ import { getPersonalizedList } from "../../api/playListApi";
 import { PersonalListItem } from "../entities/recommend/Personalized";
 import { PersonalizedCard } from "../../components/cards/PersonalizedCard";
 import { AppInfo, AppInfoClass } from "../entities/local/AppInfo";
-import { getRecommendDj } from "../../api/djApi";
-import { DjRadioRecommendCard } from "../../components/cards/DjRadioCard";
 import { RecommendDjRadio } from "../entities/dj/DjRecommend";
+import { IndexRecommend } from "./IndexRecommend";
 
 @Component
 export struct Explore {
@@ -43,7 +41,6 @@ export struct Explore {
   async getContent() {
     this.getTopLists()
     this.getPersonalizedList()
-    // this.getRecommendDjRadio()
   }
 
   private async getTopLists() {
@@ -64,15 +61,6 @@ export struct Explore {
     else return
   }
 
-  // private async getRecommendDjRadio() {
-  //   if(this.isLogged && this.recommendDjRadioList.length == 0 && this.validApiUrl) {
-  //     this.isLoadingRecommendDjRadio = true
-  //     this.recommendDjRadioList = await getRecommendDj()
-  //     this.isLoadingRecommendDjRadio = false
-  //   }
-  //   else return
-  // }
-
   private async refreshContent() {
     this.isRefreshing = true
     const currentTime = new Date().getTime()
@@ -83,7 +71,6 @@ export struct Explore {
         Promise.all([
           this.topList = await getTopList(),
           this.personalizedList = await getPersonalizedList(),
-          // this.recommendDjRadioList = await getRecommendDj()
         ])
         this.lastRefreshTime = currentTime
         ToastUtil.showToast('刷新成功')
@@ -105,7 +92,7 @@ export struct Explore {
           }
           GridItem() {
             Search({
-              placeholder: '搜索内容',
+              placeholder: $r('app.string.Search_content'),
               icon: '/resources/base/media/ic_public_search_filled.svg',
             })
               .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.9 })
@@ -121,7 +108,7 @@ export struct Explore {
           GridItem() {
             Column({ space: 5 }) {
               this.Intro(this.getGreeting(this.currentHour), () => {})
-              RecommendCards({ isLogged: this.isLogged, breakpoint: this.breakpoint })
+              IndexRecommend({ isLogged: this.isLogged })
             }
           }
 

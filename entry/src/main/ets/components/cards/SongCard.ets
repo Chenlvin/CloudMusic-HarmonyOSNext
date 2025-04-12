@@ -26,12 +26,12 @@ export struct SongCard {
   @State isShowArtistSheet: boolean = false
   @State playmode: PLAYMODE = PLAYMODE.SINGLE
   playlist: PlayList = PlayListItem
-  djRadio: DjRadio = djRadioItem
   song: Song = SongItem
   artists: string = ''
   picUrl: string | ResourceStr = ''
   reason: string = ''
   allowToArtist: boolean = true
+  allowToAlbum: boolean = true
   moreVisible: boolean = true
   listPlayAction: () => void = () => {}
 
@@ -200,6 +200,7 @@ export struct SongCard {
       isShowArtistsSheet: this.isShowArtistSheet,
       isShowAddSheet: this.isShowAddSheet,
       allowToArtist: this.allowToArtist,
+      allowToAlbum: this.allowToAlbum,
       playmode: this.playmode,
       listAction: this.listPlayAction
     })

@@ -42,7 +42,9 @@ export async function fetchSongInfo(fileName: string): Promise<Song> {
       album: {
         id: 0,
         name: '',
-        picUrl: ''
+        picUrl: '',
+        artists: [],
+        size: 0
       },
       duration: -1,
       alias: [],
@@ -65,7 +67,9 @@ export async function fetchSongInfo(fileName: string): Promise<Song> {
     album: {
       id: 0,
       name: '',
-      picUrl: ''
+      picUrl: '',
+      artists: [],
+      size: 0
     },
     duration: -1,
     alias: [],

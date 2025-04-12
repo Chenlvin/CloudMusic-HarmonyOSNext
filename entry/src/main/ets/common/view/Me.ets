@@ -84,14 +84,14 @@ export struct Me {
         .height(80)
 
         Column() {
-          this.ItemCard($r('app.media.ic_public_settings_filled'), '应用设置', () => {
+          this.ItemCard($r('app.media.ic_public_settings_filled'), $r('app.string.Settings'), () => {
             this.isShowSettings = true
           })
         }
         .itemColumnStyle()
 
         Column() {
-          this.ItemCard($r('app.media.ic_public_folder_filled'), '本地曲库', () => {
+          this.ItemCard($r('app.media.ic_public_folder_filled'), $r('app.string.LocalSongs'), () => {
             this.pageInfos.pushPath({ name: 'LocalSongPage', param: null }, { launchMode: LaunchMode.MOVE_TO_TOP_SINGLETON })
           })
         }
@@ -101,11 +101,11 @@ export struct Me {
 
         if(this.isValidAPI && !this.appLoading) {
           if(this.isLogged) {
-            this.LoginButton($r('app.color.app_red'), '退出登录', () => {
+            this.LoginButton($r('app.color.app_red'), $r('app.string.Logout'), () => {
               this.LogOut()
             })
           } else {
-            this.LoginButton(Color.Blue, '登 录', () => {
+            this.LoginButton(Color.Blue, $r('app.string.Login'), () => {
               this.pageInfos.pushPathByName('LoginPage', null, this.breakpoint === 'lg' && this.pageInfos.size() === 0 ? false : true)
             })
           }
@@ -127,7 +127,7 @@ export struct Me {
     .scrollBar(BarState.Off)
   }
 
-  @Builder ItemCard(icon: ResourceStr | string, text: string, action: () => void) {
+  @Builder ItemCard(icon: ResourceStr | string, text: string | ResourceStr, action: () => void) {
     Button() {
       Row({ space: 10 }) {
         Image(icon).iconStyle()
@@ -141,7 +141,7 @@ export struct Me {
     .onClick(action)
   }
 
-  @Builder LoginButton(color: Color | string | ResourceStr, text: string, action: () => void) {
+  @Builder LoginButton(color: Color | string | ResourceStr, text: string | ResourceStr, action: () => void) {
     Button() {
       Row({ space: 10 }) {
         Text(text)

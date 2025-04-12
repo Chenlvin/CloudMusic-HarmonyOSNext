@@ -1,5 +1,7 @@
+import { EmitterUtil } from "@pura/harmony-utils"
 import Constants from "../../common/constants/Constants"
-import { PlayListPageParam } from "../../common/entities/local/PageParams"
+import { EmitterConstants } from "../../common/constants/EmitterConstants"
+import { CommonParam, PlayListPageParam } from "../../common/entities/local/PageParams"
 import { PersonalListItem } from "../../common/entities/recommend/Personalized"
 
 @Component
@@ -14,7 +16,6 @@ export struct PersonalizedCard {
     trackCount: 0
   }
   @Prop breakpoint: string = 'sm'
-  @Consume('pageInfos') pageInfos: NavPathStack
 
   build() {
     Row({ space: 10 }) {
@@ -46,7 +47,7 @@ export struct PersonalizedCard {
     .width(250)
     .clickEffect({ level: ClickEffectLevel.HEAVY, scale: 0.9 })
     .onClick(() => {
-      let param: PlayListPageParam = {
+      let playlistParam: PlayListPageParam = {
         playList: {
           userId: 0,
           id: this.item.id,
@@ -66,11 +67,12 @@ export struct PersonalizedCard {
         isShowHeart: false,
         useTimestamp: false
       }
-      if(!this.pageInfos.getAllPathName().includes('PlayListPage')) {
-        this.pageInfos.pushPathByName('PlayListPage', param, this.pageInfos.size() === 0 && this.breakpoint === 'lg' ? false : true)
-      } else {
-        this.pageInfos.replacePath({ name: 'PlayListPage', param: param }, { launchMode: LaunchMode.MOVE_TO_TOP_SINGLETON })
+      let param: CommonParam<PlayListPageParam> = {
+        pageName: 'PlayListPage',
+        param: playlistParam,
+        remove: true
       }
+      EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
     })
   }
 }

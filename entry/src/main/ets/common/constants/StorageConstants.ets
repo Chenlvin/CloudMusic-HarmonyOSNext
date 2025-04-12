@@ -220,6 +220,11 @@ export class StorageConstants {
    */
   static readonly USER_DJRADIO_LIST: string = 'userDjRadioList'
   /**
+   * 用户收藏专辑
+   * @description AppStorage & Preference
+   */
+  static readonly USER_SUB_ALBUM: string = 'userSubAlbum'
+  /**
    * 用户歌单
    * @description AppStorage & Preference
    */

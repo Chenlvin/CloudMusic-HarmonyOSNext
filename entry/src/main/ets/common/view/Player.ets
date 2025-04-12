@@ -138,9 +138,9 @@ export struct Player {
      /**
       * 主内容
       */
-     if(this.widBp === 'lg' || (this.widBp === 'md' && this.heightBp === 'md')) {
+     if(this.widBp !== 'sm' && this.heightBp === 'md') {
        this.LargeUI()
-     } else if(this.widBp === 'md' && this.heightBp === 'sm') {
+     } else if(this.heightBp === 'sm' && this.widBp !== 'sm') {
        this.PhoneLargeUI()
      } else {
        this.PhoneUI()
@@ -374,25 +374,22 @@ export struct Player {
   @Builder
   SongInfo() {
     Column({ space: 20 }) {
-      Column({ space: 10 }) {
-        this.PersonalFmButton()
+      this.PersonalFmButton()
 
-        // 歌曲封面图片
-        Stack() {
-          Image(this.playmode === 0 ? this.picUrl : this.picUrl + '?param=512y512')
-            .height(this.song.id == 0 ? '70%' : '100%')
-            .borderRadius(5)
-            .aspectRatio(1)
-        }
-        .height('80%')
-        .aspectRatio(1)
-        .constraintSize({
-          minHeight: 0,
-          maxHeight: new BreakpointType<number>(300, 300, 500).getValue(this.widBp)
-        })
-        .padding({ bottom: 30 })
+      // 歌曲封面图片
+      Column() {
+        Image(this.playmode === 0 ? this.picUrl : this.picUrl + '?param=512y512')
+          .height(this.song.id === 0 ? '70%' : '100%')
+          .borderRadius(5)
+          .aspectRatio(1)
       }
-      .width('100%')
+      .justifyContent(FlexAlign.Center)
+      .constraintSize({
+        minHeight: 0,
+        maxHeight: new BreakpointType<number>(300, 300, 500).getValue(this.widBp)
+      })
+      .layoutWeight(1)
+      .padding({ bottom: 30 })
 
       // 歌曲名称&艺术家
       Text(this.song.name)
@@ -412,9 +409,9 @@ export struct Player {
         .bindSheet(this.isShowArtists, this.ArtistsSheet(), this.artistsSheetOptions)
     }
     .layoutWeight(1)
-    .width('100%')
-    .padding({ left: 15, right: 15, top:px2vp(this.topRectHeight) + 40 })
     .height('100%')
+    .width('100%')
+    .padding({ left: 15, right: 15, top: px2vp(this.topRectHeight) + Constants.PADDING_EDGE_TEXT })
     .justifyContent(FlexAlign.Center)
     .gesture(
       SwipeGesture({
@@ -535,8 +532,12 @@ export struct Player {
 
   @Builder LargeUI() {
     Row() {
-      Column() {
-        this.SongInfo()
+      Column({ space: 5 }) {
+        Column() {
+          this.SongInfo()
+        }
+        .layoutWeight(1)
+
         Column({ space: 10 }) {
           this.SliderContent()
           this.ToolBar()
