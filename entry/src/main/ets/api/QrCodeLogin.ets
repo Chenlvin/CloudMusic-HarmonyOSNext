@@ -1,59 +1,72 @@
-import { ToastUtil } from "@pura/harmony-utils"
+import { LogUtil, ToastUtil } from "@pura/harmony-utils"
 import { StorageConstants } from "../common/constants/StorageConstants"
 import { extractCookie } from "../common/functions/common/convert"
-import { getApiUrl } from "../common/functions/common/get"
-import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
+import commonRequest from "../common/utils/request/RequestUtil"
 import { getLoginStatus } from "./loginApi"
+
+interface GetQrCodeImg {
+  qrimg: string
+}
+
+interface GetQrCodeKey {
+  unikey: string
+}
+
+interface GetQrCodeResponse {
+  data: GetQrCodeKey
+}
+
+interface GetQrCodeImgResponse {
+  data: GetQrCodeImg
+}
 
 /**
  * 获取登录二维码
  * @returns string - qrImg
  */
-export async function getQrCode(): Promise<string[]> {
-  const timestamp = new Date().getTime()
-  let qrimg:string = ''
-  let unikey:string = ''
-  const rootUrl = await getApiUrl()
-  const url:string = `${rootUrl}/login/qr/key?timestamp=${timestamp}`
-  const request = new HttpRequest(url)
-  await request.Request().then(async (data) => {
-    unikey = data.result["data"]["unikey"]
-    const timestamp2 = new Date().getTime()
-    const request_qr = new HttpRequest(`${rootUrl}/login/qr/create?key=${unikey}&qrimg=true&timestamp=${timestamp2}`)
-    await request_qr.Request().then((qrImg) => {
-      qrimg = qrImg.result["data"]["qrimg"]
-    })
+export const getQrCode = async(): Promise<string[]> => {
+  const keyResponse = await commonRequest<GetQrCodeResponse>({
+    url: '/login/qr/key',
+    params: { noCookie: true, timestamp: new Date().getTime() }
   })
-  return [unikey,qrimg]
+
+  LogUtil.info('QrCodeLogin KeyResponse: ' + JSON.stringify(keyResponse))
+
+  const unikey = keyResponse.data.unikey
+
+  const imgResponse = await commonRequest<GetQrCodeImgResponse>({
+    url: '/login/qr/create',
+    params: { key: unikey, qrimg: true, timestamp: new Date().getTime(), noCookie: true }
+  })
+
+  LogUtil.info('QrCodeLogin ImgResponse: ' + JSON.stringify(imgResponse))
+
+  return [unikey, imgResponse.data.qrimg]
 }
 
-export async function checkQrLogin(key: string): Promise<boolean> {
-  const rootUrl = await getApiUrl()
-  const url: string = `${rootUrl}/login/qr/check?timestamp=${new Date().getTime()}&key=${key}`
-  const request = new HttpRequest(url)
-  try {
-    const data = await request.Request(false)
-    const code: number = data.result["code"]
-    if (code == 800 || code == 801) {
-      ToastUtil.showToast(data.result["message"])
-      return false
-    } else if (code == 803) { // success
-      let cookie: string = data.result["cookie"]
-      if (cookie) {
-        cookie = extractCookie(cookie)
-        cookie = cookie + '; OS=pc'
-        AppStorage.setOrCreate(StorageConstants.COOKIE, cookie)
-        const result = await getLoginStatus(cookie)
-        return result
-      } else {
-        ToastUtil.showToast('获取登录状态失败')
-        return false
-      }
-    } else {
-      return false
+/**
+ * 检查二维码登录状态
+ */
+interface CheckQrResponse {
+  code: number
+  message: string
+  cookie: string
+}
+export const checkQrLogin = async (key: string): Promise<boolean> => {
+  const response = await commonRequest<CheckQrResponse>({
+    url: '/login/qr/check',
+    params: { key, noCookie: true, timestamp: new Date().getTime() }
+  })
+  if(response.code === 803) { // success
+    let cookie = response.cookie
+    if(cookie) {
+      cookie = extractCookie(cookie)
+      cookie = cookie + '; OS=pc'
+      AppStorage.setOrCreate(StorageConstants.COOKIE, cookie)
+      const result = await getLoginStatus(cookie)
+      return result
     }
-  } catch (error) {
-    ToastUtil.showToast(`请求失败: ${error}`)
-    return false
   }
+  ToastUtil.showToast(response.message)
+  return false
 }

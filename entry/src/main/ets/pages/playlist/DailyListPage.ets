@@ -45,7 +45,7 @@ export struct DailyListPage {
       if(result.length < 3) { result = await getDailySongs(false) }
       this.list = result
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching songs: ', e)
+      LogUtil.error(TAG, 'Error fetching songs: ', e)
     } finally {
       this.isLoading = false
     }
@@ -96,7 +96,7 @@ export struct DailyListPage {
                     }
                   })
                 }
-                .padding({ left: 20, bottom: 10 })
+                .padding({ bottom: Constants.PADDING_EDGE_DEFAULT })
 
                 ForEach(this.list, (item: DailySongRes, index) => {
                   ListItem() {

@@ -33,7 +33,7 @@ class PlayQueueUtils {
       AppStorage.setOrCreate('PlayQueue',this.queue)
       AppStorage.setOrCreate('cycleMode', circleMode)
     } catch (e) {
-      LogUtil.error(TAG + '初始化播放列表 init playqueue error: ' + e.message())
+      LogUtil.error(TAG, '初始化播放列表 init playqueue error: ' + e.message())
     }
   }
 
@@ -45,7 +45,7 @@ class PlayQueueUtils {
       AppStorage.setOrCreate('PlayQueue', this.queue)
       await PreferencesUtils.putPreferenceValue(pref, 'queue', this.queue)
     } catch (e) {
-      LogUtil.error(TAG + 'Error while syncQueueToStorage: ' + e.message)
+      LogUtil.error(TAG, 'Error while syncQueueToStorage: ' + e.message)
     }
   }
 
@@ -62,7 +62,7 @@ class PlayQueueUtils {
       })
       await this.syncQueueToStorage()
     } catch (e) {
-      LogUtil.error(TAG + '添加失败 add queue element error: ' + e.message())
+      LogUtil.error(TAG, '添加失败 add queue element error: ' + e.message())
     }
   }
 
@@ -73,7 +73,7 @@ class PlayQueueUtils {
       await PreferencesUtils.putPreferenceValue(pref, 'queue', this.queue)
       EmitterUtil.post(EmitterConstants.EMITTER_REFRESH_PLAYQUEUE, () => {})
     } catch (e) {
-      LogUtil.error(TAG + 'Error while queueAdd_array: ' + e.message)
+      LogUtil.error(TAG, 'Error while queueAdd_array: ' + e.message)
     }
   }
 
@@ -89,7 +89,7 @@ class PlayQueueUtils {
         this.setIndex(this.currentQueueIndex - 1)
       }
     } catch (e) {
-      LogUtil.error(TAG + '删除失败 delete queue element error: ' + e.message())
+      LogUtil.error(TAG, '删除失败 delete queue element error: ' + e.message())
     }
   }
 

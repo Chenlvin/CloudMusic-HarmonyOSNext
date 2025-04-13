@@ -62,7 +62,7 @@ class AVSessionUtils {
       })
 
     } catch (e) {
-      LogUtil.error(TAG + '创建session失败 / create session error: ' + JSON.stringify(e))
+      LogUtil.error(TAG, '创建session失败 / create session error: ' + JSON.stringify(e))
     } finally {
       return session
     }
@@ -113,7 +113,7 @@ class AVSessionUtils {
     try {
       (await this.session).deactivate()
     } catch (e) {
-      LogUtil.error(TAG + '停用失败: ' + e)
+      LogUtil.error(TAG, '停用失败: ' + e)
     }
   }
 

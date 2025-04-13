@@ -1,3 +1,4 @@
+import { COMMENT_TYPE } from "../../model/Enum";
 import { DjRadio } from "../dj/DjResult";
 import { PlayList } from "../playlist/PlayList";
 import { Album } from "../song/Album";
@@ -45,8 +46,9 @@ export interface AlbumParam {
  * 评论页参数
  */
 export interface CommentParam {
-  songId: number
-  songName: string
+  id: number
+  name: string
+  type: COMMENT_TYPE
 }
 /**
  * 通用参数

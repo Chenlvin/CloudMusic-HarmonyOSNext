@@ -48,6 +48,7 @@
         "compatibleSdkVersion": "5.0.4(16)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
+
           "strictMode": {
             "caseSensitiveCheck": true,
             "useNormalizedOHMUrl": true

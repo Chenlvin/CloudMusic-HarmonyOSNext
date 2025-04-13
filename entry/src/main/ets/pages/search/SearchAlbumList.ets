@@ -73,7 +73,7 @@ export struct SearchAlbumList {
     try {
       this.albums = await searchAlbums(this.searchKeyword)
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching Albums: ', JSON.stringify(e))
+      LogUtil.error(TAG, 'Error fetching Albums: ', JSON.stringify(e))
     } finally {
       this.isLoading = false
       this.hasLoaded = true

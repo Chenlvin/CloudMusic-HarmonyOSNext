@@ -102,7 +102,7 @@ export struct SearchSongsList {
       this.songOffset += 30
       this.hasMoreSongs = result.hasMore
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching songs: ', JSON.stringify(e))
+      LogUtil.error(TAG, 'Error fetching songs: ', JSON.stringify(e))
     } finally {
       this.isLoading = false
       this.isLoadingMore = false

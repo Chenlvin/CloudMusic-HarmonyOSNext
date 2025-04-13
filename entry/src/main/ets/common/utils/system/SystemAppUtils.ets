@@ -17,10 +17,10 @@ class SystemAppUtils {
       }
       context.startAbility(want)
         .catch((err: BusinessError) => {
-          LogUtil.error(TAG + '尝试拉起浏览器失败: ' + err.message)
+          LogUtil.error(TAG, '尝试拉起浏览器失败: ' + err.message)
         })
     } else {
-      LogUtil.error(TAG + '拉起浏览器 getContext() 失败')
+      LogUtil.error(TAG, '拉起浏览器 getContext() 失败')
     }
   }
 }

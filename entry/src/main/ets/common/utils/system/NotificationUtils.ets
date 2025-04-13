@@ -26,7 +26,7 @@ class NotificationUtils {
         }
       },
     }).catch((err:Error) => {
-      LogUtil.error(TAG + '发送通知失败' + err.message)
+      LogUtil.error(TAG, '发送通知失败' + err.message)
     })
   }
 
@@ -48,7 +48,7 @@ class NotificationUtils {
 
     notificationManager.publish(notificationRequest, (err: BusinessError) => {
       if(err) {
-        LogUtil.error(TAG + 'Error: ' + err.message)
+        LogUtil.error(TAG, 'Error: ' + err.message)
         return
       }
     })

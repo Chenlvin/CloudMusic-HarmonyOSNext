@@ -15,7 +15,7 @@ class PreferencesUtils {
       const preference = await preferences.getPreferences(context, name)
       this.preferencesMap.set(name,preference)
     } catch (e) {
-      LogUtil.error(TAG + `加载 Preference ${name} 失败: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `加载 Preference ${name} 失败: ${JSON.stringify(e)}`)
       throw new Error(`加载 Preference ${name} 失败: ${JSON.stringify(e)}`)
     }
   }
@@ -23,7 +23,7 @@ class PreferencesUtils {
   // 新增数据
   async putPreferenceValue(name: string, key: string, value: preferences.ValueType) {
     if(!this.preferencesMap.has(name)) {
-      LogUtil.error(TAG + `Preference ${name} 尚未初始化`)
+      LogUtil.error(TAG, `Preference ${name} 尚未初始化`)
       return
     }
     try {
@@ -31,7 +31,7 @@ class PreferencesUtils {
       await preference?.put(key, value)
       await preference?.flush()
     } catch (e) {
-      LogUtil.error(TAG + `保存 Preference ${name} 失败: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `保存 Preference ${name} 失败: ${JSON.stringify(e)}`)
     }
   }
 
@@ -47,7 +47,7 @@ class PreferencesUtils {
       const value = await preference?.get(key, defaultValue)
       return value as T;
     } catch (e) {
-      LogUtil.error(TAG + `读取 Preference ${name} 失败: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `读取 Preference ${name} 失败: ${JSON.stringify(e)}`)
       throw new Error(TAG + `无法读取 Preference ${name}.${key}`)
     }
   }
@@ -56,7 +56,7 @@ class PreferencesUtils {
   // 删除数据
   async delPreferenceValue(name: string, key: string) {
     if(!this.preferencesMap.has(name)) {
-      LogUtil.error(TAG + `Preference ${name} 尚未初始化`)
+      LogUtil.error(TAG, `Preference ${name} 尚未初始化`)
       return
     }
     try {
@@ -64,14 +64,14 @@ class PreferencesUtils {
       await preference?.delete(key)
       await preference?.flush()
     } catch (e) {
-      LogUtil.error(TAG + `删除 Preference ${name} 失败: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `删除 Preference ${name} 失败: ${JSON.stringify(e)}`)
     }
   }
 
   // 判断 Preference 中是否存在指定的 key
   async hasPreferenceValue(name: string, key: string): Promise<boolean> {
     if (!this.preferencesMap.has(name)) {
-      LogUtil.error(TAG + `Preference ${name} 尚未初始化`)
+      LogUtil.error(TAG, `Preference ${name} 尚未初始化`)
       return false
     }
     try {
@@ -79,7 +79,7 @@ class PreferencesUtils {
       const value = await preference?.get(key, undefined)
       return value !== undefined
     } catch (e) {
-      LogUtil.error(TAG + `判断 Preference ${name} 是否存在失败: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `判断 Preference ${name} 是否存在失败: ${JSON.stringify(e)}`)
       return false
     }
   }

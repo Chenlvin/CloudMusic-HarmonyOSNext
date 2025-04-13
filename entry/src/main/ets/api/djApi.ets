@@ -1,31 +1,24 @@
-import { LogUtil } from "@pura/harmony-utils"
 import { StorageConstants } from "../common/constants/StorageConstants"
 import { DjProgramResult } from "../common/entities/dj/DjProgramResult"
-import { DjRecommendResult, RecommendDjRadio } from "../common/entities/dj/DjRecommend"
 import { DjRadio, DjResult } from "../common/entities/dj/DjResult"
 import { PlayQueue } from "../common/entities/local/PlayQueue"
 import { Song } from "../common/entities/song/Song"
-import { getArtists } from "../common/functions/common/convert"
-import { getApiUrl } from "../common/functions/common/get"
 import PreferencesUtils from "../common/utils/data/PreferencesUtils"
 import PlayQueueUtils from "../common/utils/play/PlayQueueUtils"
-import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
-
-const TAG = '[djApi] '
+import commonRequest from "../common/utils/request/RequestUtil"
 
 /**
  * 获取用户电台 Sublist
  * @returns DjResult
  */
-export async function getDjSublist(): Promise<DjResult> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/dj/sublist?timestamp=${new Date().getTime()}`
-  const request = new HttpRequest(url)
-  const data = await request.RequestInStream(true)
-  const dataGot = data.result as DjResult
-  AppStorage.setOrCreate(StorageConstants.USER_DJRADIO_LIST, dataGot.djRadios)
-  PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_DJRADIO_LIST, dataGot.djRadios)
-  return dataGot
+export const getDjSublist = async (): Promise<DjResult> => {
+  const response = await commonRequest<DjResult>({
+    url: '/dj/sublist',
+    params: { timestamp: new Date().getTime() }
+  })
+  AppStorage.setOrCreate(StorageConstants.USER_DJRADIO_LIST, response.djRadios)
+  PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_DJRADIO_LIST, response.djRadios)
+  return response
 }
 
 /**
@@ -35,28 +28,11 @@ export async function getDjSublist(): Promise<DjResult> {
  * @param offset
  * @returns DjProgramResult
  */
-export async function getDjPrograms(rid: number, limit: number, offset: number): Promise<DjProgramResult> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/dj/program?rid=${rid}&limit=${limit}&offset=${offset}&timestamp=${new Date().getTime()}`
-  const request = new HttpRequest(url)
-  const data = await request.RequestInStream(true)
-  const dataGot = data.result as DjProgramResult
-  return dataGot
-}
-
-/**
- * 获取推荐电台
- * @returns
- */
-export async function getRecommendDj(): Promise<Array<RecommendDjRadio>> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/personalized/djprogram`
-  const request = new HttpRequest(url)
-  const data = await request.RequestInStream(true)
-  const dataGot = data.result as DjRecommendResult
-  LogUtil.info(TAG + 'result: ' + JSON.stringify(dataGot))
-  PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.RECOMMENDED_DJ, dataGot.djRadios ?? [])
-  return dataGot.djRadios ?? []
+export const getDjPrograms = async (rid: number, limit: number, offset: number): Promise<DjProgramResult> => {
+  return commonRequest({
+    url: '/dj/program',
+    params: { rid, limit, offset, timestamp: new Date().getTime() }
+  })
 }
 
 /**
@@ -68,22 +44,27 @@ export async function getRecommendDj(): Promise<Array<RecommendDjRadio>> {
  * @param first
  * @returns
  */
-export async function putDjRadioInQueue(rid: number, trackCount: number, limit: number = 100, offset: number = 0, first: boolean = true): Promise<void> {
-  const rootUrl = await getApiUrl()
+export const putDjRadioInQueue = async (
+  rid: number,
+  trackCount: number,
+  limit: number = 100,
+  offset: number = 0,
+  first: boolean = true
+): Promise<void> => {
   const allQueue: PlayQueue[] = []
 
   while (offset < trackCount) {
-    const url = `${rootUrl}/dj/program?rid=${rid}&limit=${limit}&offset=${offset}`
-    const data = await new HttpRequest(url).RequestInStream()
-    const dataResult = data.result as DjProgramResult
+    const response = await commonRequest<DjProgramResult>({
+      url: '/dj/program',
+      params: { rid, limit, offset, timestamp: new Date().getTime() }
+    })
 
-    allQueue.push(...dataResult.programs.map((item): PlayQueue => ({
+    allQueue.push(...response.programs.map((item): PlayQueue => ({
       playmode: 3,
       song: item.mainSong as Song,
       fileName: '',
       picUrl: item.coverUrl || $r('app.media.ic_public_music')
     })))
-
     offset += limit
   }
 
@@ -91,16 +72,23 @@ export async function putDjRadioInQueue(rid: number, trackCount: number, limit: 
   await PlayQueueUtils.queueAdd_array(allQueue)
 }
 
+interface DjRadioBody {
+  djRadios: DjRadio[]
+}
+
+interface DjRadioResult {
+  result: DjRadioBody
+}
+
 /**
  * 搜索播客电台
  * @param keyword
  * @returns
  */
-export async function getDjRadioList(keyword: string): Promise<DjRadio[]> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/search?keywords=${encodeURIComponent(keyword)}&type=1009`
-  const request = new HttpRequest(url)
-  const data = await request.RequestInStream()
-  const dataGot: DjRadio[] = data.result["result"]["djRadios"] as DjRadio[]
-  return dataGot ?? []
+export const getDjRadioList = async (keywords: string): Promise<DjRadio[]> => {
+  const response = await commonRequest<DjRadioResult>({
+    url: '/search',
+    params: { keywords, type: 1009 }
+  })
+  return response.result.djRadios
 }

@@ -73,7 +73,7 @@ export struct SearchArtistsList {
     try {
       this.artists = await searchArtists(this.searchKeyword)
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching artists: ', JSON.stringify(e));
+      LogUtil.error(TAG, 'Error fetching artists: ', JSON.stringify(e));
     } finally {
       this.isLoading = false
       this.hasArtistLoaded = true

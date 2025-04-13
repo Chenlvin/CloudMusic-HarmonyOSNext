@@ -1,10 +1,8 @@
 import { LogUtil } from "@pura/harmony-utils";
-import Constants from "../../constants/Constants";
 import { StorageConstants } from "../../constants/StorageConstants";
-import { LocalSong } from "../../entities/local/LocalData";
 import { CacheSet, CacheSetItem } from "../../entities/local/Settings";
 import { Artist } from "../../entities/song/Song";
-import { HttpRequest } from "../../utils/request/HttpRequestUtils";
+import commonRequest from "../../utils/request/RequestUtil";
 import { getArtists } from "./convert";
 
 const TAG = '[get function] '
@@ -32,17 +30,20 @@ export async function getCookie(): Promise<string> {
   return cookie
 }
 
+interface InnerVersion {
+  code: number
+}
 /**
  * 检查API URL连通性
  * @returns
  */
 export async function checkValidUrl(): Promise<boolean> {
   try {
-    const rootUrl = await getApiUrl()
-    const url: string = `${rootUrl}/inner/version`
-    const request = new HttpRequest(url)
-    const data = await request.Request()
-    if (data.responseCode === 200 && data.result["code"] === 200) {
+    const response = await commonRequest<InnerVersion>({
+      url: '/inner/version',
+      params: {}
+    })
+    if (response.code === 200) {
       AppStorage.setOrCreate(StorageConstants.VALID_API_URL, true)
       return true
     } else {
@@ -81,7 +82,7 @@ export async function getCacheSet() {
     const cacheSet = await AppStorage.get(StorageConstants.CACHE_SETTINGS) as CacheSet
     return cacheSet ?? CacheSetItem
   } catch (e) {
-    LogUtil.error(TAG + 'getCacheSet Error: ' + e.message)
+    LogUtil.error(TAG, 'getCacheSet Error: ' + e.message)
     return CacheSetItem
   }
 }

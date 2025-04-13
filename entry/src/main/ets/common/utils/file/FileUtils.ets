@@ -68,12 +68,12 @@ class FileUtils {
           }
           successCount++
         } catch (e) {
-          LogUtil.error(TAG + `删除文件 ${localSong.songFile} 失败: ${e.stack}`)
+          LogUtil.error(TAG, `删除文件 ${localSong.songFile} 失败: ${e.stack}`)
         }
       }
       ToastUtil.showToast(`删除了 ${successCount}/${localSongs.length} 个文件`)
     } catch (e) {
-      LogUtil.error(TAG + `Delete files error: ${JSON.stringify(e)}`)
+      LogUtil.error(TAG, `Delete files error: ${JSON.stringify(e)}`)
     }
   }
 
@@ -83,7 +83,7 @@ class FileUtils {
       let uri = FileUtil.getFileUri(this.filesDir + `/${fileName}`)
       return uri
     } catch (e) {
-      LogUtil.error(TAG + '获取文件Uri失败: ' + e.message())
+      LogUtil.error(TAG, '获取文件Uri失败: ' + e.message())
       return null
     }
   }
@@ -92,7 +92,7 @@ class FileUtils {
     try {
       FileUtil.moveFile(from, to, 0)
     } catch (e) {
-      LogUtil.error(TAG + '移动文件时出错 move file error: ' + e.message())
+      LogUtil.error(TAG, '移动文件时出错 move file error: ' + e.message())
     }
   }
 
@@ -110,15 +110,15 @@ class FileUtils {
             await fs.copyFile(srcPath, descFile.fd)
             fs.closeSync(descFile.fd)
           } catch (err) {
-            LogUtil.error(TAG + `文件 ${localSongs[index].songFile} 保存失败: ${err.message}`)
+            LogUtil.error(TAG, `文件 ${localSongs[index].songFile} 保存失败: ${err.message}`)
           }
         })
         ToastUtil.showToast(`已保存 ${uris.length} 个文件`)
       }).catch((err: Error) => {
-        LogUtil.error(TAG + 'File Picker 出错: ' + err.message)
+        LogUtil.error(TAG, 'File Picker 出错: ' + err.message)
       })
     } catch (e) {
-      LogUtil.error(TAG + '保存文件出错: ' + e.message())
+      LogUtil.error(TAG, '保存文件出错: ' + e.message())
     }
   }
 
@@ -127,7 +127,7 @@ class FileUtils {
     let uri = FileUtil.getUriFromPath(this.filesDir + `/${fileName}`)
     let info = PreviewUtil.generatePreviewInfo(uri)
     PreviewUtil.openPreview(info).catch((error: BusinessError) => {
-      LogUtil.error(TAG + 'preview file error: ' + error.message)
+      LogUtil.error(TAG, 'preview file error: ' + error.message)
     })
   }
 
@@ -136,7 +136,7 @@ class FileUtils {
       await FileUtil.rmdir(this.cacheDir)
       return true
     } catch (e) {
-      LogUtil.error(TAG + e.message())
+      LogUtil.error(TAG, e.message())
       ToastUtil.showToast('清除缓存失败')
     }
     return false
@@ -147,7 +147,7 @@ class FileUtils {
       let size = FileUtil.getFileDirSize(this.cacheDir)
       return size
     } catch (e) {
-      LogUtil.error(TAG + '获取缓存大小失败: ' + e.message())
+      LogUtil.error(TAG, '获取缓存大小失败: ' + e.message())
       return -1
     }
   }
@@ -207,7 +207,7 @@ class FileUtils {
       let sizeFree = statfs.getFreeSizeSync(path)
       return sizeTotal - sizeFree
     } catch (e) {
-      LogUtil.error(TAG + 'getSongCacheSize Error: ' + e.message)
+      LogUtil.error(TAG, 'getSongCacheSize Error: ' + e.message)
       return 0
     }
   }

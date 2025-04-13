@@ -4,9 +4,6 @@ import { JSON } from "@kit.ArkTS";
 import Constants from "../../common/constants/Constants";
 import { resourceManager } from "@kit.LocalizationKit";
 import { AppConstants } from "../../common/constants/AppConstants";
-import { HttpRequest } from "../../common/utils/request/HttpRequestUtils";
-import { getApiUrl } from "../../common/functions/common/get";
-import { ToastUtil } from "@pura/harmony-utils";
 
 @Component
 export struct DebugPage {
@@ -60,18 +57,18 @@ export struct DebugPage {
   }
 
   async request() {
-    const rootUrl = await getApiUrl()
-    const url = rootUrl + this.apiUrl
-    try {
-      const request = new HttpRequest(url)
-      const data = await request.RequestInStream()
-      if(data.responseCode == 200) {
-        ToastUtil.showToast('200 OK')
-        this.result = JSON.stringify(data.result, null, 2).replace(/\n/g, '\n')
-      }
-    } catch (e) {
-      ToastUtil.showToast('Request Error:\n' + e.message)
-    }
+    // const rootUrl = await getApiUrl()
+    // const url = rootUrl + this.apiUrl
+    // try {
+    //   const request = new HttpRequest(url)
+    //   const data = await request.RequestInStream()
+    //   if(data.responseCode == 200) {
+    //     ToastUtil.showToast('200 OK')
+    //     this.result = JSON.stringify(data.result, null, 2).replace(/\n/g, '\n')
+    //   }
+    // } catch (e) {
+    //   ToastUtil.showToast('Request Error:\n' + e.message)
+    // }
   }
 }
 

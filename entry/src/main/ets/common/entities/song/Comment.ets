@@ -14,16 +14,22 @@ export interface Comment {
   likedCount: number
 }
 
+interface CommentData {
+  commentsTitle: string
+  comments: Comment[]
+}
+
 export interface CommentResult {
-  userId: number
-  moreHot: boolean
-  hotComments: Comment[]
+  code: number
+  data: CommentData
 }
 
 export const CommentResultItem: CommentResult = {
-  userId: 0,
-  moreHot: false,
-  hotComments: []
+  code: 200,
+  data: {
+    commentsTitle: '',
+    comments: []
+  }
 }
 
 export const CommentItem: Comment = {

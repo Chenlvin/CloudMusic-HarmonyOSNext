@@ -85,7 +85,7 @@ class AVPlayerUtils {
         }
       })
     } catch (e) {
-      LogUtil.error(TAG + '播放错误: ' + e.message)
+      LogUtil.error(TAG, '播放错误: ' + e.message)
     }
   }
 
@@ -121,7 +121,7 @@ class AVPlayerUtils {
 
   private setCallback(avPlayer: media.AVPlayer) {
     avPlayer.on('error', (err: BusinessError) => {
-      LogUtil.error(TAG + `Invoke avPlayer failed, code is ${err.code}, message is ${err.message}`)
+      LogUtil.error(TAG, `Invoke avPlayer failed, code is ${err.code}, message is ${err.message}`)
       if(avPlayer.state === 'paused' || avPlayer.state === 'stopped') return
       setTimeout(() => {
         if(this.errorFlag) return

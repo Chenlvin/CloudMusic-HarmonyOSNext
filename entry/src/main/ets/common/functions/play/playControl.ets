@@ -61,7 +61,7 @@ export async function playMusicByUrl(song: Song, isLogged: boolean, picUrl: stri
     AVSessionUtils.activate()
     saveCurrentSongInfo(mode, song, artists, picUrl)
   } catch (e) {
-    LogUtil.error(TAG + '播放出错: ' + e)
+    LogUtil.error(TAG, '播放出错: ' + e)
     playNext()
   }
 }
@@ -100,7 +100,7 @@ export async function playMusicWithFile(song: Song, fileName: string) {
       playNext()
     }
   } catch (e) {
-    LogUtil.error(TAG + '播放本地文件 PlayMusicWithFile 出错: ' + JSON.stringify(e))
+    LogUtil.error(TAG, '播放本地文件 PlayMusicWithFile 出错: ' + JSON.stringify(e))
     playNext()
   }
 }

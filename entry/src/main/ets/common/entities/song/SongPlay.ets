@@ -1,11 +1,11 @@
 interface Data {
-  id:number
-  url:string
-  time:number
+  id: number
+  url: string
+  time: number
 }
 
 export interface SongPlay {
-  data:Data[]
+  data: Data[]
 }
 
 export const SongPlayClass: SongPlay = {

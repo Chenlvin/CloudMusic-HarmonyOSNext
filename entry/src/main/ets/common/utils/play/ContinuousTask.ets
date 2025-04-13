@@ -28,7 +28,7 @@ class ContinuousTask {
       backgroundTaskManager.startBackgroundRunning(this.context,
         backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK, wantAgentObj).then(async () => {
       }).catch((err: BusinessError) => {
-        // LogUtil.error(TAG + `启动长时任务 Start Background Running 失败：Code - ${err.code}, Message - ${err.message}`)
+        // LogUtil.error(TAG, `启动长时任务 Start Background Running 失败：Code - ${err.code}, Message - ${err.message}`)
       })
     })
   }
@@ -36,7 +36,7 @@ class ContinuousTask {
   async stopTask() {
     backgroundTaskManager.stopBackgroundRunning(this.context).then(() => {
     }).catch((err: BusinessError) => {
-      LogUtil.error(TAG + `结束长时任务 Stop Background Running 失败：Code - ${err.code}, Message - ${err.message}`);
+      LogUtil.error(TAG, `结束长时任务 Stop Background Running 失败：Code - ${err.code}, Message - ${err.message}`);
     })
   }
 }

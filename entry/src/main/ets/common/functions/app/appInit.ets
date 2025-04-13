@@ -17,7 +17,6 @@ import App from "@system.app"
 import Constants from "../../constants/Constants"
 import AudioCacheUtils from "../../utils/play/AudioCacheUtils"
 import { DjRadio } from "../../entities/dj/DjResult"
-import BreakpointUtils from "../../utils/system/BreakpointUtils"
 import { Album } from "../../entities/song/Album"
 
 /**
@@ -33,7 +32,7 @@ export async function appInit() {
   loadSavedSong()
   initPermission()
   initLocalData()
-  getAppInfo()
+  await getAppInfo()
   await initUserInfo()
   AppStorage.setOrCreate(StorageConstants.APP_LOADING, false)
 }
@@ -143,7 +142,7 @@ async function getDeviceTypeInfo(): Promise<resourceManager.DeviceType> {
   try {
     deviceType = getContext().resourceManager.getDeviceCapabilitySync().deviceType
   } catch (e) {
-    LogUtil.error(TAG + 'Failed to get device type: ' + e.message)
+    LogUtil.error(TAG, 'Failed to get device type: ' + e.message)
   }
   return deviceType
 }

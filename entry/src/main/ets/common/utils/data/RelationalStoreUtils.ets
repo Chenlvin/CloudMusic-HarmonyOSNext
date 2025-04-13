@@ -17,7 +17,7 @@ class RelationalStoreUtils {
     try {
       this.store = await relationalStore.getRdbStore(getContext(), STORE_CONFIG)
     } catch (e) {
-      LogUtil.error(TAG + 'Init Store Error: ' + e.message)
+      LogUtil.error(TAG, 'Init Store Error: ' + e.message)
     }
     await this.createTables()
   }
@@ -37,7 +37,7 @@ class RelationalStoreUtils {
     try {
       await this.store.executeSql(createTableSql)
     } catch (err) {
-      LogUtil.error(TAG + 'Failed to create table: ' + err.message)
+      LogUtil.error(TAG, 'Failed to create table: ' + err.message)
     }
   }
 
@@ -54,7 +54,7 @@ class RelationalStoreUtils {
     try {
       return await this.store.insert(TABLE_SONGS, valueBucket)
     } catch (e) {
-      LogUtil.error(TAG + 'Insert song Error: ' + e.message)
+      LogUtil.error(TAG, 'Insert song Error: ' + e.message)
       return -1
     }
   }
@@ -71,7 +71,7 @@ class RelationalStoreUtils {
       const resultSet = await this.store.query(predicates, columns)
       return await this.parseResultSet(resultSet)
     } catch (e) {
-      LogUtil.error(TAG + 'Failed to get songs: ' + e.message)
+      LogUtil.error(TAG, 'Failed to get songs: ' + e.message)
       return []
     }
   }
@@ -117,7 +117,7 @@ class RelationalStoreUtils {
     try {
       return await this.store.update(valueBucket, predicates)
     } catch (e) {
-      LogUtil.error(TAG + 'Update Error: ' + e.message)
+      LogUtil.error(TAG, 'Update Error: ' + e.message)
       return 0
     }
   }
@@ -133,7 +133,7 @@ class RelationalStoreUtils {
     try {
       return await this.store.delete(predicates)
     } catch (e) {
-      LogUtil.error(TAG + 'Delete Error: ' + e.message)
+      LogUtil.error(TAG, 'Delete Error: ' + e.message)
       return 0
     }
   }
@@ -147,7 +147,7 @@ class RelationalStoreUtils {
       await this.store.executeSql(`DELETE FROM ${TABLE_SONGS}`)
       return true
     } catch (e) {
-      LogUtil.error(TAG + 'Clear data failed: ' + e.message)
+      LogUtil.error(TAG, 'Clear data failed: ' + e.message)
       return false
     }
   }

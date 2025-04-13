@@ -1,22 +1,17 @@
-import { ArtistInfo, ArtistInfoItem } from "../common/entities/song/ArtistInfo"
+import { ArtistInfo } from "../common/entities/song/ArtistInfo"
 import { ArtistItem, ArtistsResult } from "../common/entities/song/ArtistsResult"
-import { getApiUrl } from "../common/functions/common/get"
-import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
-
-const TAG = '[artistApi] '
+import commonRequest from "../common/utils/request/RequestUtil"
 
 /**
  * 获取歌手信息
  * @param id
  * @returns
  */
-export async function getArtistInfo(id: number): Promise<ArtistInfo> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/artists?id=${id}`
-  const request = new HttpRequest(url)
-  const data = await request.RequestInStream()
-  const dataGot: ArtistInfo = data.result as ArtistInfo
-  return dataGot ?? ArtistInfoItem
+export const getArtistInfo = async (id: number): Promise<ArtistInfo> => {
+  return commonRequest<ArtistInfo>({
+    url: '/artists',
+    params: { id }
+  })
 }
 
 /**
@@ -24,11 +19,11 @@ export async function getArtistInfo(id: number): Promise<ArtistInfo> {
  * @param keyword
  * @returns
  */
-export async function searchArtists(keyword: string): Promise<Array<ArtistItem>> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/search?keywords=${encodeURIComponent(keyword)}&type=100`
-  const request = new HttpRequest(url)
-  const data = await request.Request()
-  const dataGot: ArtistsResult = data.result as ArtistsResult
-  return dataGot.result.artists ?? []
+export const searchArtists = async (keywords: string, limit: number = 20): Promise<ArtistItem[]> => {
+  const result = await commonRequest<ArtistsResult>({
+    url: '/search',
+    params: { keywords, limit, type: 100 }
+  })
+  return result.result.artists ?? []
 }
+

@@ -73,7 +73,7 @@ export struct SearchDjRadioList {
     try {
       this.djRadios = await getDjRadioList(this.searchKeyword)
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching DjRadio list: ', JSON.stringify(e))
+      LogUtil.error(TAG, 'Error fetching DjRadio list: ', JSON.stringify(e))
     } finally {
       this.isLoading = false
       this.hasLoaded = true

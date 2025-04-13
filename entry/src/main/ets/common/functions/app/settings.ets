@@ -69,7 +69,7 @@ export async function changeSettings<T extends preferences.ValueType>(name: stri
     AppStorage.setOrCreate(name, value)
   } catch (e) {
     ToastUtil.showToast('更改设置失败')
-    LogUtil.error(TAG + 'Error while changing settings: ' + e.message)
+    LogUtil.error(TAG, 'Error while changing settings: ' + e.message)
   }
 }
 

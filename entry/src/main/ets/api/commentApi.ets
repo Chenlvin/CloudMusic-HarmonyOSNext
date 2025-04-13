@@ -1,32 +1,27 @@
-import { CommentResult, CommentResultItem } from "../common/entities/song/Comment";
-import { getApiUrl } from "../common/functions/common/get";
-import { HttpRequest } from "../common/utils/request/HttpRequestUtils";
-
-const TAG = '[commentApi] '
-/**
- * 获取歌曲评论信息
- * @param id
- * @returns CommentResult
- */
-export async function getSongComment(id: number): Promise<CommentResult> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/comment/music?id=${id}&limit=30`
-  const request = new HttpRequest(url)
-  const response = await request.RequestInStream(false)
-  const dataGot = response.result as CommentResult
-  return dataGot ?? CommentResultItem
-}
+import { CommentResult } from "../common/entities/song/Comment";
+import { COMMENT_SORT_TYPE, COMMENT_TYPE } from "../common/model/Enum";
+import commonRequest from "../common/utils/request/RequestUtil";
 
 /**
- * 获取专辑评论信息
+ * 获取评论信息
  * @param id
+ * @param type 0-歌曲, 2-歌单, 3-专辑, 4-电台节目, 7-电台
+ * @param pageNo 分页参数 第 N 页
+ * @param pageSize 分页参数 每页多少条数据
+ * @param sortType 1-按推荐排序, 2-按热度排序, 3-按时间排序
+ * @param cursor 当sortType为 3 时且页数不是第一页时需传入 值为上一条数据的 time
  * @returns CommentResult
  */
-export async function getAlbumComment(id: number): Promise<CommentResult> {
-  const rootUrl = await getApiUrl()
-  const url = `${rootUrl}/comment/album?id=${id}&limit=30`
-  const request = new HttpRequest(url)
-  const response = await request.RequestInStream(false)
-  const dataGot = response.result as CommentResult
-  return dataGot ?? CommentResultItem
+export const getComment = async (
+  id: number,
+  type: COMMENT_TYPE,
+  pageNo: number = 1,
+  pageSize: number = 20,
+  sortType: COMMENT_SORT_TYPE,
+  cursor?: number
+): Promise<CommentResult> => {
+  return commonRequest({
+    url: '/comment/new',
+    params: { id, type, pageNo, pageSize, sortType }
+  })
 }

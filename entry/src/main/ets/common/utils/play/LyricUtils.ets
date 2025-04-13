@@ -38,7 +38,7 @@ class LyricUtils {
       try {
         this.lyric = await getLyric(song.id)
       } catch (e) {
-        LogUtil.error(TAG + 'Get Lyric Error: ' + e.message)
+        LogUtil.error(TAG, 'Get Lyric Error: ' + e.message)
       }
       lyricArr = this.lyric.lrc.lyric.split('\n')
     }
@@ -178,7 +178,7 @@ class LyricUtils {
       }
       await FileUtils.moveFile(cachePath, descPath)
     } catch (e) {
-      LogUtil.error(TAG + 'Save lyric to file error: ' + e.message + '\n' + e.stack)
+      LogUtil.error(TAG, 'Save lyric to file error: ' + e.message + '\n' + e.stack)
     }
   }
 
@@ -204,7 +204,7 @@ class LyricUtils {
       fileIo.closeSync(file)
     }
     catch (e) {
-      LogUtil.error(TAG + 'Read Lyric Error: ' + e.message + '\n' + e.stack)
+      LogUtil.error(TAG, 'Read Lyric Error: ' + e.message + '\n' + e.stack)
     }
     return lyric
   }

@@ -8,6 +8,7 @@ import { window } from "@kit.ArkUI"
 import { AlbumParam, CommentParam, CommonParam } from "../../common/entities/local/PageParams"
 import { EmitterUtil } from "@pura/harmony-utils"
 import { EmitterConstants } from "../../common/constants/EmitterConstants"
+import { COMMENT_TYPE } from "../../common/model/Enum"
 
 @Component
 export struct PlayerActionSheet {
@@ -102,8 +103,9 @@ export struct PlayerActionSheet {
             this.Item($r('app.media.ic_public_message'), '歌曲评论', () => {
               this.isShow = false
               let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
-                songId: this.song.id,
-                songName: this.song.name
+                id: this.song.id,
+                name: this.song.name,
+                type: COMMENT_TYPE.SONG
               }, remove: true }
               EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
               EmitterUtil.post(EmitterConstants.PLAYING_COVER_TOGGLE, false)

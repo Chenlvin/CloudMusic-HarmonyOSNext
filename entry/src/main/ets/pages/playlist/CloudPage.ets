@@ -69,7 +69,7 @@ export struct CloudPage {
       this.dataSource.notifyDataReload()
       this.currentOffset += limit
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching songs: ', e)
+      LogUtil.error(TAG, 'Error fetching songs: ', e)
     } finally {
       this.isLoading = false
       this.isLoadingMore = false

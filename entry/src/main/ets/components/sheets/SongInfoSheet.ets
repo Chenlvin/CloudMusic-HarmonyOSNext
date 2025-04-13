@@ -10,7 +10,7 @@ import { User, UserItem } from "../../common/entities/user/User"
 import { changeDuration } from "../../common/functions/common/convert"
 import { playQueue } from "../../common/functions/play/playControl"
 import { cleanLastPlayInfo } from "../../common/functions/play/playListOp"
-import { PLAYMODE } from "../../common/model/Enum"
+import { COMMENT_TYPE, PLAYMODE } from "../../common/model/Enum"
 import PlayQueueUtils from "../../common/utils/play/PlayQueueUtils"
 import { DownloadDialog } from "../dialog/DownloadDialog"
 
@@ -131,8 +131,9 @@ export struct SongInfoSheet {
         if(this.song.id !== 0) {
           this.Item($r('app.media.ic_public_message'), '歌曲评论', () => {
             let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
-              songId: this.song.id,
-              songName: this.song.name
+              id: this.song.id,
+              name: this.song.name,
+              type: COMMENT_TYPE.SONG
             }, remove: true }
             EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
           })

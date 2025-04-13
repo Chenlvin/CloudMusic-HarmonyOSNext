@@ -109,7 +109,7 @@ export struct PlayListPage {
       playQueue(songIndex)
     } catch (e) {
       ToastUtil.showToast('播放失败: ' + e.message)
-      LogUtil.error(TAG + 'playSong Error: ' + e.stack)
+      LogUtil.error(TAG, 'playSong Error: ' + e.stack)
     }
   }
 
@@ -462,7 +462,7 @@ export struct PlayListPage {
         this.loadSongs(limit, this.currentOffset)
       }
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching songs: ', e.message)
+      LogUtil.error(TAG, 'Error fetching songs: ', e.message)
     } finally {
       this.isLoading = false
     }
@@ -509,7 +509,7 @@ export struct PlayListPage {
       }))
     } catch (e) {
       ToastUtil.showToast('搜索时出错: ' + (e as Error).message)
-      LogUtil.error(TAG + 'Error while handelSearch: ' + (e as Error).message)
+      LogUtil.error(TAG, 'Error while handelSearch: ' + (e as Error).message)
     }
   }
 

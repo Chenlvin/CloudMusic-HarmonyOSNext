@@ -5,7 +5,8 @@
     "@pura/harmony-utils": "^1.3.0",
     "@pie/lazy-data": "^1.0.0",
     "@pura/picker_utils": "^1.0.0",
-    "@sj/mediacache": "^1.0.3"
+    "@sj/mediacache": "^1.0.3",
+    "@ohos/axios": "^2.2.6"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.19",

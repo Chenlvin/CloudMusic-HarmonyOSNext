@@ -1,32 +1,26 @@
 import { LogUtil } from "@pura/harmony-utils"
 import { User, UserItem } from "../common/entities/user/User"
-import { HttpRequest } from "../common/utils/request/HttpRequestUtils"
 import PreferencesUtils from "../common/utils/data/PreferencesUtils"
 import { StorageConstants } from "../common/constants/StorageConstants"
-import { getApiUrl } from "../common/functions/common/get"
+import commonRequest from "../common/utils/request/RequestUtil"
 
-const TAG = '[loginApi] '
 /**
  * 获取登录状态
  * @param cookie
  */
-export async function getLoginStatus(cookie: string): Promise<boolean> {
-  let code: number = -1
+export const getLoginStatus = async (cookie: string): Promise<boolean> => {
   try {
-    const rootUrl = await getApiUrl()
-    const url: string = `${rootUrl}/login/status?timestamp=${new Date().getTime()}`
-    const request = new HttpRequest(url, false)
-    const userPref = StorageConstants.USER_PREF
-    const data = await request.Request()
-    code = data.responseCode
-    const user: User = data.result as User
+    const response = await commonRequest<User>({
+      url: '/login/status',
+      params: { timestamp: new Date().getTime() }
+    })
     AppStorage.setOrCreate(StorageConstants.VALID_API_URL, true)
-    if (user.data.account.id && user.data.profile.nickname) {
-      PreferencesUtils.putPreferenceValue(userPref, StorageConstants.USER, user)
-      PreferencesUtils.putPreferenceValue(userPref, StorageConstants.COOKIE, cookie)
-      AppStorage.setOrCreate(StorageConstants.VIP_TYPE, user.data.account.vipType)
+    if (response.data.account.id && response.data.profile.nickname) {
+      PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER, response)
+      PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.COOKIE, cookie)
+      AppStorage.setOrCreate(StorageConstants.VIP_TYPE, response.data.account.vipType)
       AppStorage.setOrCreate(StorageConstants.VALID_COOKIE, true)
-      AppStorage.setOrCreate(StorageConstants.USER, user)
+      AppStorage.setOrCreate(StorageConstants.USER, response)
       AppStorage.setOrCreate(StorageConstants.IS_LOGGED, true)
       return true
     } else {
@@ -44,36 +38,32 @@ export async function getLoginStatus(cookie: string): Promise<boolean> {
     }
   } catch (error) {
     LogUtil.error('获取登录状态失败: ', error.message)
-    if(code == 200) {
-      AppStorage.setOrCreate(StorageConstants.VALID_COOKIE, false)
-      AppStorage.setOrCreate(StorageConstants.VALID_API_URL, true)
-    } else {
-      AppStorage.setOrCreate(StorageConstants.VALID_API_URL, false)
-    }
     return false
   }
 }
 
-export async function logOut(): Promise<boolean> {
-  const rootUrl = await getApiUrl()
-  const url:string = `${rootUrl}/logout?timestamp=${new Date().getTime()}`
-  const request = new HttpRequest(url)
-  try {
-    let data = await request.Request()
-    if(data.responseCode == 200) {
-      await PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER)
-      await PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.COOKIE)
-      await PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_PLAYLISTS)
-      AppStorage.setOrCreate(StorageConstants.VALID_COOKIE, false)
-      AppStorage.setOrCreate(StorageConstants.COOKIE, '')
-      AppStorage.setOrCreate(StorageConstants.IS_LOGGED, false)
-      AppStorage.setOrCreate(StorageConstants.USER_PLAYLISTS, [])
-      return true
-    } else {
-      return false
-    }
-  } catch (e) {
-    LogUtil.error(TAG + '退出登录失败：' + JSON.stringify(e))
-    return false
+interface LogOutResponse {
+  code: number
+}
+/**
+ * 退出登录
+ */
+export const logOut = async (): Promise<boolean> => {
+  const response = await commonRequest<LogOutResponse>({
+    url: '/logout',
+    params: { timestamp: new Date().getTime() }
+  })
+  if(response.code === 200) {
+    Promise.all([
+      PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER),
+      PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.COOKIE),
+      PreferencesUtils.delPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER_PLAYLISTS)
+    ])
+    AppStorage.setOrCreate(StorageConstants.VALID_COOKIE, false)
+    AppStorage.setOrCreate(StorageConstants.COOKIE, '')
+    AppStorage.setOrCreate(StorageConstants.IS_LOGGED, false)
+    AppStorage.setOrCreate(StorageConstants.USER_PLAYLISTS, [])
+    return true
   }
+  return false
 }

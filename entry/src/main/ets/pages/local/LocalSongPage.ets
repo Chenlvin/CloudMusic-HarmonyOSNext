@@ -253,7 +253,7 @@ export struct LocalSongPage {
       }))
     } catch (e) {
       ToastUtil.showToast('搜索时出错')
-      LogUtil.error(TAG + 'Error while handelSearch: ' + e.message)
+      LogUtil.error(TAG, 'Error while handelSearch: ' + e.message)
     }
   }
 

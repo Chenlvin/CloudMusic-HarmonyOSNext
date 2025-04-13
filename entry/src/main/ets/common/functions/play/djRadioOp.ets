@@ -18,7 +18,7 @@ export async function djRadioToQueue(id: number, count: number, currentIndex: nu
       await putDjRadioInQueue(id, count, 400, limit, false)
     }
   } catch (e) {
-    LogUtil.error(TAG + '' + e.message)
+    LogUtil.error(TAG, '' + e.message)
     ToastUtil.showToast('播放播客出错')
   } finally {
     // const playInfo: PlayingPlayList = {

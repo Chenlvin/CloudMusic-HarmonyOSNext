@@ -65,7 +65,7 @@ class FileDownloadUtils {
           })
         }).catch((err: BusinessError) => {
           ToastUtil.showToast('缓存时出错: ' + err.message)
-          LogUtil.error(TAG + `缓存时出错: ${JSON.stringify(err)}`)
+          LogUtil.error(TAG, `缓存时出错: ${JSON.stringify(err)}`)
           FileUtils.deleteFile([{
             id: 0,
             name: song.name,
@@ -84,7 +84,7 @@ class FileDownloadUtils {
         } else {
           DialogUtil.showConfirmDialog({ title: '缓存失败', message: `${err.message}` })
         }
-        LogUtil.error(TAG + '下载出错: ' + err.message)
+        LogUtil.error(TAG, '下载出错: ' + err.message)
       }
     }
   }
@@ -104,7 +104,7 @@ class FileDownloadUtils {
         })
       })
     } catch (e) {
-      LogUtil.error(TAG + 'Download Error: ' + e.message)
+      LogUtil.error(TAG, 'Download Error: ' + e.message)
     }
   }
 }

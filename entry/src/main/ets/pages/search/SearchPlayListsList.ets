@@ -88,7 +88,7 @@ export struct SearchPlayListsList {
       this.playListOffset += 15
       this.hasMorePlayLists = result.more
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching playLists: ', JSON.stringify(e));
+      LogUtil.error(TAG, 'Error fetching playLists: ', JSON.stringify(e));
     } finally {
       this.isLoading = false
       this.isLoadingMore = false

@@ -18,12 +18,12 @@ class VibratorUtils {
         usage: 'alarm'
       }, (error: BusinessError) => {
         if (error) {
-          LogUtil.error(TAG + 'Start Vibrator Error: ' + error.message)
+          LogUtil.error(TAG, 'Start Vibrator Error: ' + error.message)
           return
         }
       })
     } catch (e) {
-      LogUtil.error(TAG + 'Error: ' + e.message)
+      LogUtil.error(TAG, 'Error: ' + e.message)
     }
   }
 
@@ -48,7 +48,7 @@ class VibratorUtils {
       }
       vibrator.isSupportEffect(effectId, (err: BusinessError, state: boolean) => {
         if (err) {
-          LogUtil.error(TAG + 'Error: ' + err.message)
+          LogUtil.error(TAG, 'Error: ' + err.message)
           return
         }
         try {
@@ -61,16 +61,16 @@ class VibratorUtils {
             usage: 'unknown'
           }, (error: BusinessError) => {
             if (error) {
-              LogUtil.error(TAG + 'Start Vibrator Error: ' + error.message)
+              LogUtil.error(TAG, 'Start Vibrator Error: ' + error.message)
               return
             }
           })
         } catch (e) {
-          LogUtil.error(TAG + 'Error: ' + e.message)
+          LogUtil.error(TAG, 'Error: ' + e.message)
         }
       })
     } catch (e) {
-      LogUtil.error(TAG + 'Error: ' + e.message)
+      LogUtil.error(TAG, 'Error: ' + e.message)
     }
   }
 }

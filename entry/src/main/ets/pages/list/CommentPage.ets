@@ -1,4 +1,4 @@
-import { getSongComment } from "../../api/commentApi"
+import { getComment } from "../../api/commentApi"
 import Constants from "../../common/constants/Constants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
 import { CommentParam } from "../../common/entities/local/PageParams"
@@ -10,15 +10,26 @@ import { BottomBarComponent } from "../../components/play/BottomBarComponent"
 export struct CommentPage {
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) breakpoint: string = 'sm'
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
-  @State param: CommentParam = { songId: 0, songName: '' }
+  @State param: CommentParam = { id: 0, name: '', type: 0 }
   @State comments: Comment[] = []
   @State isLoading: boolean = false
+  @State currentPage: number = 1
+  @State sortType: 1 | 2 | 3 = 1 // 1-按推荐排序, 2-按热度排序, 3-按时间排序
+  showMiniPlayer: boolean = true
+  pageSize: number = 20
 
   async aboutToAppear(): Promise<void> {
     try {
-      if(this.param.songId !== 0) {
+      if(this.param.id !== 0) {
         this.isLoading = true
-        this.comments = (await getSongComment(this.param.songId)).hotComments
+        this.comments = (await getComment(
+          this.param.id,
+          this.param.type,
+          this.currentPage,
+          this.pageSize,
+          this.sortType
+        ))
+          .data.comments
       }
     } catch (e) {
       throw new Error(e.stack)
@@ -55,12 +66,12 @@ export struct CommentPage {
         }
         BottomBarComponent()
           .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT })
-          .visibility(this.breakpoint === 'lg' ? Visibility.None : Visibility.Visible)
+          .visibility(this.breakpoint !== 'lg' && this.showMiniPlayer ? Visibility.Visible : Visibility.None)
       }
       .height('100%')
       .width('100%')
     }
-    .title(`评论 - ${this.param.songName}`)
+    .title(`评论 - ${this.param.name}`)
     .backgroundColor($r('app.color.background'))
   }
 }

@@ -32,7 +32,7 @@ export struct PlayListAddSheet {
         this.playLists = result.playlist
       }
     } catch (e) {
-      LogUtil.error(TAG + 'Error fetching playlists: ', e)
+      LogUtil.error(TAG, 'Error fetching playlists: ', e)
     } finally {
       this.isLoading = false
     }
@@ -90,7 +90,7 @@ export struct PlayListAddSheet {
                       const result = await PlayListOperation('add', item.id, this.songId)
                       if (result) ToastUtil.showToast('成功添加到歌单')
                     } catch (e) {
-                      LogUtil.error(TAG + 'Add to PlayList Error: ' + e)
+                      LogUtil.error(TAG, 'Add to PlayList Error: ' + e)
                       ToastUtil.showToast(e.message)
                     }
                   })

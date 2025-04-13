@@ -19,7 +19,7 @@ export async function isThisSongLiked(sid: number) {
       isLiked = likelist.map(Number).includes(sid)
     }
   } catch (e) {
-    LogUtil.error(TAG + 'isThisSongLiked Error: ' + e.message)
+    LogUtil.error(TAG, 'isThisSongLiked Error: ' + e.message)
   } finally {
     AppStorage.setOrCreate(StorageConstants.ISLIKED, isLiked)
   }
@@ -49,6 +49,6 @@ export async function likeThisSong() {
       ToastUtil.showToast(result ? '取消喜欢当前歌曲' : '取消喜欢失败')
     }
   } catch (e) {
-    LogUtil.error(TAG + 'likeThisSong Error: ' + e.message)
+    LogUtil.error(TAG, 'likeThisSong Error: ' + e.message)
   }
 }
