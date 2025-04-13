@@ -120,6 +120,34 @@ export struct SetLyricStyle {
   }
 }
 
+@Component
+export struct FloatLyrics {
+  @StorageProp(StorageConstants.FLOAT_LYRICS_TOUCHABLE) lyricsTouchable: boolean = true
+
+  build() {
+    Row() {
+      Text('悬浮歌词是否可拖动')
+        .fontSize(Constants.FONT_SIZE_COMMON)
+        .fontWeight(FontWeight.Bold)
+      Toggle({ type: ToggleType.Switch, isOn: this.lyricsTouchable === true })
+        .height(24)
+        .width(48)
+        .onChange((isOn) => {
+          if(!isOn) {
+            this.lyricsTouchable = false;
+          } else {
+            this.lyricsTouchable = true;
+          }
+          changeSettings(StorageConstants.FLOAT_LYRICS_TOUCHABLE, this.lyricsTouchable)
+        })
+        .selectedColor($r('app.color.app_red'))
+    }
+    .height(Constants.HEIGHT_SETTINGS_ITEM)
+    .width('100%')
+    .justifyContent(FlexAlign.SpaceBetween)
+  }
+}
+
 @Extend(Text) function lyricStyle(size: number, align: string) {
   .width('100%')
   .textAlign(TextAlign.Center)

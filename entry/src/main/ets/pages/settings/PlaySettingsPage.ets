@@ -1,5 +1,5 @@
 import Constants from "../../common/constants/Constants"
-import { LyricTranslate, SetLyricStyle } from "../../components/settings/LyricSettings"
+import { FloatLyrics, LyricTranslate, SetLyricStyle } from "../../components/settings/LyricSettings"
 import { MixWithOthers } from "../../components/settings/MixWithOthers"
 import { SetPlayQuality } from "../../components/settings/SetPlayQuality"
 
@@ -22,6 +22,12 @@ export struct PlaySettingsPage {
 
         ListItem() {
           LyricTranslate()
+            .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT })
+        }
+        .itemStyle()
+
+        ListItem() {
+          FloatLyrics()
             .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT })
         }
         .itemStyle()
