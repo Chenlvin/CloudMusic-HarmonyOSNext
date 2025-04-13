@@ -7,6 +7,7 @@ import { appInit } from '../common/functions/app/appInit';
 import { StorageConstants } from '../common/constants/StorageConstants';
 import { BusinessError } from '@kit.BasicServicesKit';
 import OrientationUtils from '../common/utils/system/WindowUtils';
+import Constants from '../common/constants/Constants';
 
 
 export default class EntryAbility extends UIAbility {
@@ -31,6 +32,7 @@ export default class EntryAbility extends UIAbility {
 
   onDestroy(): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME)?.destroyWindow();
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

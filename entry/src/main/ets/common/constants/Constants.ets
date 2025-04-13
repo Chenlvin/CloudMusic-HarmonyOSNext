@@ -122,4 +122,13 @@ export default class Constants {
    * 允许缓存占用总大小
    */
   static readonly CACHE_DISK_MAX_SIZE: number = 2048 * 1024 * 1024
+  /**
+   * 悬浮窗歌词名字
+   */
+  static readonly FLOAT_LYRICS_WIN_NAME: string = 'lyricsFloatWin'
+
+  /**
+   * 悬浮窗歌词顶部避让
+   */
+  static readonly FLOAT_LYRICS_TOP_MARGIN: number = vp2px(42);
 }
