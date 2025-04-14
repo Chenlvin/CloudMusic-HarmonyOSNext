@@ -32,8 +32,8 @@ export async function appInit() {
   loadSavedSong()
   initPermission()
   initLocalData()
-  await getAppInfo()
   await initUserInfo()
+  await getAppInfo()
   AppStorage.setOrCreate(StorageConstants.APP_LOADING, false)
 }
 
