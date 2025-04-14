@@ -1,16 +1,9 @@
-import { CacheManagePage} from './CacheManagePage'
 import { VersionCard } from '../../components/settings/TextContent'
 import Constants from '../../common/constants/Constants'
 import { SetDefaultHomePage } from '../../components/settings/SetDefaultHomePage'
-import { SongClickActionPage } from './SongClickActionPage'
-import { ApiSetPage } from './ApiSetPage'
-import { WebPage } from '../web/WebPage'
 import { WebPageParam } from '../../common/entities/local/PageParams'
-import { DebugPage } from '../local/DebugPage'
 import { CommonSettingsCard } from '../../components/cards/SettingsCard'
-import { PlaySettingsPage } from './PlaySettingsPage'
-import { AboutPage } from './AboutPage'
-import { DonatePage } from './DonatePage'
+import { SettingsPageMap } from '../../common/model/PageMap'
 
 /**
  * 设置页面
@@ -69,35 +62,8 @@ export struct SettingsPage {
     .title($r('app.string.Settings'))
     .mode(NavigationMode.Stack)
     .titleMode(NavigationTitleMode.Mini)
-    .navDestination(this.PageMap)
+    .navDestination(SettingsPageMap)
     .padding({ top: Constants.PADDING_EDGE_DEFAULT })
-  }
-
-  @Builder PageMap(name: string, param: Object) {
-    if(name === 'SongClickActionPage') {
-      SongClickActionPage()
-    }
-    else if(name === 'PlaySettingsPage') {
-      PlaySettingsPage()
-    }
-    else if(name === 'ApiSetPage') {
-      ApiSetPage()
-    }
-    else if(name === 'CacheManagePage') {
-      CacheManagePage()
-    }
-    else if(name === 'WebPage') {
-      WebPage({ param: param as WebPageParam })
-    }
-    else if(name === 'AboutPage') {
-      AboutPage()
-    }
-    else if(name === 'DonatePage') {
-      DonatePage()
-    }
-    else if(name === 'DebugPage') {
-      DebugPage()
-    }
   }
 
   @Builder PlaySettings() {

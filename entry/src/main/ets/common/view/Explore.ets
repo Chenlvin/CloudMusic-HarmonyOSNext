@@ -27,7 +27,7 @@ export struct Explore {
   @State isLoadingRecommendDjRadio: boolean = false
   @State isRefreshing: boolean = false
   @State lastRefreshTime: number = 0
-  @State currentHour: number = 0
+  @Prop currentHour: number = 0
   @State totalOpacity: number = 0
   @Consume('pageInfos') pageInfos: NavPathStack
   private refreshCooldown: number = 5000

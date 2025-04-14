@@ -12,7 +12,13 @@ import { DailyListPage } from "../../pages/playlist/DailyListPage"
 import { DjRadioPage } from "../../pages/playlist/DjRadioPage"
 import { PlayListPage } from "../../pages/playlist/PlayListPage"
 import { SearchPage } from "../../pages/search/SearchPage"
+import { AboutPage } from "../../pages/settings/AboutPage"
+import { ApiSetPage } from "../../pages/settings/ApiSetPage"
+import { CacheManagePage } from "../../pages/settings/CacheManagePage"
+import { DonatePage } from "../../pages/settings/DonatePage"
+import { PlaySettingsPage } from "../../pages/settings/PlaySettingsPage"
 import { SettingsPage } from "../../pages/settings/SettingsPage"
+import { SongClickActionPage } from "../../pages/settings/SongClickActionPage"
 import { WebPage } from "../../pages/web/WebPage"
 import {
   AlbumParam,
@@ -70,6 +76,34 @@ export function PageMap(name: string, param: Object) {
     TopListPage()
   }
   else if(name == 'DebugPage') {
+    DebugPage()
+  }
+}
+
+@Builder
+export function SettingsPageMap(name: string, param: Object) {
+  if(name === 'SongClickActionPage') {
+    SongClickActionPage()
+  }
+  else if(name === 'PlaySettingsPage') {
+    PlaySettingsPage()
+  }
+  else if(name === 'ApiSetPage') {
+    ApiSetPage()
+  }
+  else if(name === 'CacheManagePage') {
+    CacheManagePage()
+  }
+  else if(name === 'WebPage') {
+    WebPage({ param: param as WebPageParam })
+  }
+  else if(name === 'AboutPage') {
+    AboutPage()
+  }
+  else if(name === 'DonatePage') {
+    DonatePage()
+  }
+  else if(name === 'DebugPage') {
     DebugPage()
   }
 }

@@ -20,11 +20,11 @@
         "material": {
           "certpath": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BFC7EF293B0E569D63BAA3747718C0B9925FBACF85779E7062E52E15E81B9A8C14C8F31C9C91F9C",
+          "keyPassword": "0000001A7CC5C9F615A7CA9E1AAADB50A02CF9D94E801DA1DAF9014B73D8A2086871E28689B2A8E2FE1E",
           "profile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\cc_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
-          "storePassword": "0000001BA320D07533ED161CD2BF807D8C39F92197D9076357B55CD8C3B1E58014EEF17FB527C7911649F2"
+          "storePassword": "0000001AD3082165B0DC0A88714D0564B5D89A193BA54564FD9978F5CDAC6DE997502F5FEF48A2AE2851"
         }
       },
       {
@@ -48,7 +48,6 @@
         "compatibleSdkVersion": "5.0.4(16)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
-
           "strictMode": {
             "caseSensitiveCheck": true,
             "useNormalizedOHMUrl": true

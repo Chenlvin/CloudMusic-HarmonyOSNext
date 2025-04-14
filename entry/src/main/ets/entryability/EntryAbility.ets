@@ -32,7 +32,7 @@ export default class EntryAbility extends UIAbility {
 
   onDestroy(): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
-    window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME)?.destroyWindow();
+    // window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME)?.destroyWindow();
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

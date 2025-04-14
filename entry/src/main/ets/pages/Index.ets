@@ -9,31 +9,26 @@ import { UserLists } from '../common/view/userLists/UserLists';
 import { Me } from '../common/view/Me';
 import { StorageConstants } from '../common/constants/StorageConstants';
 import BreakpointUtils from '../common/utils/system/BreakpointUtils';
-import { EmitterUtil, LogUtil } from '@pura/harmony-utils';
+import { EmitterUtil } from '@pura/harmony-utils';
 import { EmitterConstants } from '../common/constants/EmitterConstants';
 import { PageMap } from '../common/model/PageMap';
-import { AddPlayListDialog } from '../components/dialog/AddPlayListDialog';
+import WindowUtils from '../common/utils/system/WindowUtils';
+import { FloatLyric, FloatLyricItem } from '../common/entities/local/Settings';
 
 @Entry
 @Component
 struct Index {
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
-
-  // private addPlayListDialog: CustomDialogController = new CustomDialogController({
-  //   builder: AddPlayListDialog()
-  // })
-
-  private tabController: TabsController = new TabsController()
-
   @StorageProp('topRectHeight') topRectHeight: number = 0
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) widBp: string = 'sm'
   @StorageProp(StorageConstants.DEFAULT_PAGE_INDEX) index: number = 0
+  @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) floatLyric: FloatLyric = FloatLyricItem
   @State currentHour: number = 0
   @State tabCurrentIndex: number = 0
   @State categoryTabIndex: number = 0
   @State contentTabIndex: number = 0
-
+  private tabController: TabsController = new TabsController()
   async aboutToAppear(): Promise<void> {
     BreakpointUtils.register()
     setTimeout(() => {
@@ -58,6 +53,7 @@ struct Index {
 
   onPageShow(): void {
     this.currentHour = new Date().getHours()
+    if(this.floatLyric.on) WindowUtils.createLyricsFloatWindow()
   }
 
   private getMenuItems(): NavigationMenuItem[] {

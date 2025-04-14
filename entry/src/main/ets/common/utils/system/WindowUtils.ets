@@ -6,6 +6,7 @@ const TAG = '[WindowUtils] '
 
 class WindowUtils {
   windowClass: window.Window | undefined = undefined
+  lyricWindowClass: window.Window | undefined = undefined
   flag: number = 0
 
   init(data: window.Window) {
@@ -42,6 +43,7 @@ class WindowUtils {
   }
 
   createLyricsFloatWindow(): void {
+    if(this.lyricWindowClass) return
     let config: window.Configuration =
       { name: Constants.FLOAT_LYRICS_WIN_NAME, windowType: window.WindowType.TYPE_FLOAT, ctx: getContext(this) };
     window.createWindow(config, (err, data) => {
@@ -49,14 +51,21 @@ class WindowUtils {
         console.error('Failed to create the floatWindow. Cause: ' + JSON.stringify(err));
         return;
       }
-      let win = data;
+      this.lyricWindowClass = data;
       console.info('Succeeded in creating the floatWindow. Data: ' + JSON.stringify(data));
-      win.setUIContent('pages/lyrics/FloatingLyrics');
+      this.lyricWindowClass.setUIContent('pages/lyrics/FloatingLyrics');
       let displayW = display.getDefaultDisplaySync().width;
-      win.resize(displayW, 140);
-      win.moveWindowToGlobal(0, Constants.FLOAT_LYRICS_TOP_MARGIN);
-      win.showWindow();
+      this.lyricWindowClass.resize(displayW, 140);
+      this.lyricWindowClass.moveWindowToGlobal(0, Constants.FLOAT_LYRICS_TOP_MARGIN);
+      this.lyricWindowClass.showWindow();
     });
+  }
+
+  destoryLyricFloatWindow() {
+    if(!this.lyricWindowClass) return
+    this.lyricWindowClass.destroyWindow(() => {
+      this.lyricWindowClass = undefined
+    })
   }
 }
 

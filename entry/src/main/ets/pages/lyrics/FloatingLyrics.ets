@@ -2,11 +2,7 @@ import { StorageConstants } from "../../common/constants/StorageConstants"
 import { display, window } from "@kit.ArkUI"
 import Constants from "../../common/constants/Constants";
 import { LogUtil } from "@pura/harmony-utils";
-
-interface Position {
-  x: number,
-  y: number
-}
+import { FloatLyric, FloatLyricItem, LyricPosition } from "../../common/entities/local/Settings";
 
 const TAG = "FloatingLyrics";
 const BOTTOM_MARGIN = vp2px(60);
@@ -17,7 +13,7 @@ class FloatingLyricsController {
   public displayH = display.getDefaultDisplaySync().height;
   public displayW = display.getDefaultDisplaySync().width;
   private leftMargin = px2vp(0.1 * this.displayW);
-  private windowPosition: Position = { x: 0, y: 0 };
+  private windowPosition: LyricPosition = { x: 0, y: 0 };
 
   public init() {
     try {
@@ -48,7 +44,7 @@ class FloatingLyricsController {
       return;
     }
     let resY = this.windowPosition.y + event.offsetY
-    if (resY < Constants.FLOAT_LYRICS_TOP_MARGIN - THRESHOLD || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD) {
+    if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD) {
       return;
     }
     this.windowPosition.y = resY;
@@ -81,32 +77,33 @@ class FloatingLyricsController {
 export struct FloatingLyrics {
   @StorageProp(StorageConstants.CURRENT_LYRIC) currentLyric: string = '';
   @StorageProp(StorageConstants.PLAY_ARTISTS) artists: string = '';
-  @StorageProp(StorageConstants.FLOAT_LYRICS_TOUCHABLE) @Watch('onTouchableChange') floatTouchable: boolean = true;
+  @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) @Watch('onTouchableChange') floatLyricStyle: FloatLyric = FloatLyricItem
   private controller: FloatingLyricsController = new FloatingLyricsController();
 
   aboutToAppear(): void {
     this.controller.init();
-    this.controller.onTouchableChange(this.floatTouchable);
+    this.controller.onTouchableChange(this.floatLyricStyle.touchable);
   }
 
   onTouchableChange() {
-    this.controller.onTouchableChange(this.floatTouchable);
+    this.controller.onTouchableChange(this.floatLyricStyle.touchable);
   }
 
   build() {
     Stack({ alignContent: Alignment.Center }) {
-      Text(this.currentLyric).textStyle(15)
+      Text(this.currentLyric)
+        .textStyle(this.floatLyricStyle.size)
+        .textAlign(this.floatLyricStyle.align === 'center' ? TextAlign.Center : TextAlign.Start)
     }
-    .margin({ left: this.controller.getLeftMarin() })
-    .width('80%')
-    .height('100%')
-    .backgroundColor(Color.Gray)
-    .opacity(0.6)
-    .backdropBlur(200)
-    .borderRadius(16)
+    // .margin({ left: this.controller.getLeftMarin() })
+    .width(`${this.floatLyricStyle.width}%`)
+    .backgroundColor(Color.Transparent)
+    .opacity(this.floatLyricStyle.opacity)
+    .backdropBlur(this.floatLyricStyle.bgBlur ? 50 : 0)
+    .borderRadius(Constants.RADIUS_IMG)
     .parallelGesture(GestureGroup(GestureMode.Exclusive,
-      TapGesture({ count: 2, fingers: 1 })
-        .onAction(this.controller.destroyWindow),
+      // TapGesture({ count: 2, fingers: 1 })
+      //   .onAction(this.controller.destroyWindow),
       PanGesture({ direction: PanDirection.Vertical })
         .onActionStart(this.controller.handlePanGestureStart)
         .onActionUpdate(this.controller.handlePanGestureUpdate)
@@ -117,10 +114,10 @@ export struct FloatingLyrics {
 @Extend(Text)
 function textStyle(size: number) {
   .fontSize(size)
-  .fontColor(Color.Red)
-  .fontWeight(FontWeight.Bolder)
-  .textAlign(TextAlign.Center)
+  .fontColor($r('app.color.app_red'))
+  .fontWeight(Constants.FONT_WEIGHT_BOLD)
   .width('100%')
   .maxLines(1)
   .textOverflow({ overflow: TextOverflow.MARQUEE })
+  .padding(5)
 }

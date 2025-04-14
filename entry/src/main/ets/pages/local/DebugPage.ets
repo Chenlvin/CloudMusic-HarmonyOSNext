@@ -4,6 +4,8 @@ import { JSON } from "@kit.ArkTS";
 import Constants from "../../common/constants/Constants";
 import { resourceManager } from "@kit.LocalizationKit";
 import { AppConstants } from "../../common/constants/AppConstants";
+import PreferencesUtils from "../../common/utils/data/PreferencesUtils";
+import { FloatLyricItem, LyricStyleItem } from "../../common/entities/local/Settings";
 
 @Component
 export struct DebugPage {
@@ -33,6 +35,11 @@ export struct DebugPage {
             .textStyle()
           Text(`Height Breakpoint: ${this.heightBp}`)
             .textStyle()
+          Button('Reset Lyric Persistent Settings')
+            .onClick(() => {
+              PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF, StorageConstants.FLOAT_LYRIC_STYLE, FloatLyricItem)
+              PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF, StorageConstants.LYRIC_STYLE, LyricStyleItem)
+            })
           Row({ space: 10 }) {
             TextInput()
               .onChange((text) => { this.apiUrl = text })

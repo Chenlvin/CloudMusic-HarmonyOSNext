@@ -1,0 +1,11 @@
+{
+  "app": {
+    "bundleName": "cc.chenlvin.cloudmusic",
+    "patchVersionCode": 2000025,
+    "versionCode": 10450
+  },
+  "module": {
+    "name": "entry",
+    "type": "hotreload"
+  }
+}

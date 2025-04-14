@@ -1,5 +1,3 @@
-import { Artist } from "../song/Song"
-
 export interface LocalSong {
   id: number
   songId: number

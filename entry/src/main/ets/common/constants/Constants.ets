@@ -126,9 +126,8 @@ export default class Constants {
    * 悬浮窗歌词名字
    */
   static readonly FLOAT_LYRICS_WIN_NAME: string = 'lyricsFloatWin'
-
   /**
    * 悬浮窗歌词顶部避让
    */
-  static readonly FLOAT_LYRICS_TOP_MARGIN: number = vp2px(42);
+  static readonly FLOAT_LYRICS_TOP_MARGIN: number = vp2px(42)
 }

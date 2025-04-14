@@ -1,10 +1,12 @@
 import Constants from "../../common/constants/Constants"
-import { FloatLyrics, LyricTranslate, SetLyricStyle } from "../../components/settings/LyricSettings"
+import { StorageConstants } from "../../common/constants/StorageConstants"
+import { LyricTranslate, SetFloatLyric, SetLyricStyle } from "../../components/settings/LyricSettings"
 import { MixWithOthers } from "../../components/settings/MixWithOthers"
 import { SetPlayQuality } from "../../components/settings/SetPlayQuality"
 
 @Component
 export struct PlaySettingsPage {
+  @StorageProp(StorageConstants.BOTTOM_RECT_HEIGHT) bottomRectHeight: number = 0
   build() {
     NavDestination() {
       List({ space: 10 }) {
@@ -27,15 +29,17 @@ export struct PlaySettingsPage {
         .itemStyle()
 
         ListItem() {
-          FloatLyrics()
-            .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT })
+          SetLyricStyle()
         }
         .itemStyle()
 
         ListItem() {
-          SetLyricStyle()
+          SetFloatLyric()
         }
         .itemStyle()
+
+        ListItem().padding({ bottom: px2vp(this.bottomRectHeight) + 30 })
+
       }
       .scrollBar(BarState.Off)
       .padding(Constants.PADDING_EDGE_DEFAULT)
