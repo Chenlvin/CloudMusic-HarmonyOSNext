@@ -1,6 +1,8 @@
 import { display, window } from '@kit.ArkUI'
 import { LogUtil } from '@pura/harmony-utils'
 import Constants from '../../constants/Constants'
+import { StorageConstants } from '../../constants/StorageConstants'
+import { FloatLyric } from '../../entities/local/Settings'
 
 const TAG = '[WindowUtils] '
 
@@ -56,7 +58,12 @@ class WindowUtils {
       this.lyricWindowClass.setUIContent('pages/lyrics/FloatingLyrics');
       let displayW = display.getDefaultDisplaySync().width;
       this.lyricWindowClass.resize(displayW, 140);
+      let floatLyricStyle: FloatLyric = AppStorage.get(StorageConstants.FLOAT_LYRIC_STYLE) as FloatLyric
       this.lyricWindowClass.moveWindowToGlobal(0, Constants.FLOAT_LYRICS_TOP_MARGIN);
+      this.lyricWindowClass.moveWindowTo(
+        this.getScreenResX(floatLyricStyle.position.x),
+        this.getScreenResY(floatLyricStyle.position.y)
+      )
       this.lyricWindowClass.showWindow();
     });
   }
@@ -66,6 +73,28 @@ class WindowUtils {
     this.lyricWindowClass.destroyWindow(() => {
       this.lyricWindowClass = undefined
     })
+  }
+
+  getScreenResY(percentage: number): number {
+    try {
+      const screenHeight = display.getDefaultDisplaySync().height
+      const resY = screenHeight * (percentage / 100)
+      return resY
+    } catch (e) {
+      LogUtil.error(TAG + 'getScreenResY error: ' + e.message)
+      return 0
+    }
+  }
+
+  getScreenResX(percentage: number): number {
+    try {
+      const screenWidth = display.getDefaultDisplaySync().width
+      const resX = screenWidth * (percentage / 100)
+      return resX
+    } catch (e) {
+      LogUtil.error(TAG + 'getScreenResX error: ' + e.message)
+      return 0
+    }
   }
 }
 

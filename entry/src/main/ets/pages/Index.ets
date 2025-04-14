@@ -14,6 +14,7 @@ import { EmitterConstants } from '../common/constants/EmitterConstants';
 import { PageMap } from '../common/model/PageMap';
 import WindowUtils from '../common/utils/system/WindowUtils';
 import { FloatLyric, FloatLyricItem } from '../common/entities/local/Settings';
+import { App } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -30,6 +31,8 @@ struct Index {
   @State contentTabIndex: number = 0
   private tabController: TabsController = new TabsController()
   async aboutToAppear(): Promise<void> {
+    App.setImageCacheCount(Constants.CACHE_DISK_MAX_SIZE)
+    App.setImageRawDataCacheSize(Constants.CACHE_DISK_MAX_SIZE)
     BreakpointUtils.register()
     setTimeout(() => {
       this.tabCurrentIndex = this.index

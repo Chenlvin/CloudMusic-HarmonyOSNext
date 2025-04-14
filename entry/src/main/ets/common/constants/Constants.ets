@@ -31,6 +31,10 @@ export default class Constants {
    */
   static readonly HEIGHT_SETTINGS_ITEM: number = 50
   /**
+   * Group设置项高度
+   */
+  static readonly HEIGHT_SETTINGS_GROUP_ITEM: number = 40
+  /**
    * 发现页大按钮尺寸
    */
   static readonly HEIGHT_EXPLORE_LARGECARD: number = 120

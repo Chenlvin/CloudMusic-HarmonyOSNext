@@ -3,6 +3,7 @@ import { display, window } from "@kit.ArkUI"
 import Constants from "../../common/constants/Constants";
 import { LogUtil } from "@pura/harmony-utils";
 import { FloatLyric, FloatLyricItem, LyricPosition } from "../../common/entities/local/Settings";
+import WindowUtils from "../../common/utils/system/WindowUtils";
 
 const TAG = "FloatingLyrics";
 const BOTTOM_MARGIN = vp2px(60);
@@ -13,7 +14,7 @@ class FloatingLyricsController {
   public displayH = display.getDefaultDisplaySync().height;
   public displayW = display.getDefaultDisplaySync().width;
   private leftMargin = px2vp(0.1 * this.displayW);
-  private windowPosition: LyricPosition = { x: 0, y: 0 };
+  windowPosition: LyricPosition = { x: 0, y: 0 };
 
   public init() {
     try {
@@ -63,7 +64,7 @@ class FloatingLyricsController {
     }
   }
 
-  private moveWindowTo(x: number, y: number) {
+  moveWindowTo(x: number, y: number) {
     try {
       this.win!.moveWindowTo(x, y);
     } catch (err) {
@@ -77,7 +78,7 @@ class FloatingLyricsController {
 export struct FloatingLyrics {
   @StorageProp(StorageConstants.CURRENT_LYRIC) currentLyric: string = '';
   @StorageProp(StorageConstants.PLAY_ARTISTS) artists: string = '';
-  @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) @Watch('onTouchableChange') floatLyricStyle: FloatLyric = FloatLyricItem
+  @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) @Watch('onLyricStyleChange') floatLyricStyle: FloatLyric = FloatLyricItem
   private controller: FloatingLyricsController = new FloatingLyricsController();
 
   aboutToAppear(): void {
@@ -85,8 +86,10 @@ export struct FloatingLyrics {
     this.controller.onTouchableChange(this.floatLyricStyle.touchable);
   }
 
-  onTouchableChange() {
+  onLyricStyleChange() {
     this.controller.onTouchableChange(this.floatLyricStyle.touchable);
+    this.controller.moveWindowTo(WindowUtils.getScreenResX(this.floatLyricStyle.position.x),
+      WindowUtils.getScreenResY(this.floatLyricStyle.position.y))
   }
 
   build() {

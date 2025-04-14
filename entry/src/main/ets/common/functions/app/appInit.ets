@@ -38,8 +38,6 @@ export async function appInit() {
 }
 
 function initApp() {
-  App.setImageCacheCount(Constants.CACHE_DISK_MAX_SIZE)
-  App.setImageRawDataCacheSize(Constants.CACHE_DISK_MAX_SIZE)
   AudioCacheUtils.init()
 }
 
