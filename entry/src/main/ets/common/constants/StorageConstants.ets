@@ -292,4 +292,10 @@ export class StorageConstants {
    * @description AppStorage & Preference
    */
   static readonly CACHE_SETTINGS: string = 'cacheSet'
+
+  /**
+   * 悬浮歌词是否可交互
+   * @description floatLyricTouchable
+   */
+  static readonly FLOAT_LYRICS_TOUCHABLE: string = 'floatLyricTouchable';
 }
