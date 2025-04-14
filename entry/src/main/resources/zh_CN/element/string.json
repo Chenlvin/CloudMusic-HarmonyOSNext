@@ -115,6 +115,10 @@
     {
       "name": "Loading",
       "value": "正在加载..."
+    },
+    {
+      "name": "Float_lyric",
+      "value": "浮动歌词"
     }
   ]
 }

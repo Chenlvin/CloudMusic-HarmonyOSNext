@@ -178,6 +178,11 @@ export class StorageConstants {
    * @description AppStorage
    */
   static readonly PERSONAL_FM_MODE: string = 'personalFmMode'
+  /**
+   * 全屏播放界面开启
+   * @description AppStorage
+   */
+  static readonly IS_PLAYER_SHOW: string = 'isPlayerShow'
 
 
 
@@ -293,7 +298,7 @@ export class StorageConstants {
    */
   static readonly CACHE_SETTINGS: string = 'cacheSet'
   /**
-   * 悬浮歌词设置
+   * 浮动歌词设置
    * @description AppStorage & Preference
    */
   static readonly FLOAT_LYRIC_STYLE: string = 'floatLyricStyle'

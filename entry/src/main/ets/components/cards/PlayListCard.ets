@@ -54,33 +54,5 @@ export struct PlayListCard {
   .textOverflow({ overflow: TextOverflow.Ellipsis })
 }
 
-@Component
-export struct PlayListCard_Skeleton {
-  build() {
-    Button() {
-      Row({ space:15 }) {
-        Column()
-          .backgroundColor($r('app.color.main'))
-          .width(50)
-          .aspectRatio(1)
-          .borderRadius(Constants.RADIUS_CARD)
-        Column({ space: 8 }) {
-          Column().backgroundColor($r('app.color.main')).borderRadius(Constants.RADIUS_CARD).height(Constants.FONT_SIZE_TITLE).width('60%').alignSelf(ItemAlign.Start)
-          Column().backgroundColor($r('app.color.main')).borderRadius(Constants.RADIUS_CARD).height(Constants.FONT_SIZE_COMMON).width('40%').alignSelf(ItemAlign.Start)
-        }
-        .layoutWeight(1)
-      }
-      .width('100%')
-      .height(Constants.HEIGHT_TEXT_BUTTON)
-    }
-    .backgroundColor(Color.Transparent)
-    .borderRadius(5)
-    .type(ButtonType.Normal)
-    .width('100%')
-    .height(60)
-    .padding({ left: 20, right: 20, bottom: 10 })
-  }
-}
-
 
 

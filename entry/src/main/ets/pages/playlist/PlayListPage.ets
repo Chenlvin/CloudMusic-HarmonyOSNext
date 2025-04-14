@@ -8,7 +8,6 @@ import { cleanLastPlayInfo } from '../../common/functions/play/playListOp'
 import Constants from '../../common/constants/Constants'
 import { LoadingMoreButton, NoMoreButton } from '../../components/buttons/LoadMoreButtons'
 import { PlayListPageParam } from '../../common/entities/local/PageParams'
-import { PlayListCard_Skeleton } from '../../components/cards/PlayListCard'
 import { StorageConstants } from '../../common/constants/StorageConstants'
 import { PlayListSong } from '../../common/entities/playlist/PlayListSongs'
 import { User, UserItem } from '../../common/entities/user/User'
@@ -20,6 +19,7 @@ import { playQueue } from '../../common/functions/play/playControl'
 import { PLAYMODE } from '../../common/model/Enum'
 import { PlayAllButton } from '../../components/buttons/PlayAllButton'
 import { BarLoading } from '../../components/cards/Loading'
+import { PlayListSkeleton } from '../../components/skeleton/Skeleton'
 
 /**
  * 歌单二级页面
@@ -145,10 +145,8 @@ export struct PlayListPage {
               .width('100%')
             }
             if (this.isLoading) {
-              ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
-                ListItem() {
-                  PlayListCard_Skeleton()
-                }
+              ForEach(Constants.ARRAY_LENGTH_10, () => {
+                PlayListSkeleton()
               })
             } else {
               ListItemGroup() {

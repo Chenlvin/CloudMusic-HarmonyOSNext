@@ -5,7 +5,7 @@ import { StorageConstants } from "../../constants/StorageConstants";
 import { DjRadio } from "../../entities/dj/DjResult";
 import { DjRadioParam } from "../../entities/local/PageParams";
 import { DjRadioCard } from "../../../components/cards/DjRadioCard";
-import { PlayListCard_Skeleton } from "../../../components/cards/PlayListCard";
+import { PlayListSkeleton } from "../../../components/skeleton/Skeleton";
 
 @Component
 export struct UserDjRadioList {
@@ -99,7 +99,7 @@ export struct UserDjRadioList {
   @Builder
   Loading() {
     ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
-      PlayListCard_Skeleton()
+      PlayListSkeleton()
     })
   }
 }

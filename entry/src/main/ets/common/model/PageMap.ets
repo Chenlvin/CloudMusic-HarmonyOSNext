@@ -16,6 +16,7 @@ import { AboutPage } from "../../pages/settings/AboutPage"
 import { ApiSetPage } from "../../pages/settings/ApiSetPage"
 import { CacheManagePage } from "../../pages/settings/CacheManagePage"
 import { DonatePage } from "../../pages/settings/DonatePage"
+import { FloatLyricPage } from "../../pages/settings/FloatLyricPage"
 import { PlaySettingsPage } from "../../pages/settings/PlaySettingsPage"
 import { SettingsPage } from "../../pages/settings/SettingsPage"
 import { SongClickActionPage } from "../../pages/settings/SongClickActionPage"
@@ -87,6 +88,9 @@ export function SettingsPageMap(name: string, param: Object) {
   }
   else if(name === 'PlaySettingsPage') {
     PlaySettingsPage()
+  }
+  else if(name === 'FloatLyricPage') {
+    FloatLyricPage()
   }
   else if(name === 'ApiSetPage') {
     ApiSetPage()

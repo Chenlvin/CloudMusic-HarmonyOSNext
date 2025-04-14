@@ -1,4 +1,4 @@
-import { EmitterUtil, FileUtil, LogUtil } from "@pura/harmony-utils"
+import { EmitterUtil, LogUtil } from "@pura/harmony-utils"
 import { getLyric } from "../../../api/LyricApi"
 import { EmitterConstants } from "../../constants/EmitterConstants"
 import { StorageConstants } from "../../constants/StorageConstants"

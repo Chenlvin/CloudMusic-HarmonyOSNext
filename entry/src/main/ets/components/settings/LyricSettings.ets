@@ -116,7 +116,7 @@ export struct SetFloatLyric {
 
   build() {
     Column({ space: 20 }) {
-      ToggleSettingItem({ name: '启用悬浮歌词', value: this.isOn,
+      ToggleSettingItem({ name: '启用浮动歌词', value: this.isOn,
         onaction: () => { this.floatLyric.on = true; WindowUtils.createLyricsFloatWindow() },
         offaction:() => { this.floatLyric.on = false; WindowUtils.destoryLyricFloatWindow() },
         action: () => { this.updateFloatLyric() }
@@ -129,27 +129,27 @@ export struct SetFloatLyric {
           this.updateFloatLyric()
         }})
 
-      ToggleSettingItem({ name: '是否可拖动', value: this.lyricDraggable,
+      ToggleSettingItem({ name: '浮动歌词拖动', value: this.lyricDraggable,
         action: () => {
           this.floatLyric.touchable = this.lyricDraggable
           this.updateFloatLyric()
         }})
 
-      ToggleSettingItem({ name: '悬浮歌词居中', value: this.fontCenter,
+      ToggleSettingItem({ name: '浮动歌词居中', value: this.fontCenter,
         onaction: () => { this.floatLyric.align = 'center' },
         offaction: () => { this.floatLyric.align = 'start' },
         action: () => { this.updateFloatLyric() }
       })
 
-      SliderSettingItem({ name: '悬浮歌词字体大小', min: 5, max: 22, targetValue: this.fontsize, changeAction: () => {
+      SliderSettingItem({ name: '浮动歌词字体大小', min: 5, max: 22, targetValue: this.fontsize, changeAction: () => {
         this.floatLyric.size = this.fontsize; this.updateFloatLyric()
       }})
 
-      SliderSettingItem({ name: '悬浮歌词宽度', min: 10, max: 100, isPercent: true, targetValue: this.wid, changeAction: () => {
+      SliderSettingItem({ name: '浮动歌词宽度', min: 10, max: 100, isPercent: true, targetValue: this.wid, changeAction: () => {
         this.floatLyric.width = this.wid; this.updateFloatLyric()
       }})
 
-      SliderSettingItem({ name: '悬浮歌词透明度', min: 0.1, max: 1, step: 0.1, targetValue: this.fontopacity, changeAction: () => {
+      SliderSettingItem({ name: '浮动歌词透明度', min: 0.1, max: 1, step: 0.1, targetValue: this.fontopacity, changeAction: () => {
         this.floatLyric.opacity = this.fontopacity; this.updateFloatLyric()
       }})
 
@@ -240,6 +240,8 @@ export struct SetFloatLyric {
         step: this.step
       })
         .selectedColor($r('app.color.app_red'))
+        .blockColor($r('app.color.app_red'))
+        .blockBorderWidth(0)
         .width('100%')
         .onChange((value, mode) => {
           if (mode !== SliderChangeMode.End) {

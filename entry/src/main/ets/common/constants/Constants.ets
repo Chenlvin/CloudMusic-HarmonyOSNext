@@ -97,7 +97,7 @@ export default class Constants {
   /**
    * 普通字体尺寸
    */
-  static readonly FONT_SIZE_COMMON: number = 15
+  static readonly FONT_SIZE_COMMON: number = 16
   /**
    * Bar 字体尺寸
    */
@@ -134,4 +134,8 @@ export default class Constants {
    * 悬浮窗歌词顶部避让
    */
   static readonly FLOAT_LYRICS_TOP_MARGIN: number = vp2px(42)
+  /**
+   * Array length 10
+   */
+  static readonly ARRAY_LENGTH_10: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }

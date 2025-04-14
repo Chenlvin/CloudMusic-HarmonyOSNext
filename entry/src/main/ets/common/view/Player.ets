@@ -26,7 +26,7 @@ import { BreakpointType } from "../model/Breakpoint"
 
 @Component
 export struct Player {
-  @StorageProp('topRectHeight') topRectHeight: number = 0
+  @StorageProp(StorageConstants.TOP_RECT_HEIGHT) topRectHeight: number = 0
   @StorageProp(StorageConstants.PLAY_MODE) playmode: PLAYMODE = PLAYMODE.SINGLE
   @StorageProp(StorageConstants.PLAY_SONG) song: Song = SongItem
   @StorageProp(StorageConstants.PLAY_ARTISTS) artists: string = ''
@@ -41,6 +41,7 @@ export struct Player {
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) widBp: string = 'sm'
   @StorageProp(StorageConstants.BREAKPOINT_HEIGHT) heightBp: string = 'md'
   @StorageProp(StorageConstants.DEVICE_TYPE) deviceType: resourceManager.DeviceType = resourceManager.DeviceType.DEVICE_TYPE_PHONE
+  @StorageLink(StorageConstants.IS_PLAYER_SHOW) isPlayerShow: boolean = false
   @Link isShow: boolean
   @State sliderThickness: number = 10
   @State isMovingSlider: boolean = false
@@ -83,6 +84,7 @@ export struct Player {
   }
 
   aboutToAppear(): void {
+    this.isPlayerShow = true
     setTimeout(() => {
       animateTo({ duration: 300, curve: Curve.EaseInOut }, () => {
         this.totalOpacity = 0.7
@@ -94,6 +96,7 @@ export struct Player {
   }
 
   aboutToDisappear(): void {
+    this.isPlayerShow = false
     OrientationUtils.setOrientation(window.Orientation.AUTO_ROTATION_UNSPECIFIED)
     EmitterUtil.unSubscribe(EmitterConstants.PLAYING_COVER_TOGGLE)
   }

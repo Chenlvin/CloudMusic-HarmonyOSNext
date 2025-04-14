@@ -4,7 +4,7 @@ import Constants from "../../common/constants/Constants"
 export struct ClickToLoadButton {
   build() {
     Button() {
-      Text('点击加载更多')
+      Text('加载更多')
         .fontSize(Constants.FONT_SIZE_COMMON)
         .fontColor($r('app.color.reverse'))
     }

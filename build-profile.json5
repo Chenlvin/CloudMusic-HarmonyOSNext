@@ -44,7 +44,7 @@
     "products": [
       {
         "name": "default",
-        "signingConfig": "cc",
+        "signingConfig": "default",
         "compatibleSdkVersion": "5.0.4(16)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {

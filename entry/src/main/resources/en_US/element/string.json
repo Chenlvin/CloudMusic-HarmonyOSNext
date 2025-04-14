@@ -115,6 +115,10 @@
     {
       "name": "Loading",
       "value": "Loading..."
+    },
+    {
+      "name": "Float_lyric",
+      "value": "Floating Lyric"
     }
   ]
 }

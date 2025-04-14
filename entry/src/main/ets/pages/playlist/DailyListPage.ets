@@ -10,6 +10,7 @@ import PlayQueueUtils from '../../common/utils/play/PlayQueueUtils'
 import { playQueue } from '../../common/functions/play/playControl'
 import { PLAYMODE } from '../../common/model/Enum'
 import { PlayAllButton } from '../../components/buttons/PlayAllButton'
+import { PlayListSkeleton } from '../../components/skeleton/Skeleton'
 
 /**
  * 每日推荐歌单页面
@@ -69,71 +70,54 @@ export struct DailyListPage {
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
-        Stack({ alignContent: Alignment.Top }) {
-          if (this.isLoading) {
-            Column() {
-              LoadingProgress().width(Constants.SIZE_LOADING_PROGRESS_DEFAULT)
-            }.height('100%').width('100%').justifyContent(FlexAlign.Center)
-          } else {
-            // debug
-            Stack({ alignContent: Alignment.Top}) {
-              Column() {
-                if(this.list.length < 3) {
-                  Text('获取每日歌单失败').fontSize(Constants.FONT_SIZE_COMMON).textAlign(TextAlign.Center)
-                }
-              }
-              .padding({ top: px2vp(this.topRectHeight) + 150, left: 20, right: 20 })
-
-              List() {
-                ListItem() {
-                  this.Info()
-                }
-                ListItem() {
-                  PlayAllButton({
-                    count: this.list.length,
-                    clickAction: () => {
-                      this.playSong(0)
-                    }
-                  })
-                }
-                .padding({ bottom: Constants.PADDING_EDGE_DEFAULT })
-
-                ForEach(this.list, (item: DailySongRes, index) => {
-                  ListItem() {
-                    SongCard({
-                      playmode: PLAYMODE.DAILY,
-                      song: item.song,
-                      sid: index,
-                      index: index,
-                      reason: item.reason,
-                      picUrl: item.picUrl ?? $r('app.media.ic_public_music'),
-                      listPlayAction: () => { this.playSong(index) }
-                    })
-                  }
-                  .translate({ y: -40 })
-                  .animation({
-                    duration: 600,
-                    curve: Curve.LinearOutSlowIn
-                  })
-                  .translate({ y: 0 })
-                  .key(item.song.id.toString())
-                })
-
-                ListItem().height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
-              }
-              .height('100%')
-              .layoutWeight(1)
-              .width('100%')
-              .scrollBar(BarState.Auto)
-              .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
-              .backToTop(true)
-            }
-            .height('100%')
-            .layoutWeight(1)
-            .width('100%')
+        List() {
+          ListItem() {
+            this.Info()
           }
+          if(this.isLoading) {
+            ForEach(Constants.ARRAY_LENGTH_10, (index: number) => {
+              PlayListSkeleton()
+            })
+          } else {
+            ListItem() {
+              PlayAllButton({
+                count: this.list.length,
+                clickAction: () => {
+                  this.playSong(0)
+                }
+              })
+            }
+            .padding({ bottom: Constants.PADDING_EDGE_DEFAULT })
+
+            ForEach(this.list, (item: DailySongRes, index) => {
+              ListItem() {
+                SongCard({
+                  playmode: PLAYMODE.DAILY,
+                  song: item.song,
+                  sid: index,
+                  index: index,
+                  reason: item.reason,
+                  picUrl: item.picUrl ?? $r('app.media.ic_public_music'),
+                  listPlayAction: () => { this.playSong(index) }
+                })
+              }
+              .translate({ y: -40 })
+              .animation({
+                duration: 600,
+                curve: Curve.LinearOutSlowIn
+              })
+              .translate({ y: 0 })
+              .key(item.song.id.toString())
+            })
+          }
+          ListItem().height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
         }
         .height('100%')
+        .layoutWeight(1)
+        .width('100%')
+        .scrollBar(BarState.Auto)
+        .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
+        .backToTop(true)
 
         BottomBarComponent()
           .padding({ left: Constants.PADDING_EDGE_DEFAULT, right: Constants.PADDING_EDGE_DEFAULT })

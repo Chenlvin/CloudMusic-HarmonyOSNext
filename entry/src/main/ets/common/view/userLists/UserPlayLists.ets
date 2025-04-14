@@ -4,7 +4,8 @@ import Constants from "../../constants/Constants"
 import { StorageConstants } from "../../constants/StorageConstants"
 import { PlayList } from "../../entities/playlist/PlayList"
 import { User, UserItem } from "../../entities/user/User"
-import { PlayListCard, PlayListCard_Skeleton } from "../../../components/cards/PlayListCard"
+import { PlayListCard } from "../../../components/cards/PlayListCard"
+import { PlayListSkeleton } from "../../../components/skeleton/Skeleton"
 
 @Component
 export struct UserPlayLists {
@@ -150,7 +151,7 @@ export struct UserPlayLists {
   @Builder
   Loading() {
     ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
-      PlayListCard_Skeleton()
+      PlayListSkeleton()
     })
   }
 }

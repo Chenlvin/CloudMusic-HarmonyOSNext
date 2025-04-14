@@ -79,6 +79,7 @@ class FloatingLyricsController {
 @Entry
 @Component
 export struct FloatingLyrics {
+  @StorageProp(StorageConstants.IS_PLAYER_SHOW) isPlayerShow: boolean = false
   @StorageProp(StorageConstants.CURRENT_LYRIC) currentLyric: string = '';
   @StorageProp(StorageConstants.PLAY_ARTISTS) artists: string = '';
   @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) @Watch('onLyricStyleChange') floatLyricStyle: FloatLyric = FloatLyricItem
@@ -104,6 +105,8 @@ export struct FloatingLyrics {
     .width(`${this.floatLyricStyle.width}%`)
     .backgroundColor(Color.Transparent)
     .opacity(this.floatLyricStyle.opacity)
+    .visibility(this.isPlayerShow ? Visibility.None : Visibility.Visible)
+    .animation({ duration: 500, curve: Curve.Smooth })
     .backdropBlur(this.floatLyricStyle.bgBlur ? 50 : 0)
     .borderRadius(Constants.RADIUS_IMG)
     .parallelGesture(GestureGroup(GestureMode.Exclusive,

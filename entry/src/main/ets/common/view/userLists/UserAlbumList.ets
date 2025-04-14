@@ -1,11 +1,10 @@
 import { LogUtil, ToastUtil } from "@pura/harmony-utils";
 import Constants from "../../constants/Constants";
 import { StorageConstants } from "../../constants/StorageConstants";
-import { AlbumParam } from "../../entities/local/PageParams";
-import { PlayListCard_Skeleton } from "../../../components/cards/PlayListCard";
 import { getSubAlbum } from "../../../api/albumApi";
 import { Album } from "../../entities/song/Album";
 import { AlbumCard } from "../../../components/cards/AlbumCard";
+import { PlayListSkeleton } from "../../../components/skeleton/Skeleton";
 
 @Component
 export struct UserAlbumList {
@@ -86,7 +85,7 @@ export struct UserAlbumList {
   @Builder
   Loading() {
     ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
-      PlayListCard_Skeleton()
+      PlayListSkeleton()
     })
   }
 }
