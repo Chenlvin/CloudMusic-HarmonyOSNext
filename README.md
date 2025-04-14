@@ -65,6 +65,7 @@
 
 - [NeteaseCloudMusicApi](https://gitlab.com/Binaryify/neteasecloudmusicapi)
 - [@pura/harmony-utils](https://ohpm.openharmony.cn/#/cn/detail/@pura%2Fharmony-utils)
+- [@ohos/axios](https://ohpm.openharmony.cn/#/cn/detail/@ohos%2Faxios)
 - [@pura/picker_utils](https://ohpm.openharmony.cn/#/cn/detail/@pura%2Fpicker_utils)
 - [@pie/lazy-data](https://ohpm.openharmony.cn/#/cn/detail/@pie%2Flazy-data)
 - [@sj/mediacache](https://ohpm.openharmony.cn/#/cn/detail/@sj%2Fmediacache)
@@ -73,11 +74,15 @@
 
 ### 界面预览
 #### Phone - 手机设备
-|**发现页**|**云盘界面**|**播控界面**|
-|:----------:|:----------:|:----------:|
-|<img src="./images/01.jpg"/>|<img src="./images/02.jpg" />|<img src="./images/03.jpg" />|
-|**播放页功能**|**歌词界面**|**播放列表**|
-|<img src="./images/04.jpg"/>|<img src="./images/05.jpg"/>|<img src="./images/06.jpg"/>|
+|            **发现**            |           **音乐云盘**            |            **播放器**            |
+|:----------------------------:|:-----------------------------:|:-----------------------------:|
+| <img src="./images/01.jpg"/> | <img src="./images/02.jpg" /> | <img src="./images/03.jpg" /> |
+|          **播放页功能**           |           **歌词界面**            |           **播放列表**            |
+| <img src="./images/04.jpg"/> | <img src="./images/05.jpg"/>  | <img src="./images/06.jpg"/>  | 
+
+|            **横屏播放器**             |
+|:----------------------------:|
+| <img src="./images/11.jpg"/> |
 
 #### Tablet - 平板设备
 |**播控/歌词界面**|**平行界面**|
