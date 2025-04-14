@@ -1,5 +1,5 @@
 import { SongCard } from '../../components/cards/SongCard'
-import { DialogUtil, EmitterUtil, LogUtil } from '@pura/harmony-utils'
+import { LogUtil } from '@pura/harmony-utils'
 import { getCloudList } from '../../api/playListApi'
 import { BottomBarComponent } from '../../components/play/BottomBarComponent'
 import Constants from '../../common/constants/Constants'
@@ -30,18 +30,6 @@ export struct CloudPage {
   @State hasLoaded: boolean = false
   @State isLoading: boolean = true
   @State isLoadingMore: boolean = false
-  @State menuItem: NavigationMenuItem[] = [
-    {
-      value: '',
-      icon: $r('app.media.ic_public_help'),
-      action: () => {
-        DialogUtil.showConfirmDialog({
-          title: '云盘',
-          message: '音乐云盘内歌曲仅支持单首播放、缓存'
-        })
-      }
-    }
-  ]
 
   async aboutToAppear() {
     if (!this.hasLoaded) {
@@ -83,8 +71,8 @@ export struct CloudPage {
         playmode: 2,
         song: {
           id: item.id,
-          artists: item.ar,
-          album: item.al,
+          artists: item?.ar ?? [{ id: 0, name: '未知' }],
+          album: item?.al ?? { id: 0, name: '未知', artists:[], picUrl: '', size: 0 },
           name: item.name,
           duration: item.dt,
           alias: [],
@@ -116,8 +104,8 @@ export struct CloudPage {
                     playmode: PLAYMODE.CLOUD,
                     song: {
                       id: item.id,
-                      artists: item.ar,
-                      album: item.al,
+                      artists: item?.ar ?? [{ id: 0, name: '未知' }],
+                      album: item?.al ?? { id: 0, name: '未知', artists:[], picUrl: '', size: 0 },
                       name: item.name,
                       duration: item.dt,
                       alias: [],
@@ -174,8 +162,7 @@ export struct CloudPage {
       .height('100%')
       .backgroundColor($r('app.color.background'))
     }
-    .title('音乐云盘')
-    .menus(this.menuItem)
+    .title($r('app.string.Cloud'))
     .backgroundColor($r('app.color.background'))
   }
 }

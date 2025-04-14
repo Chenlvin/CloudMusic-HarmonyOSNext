@@ -2,7 +2,7 @@ import { EmitterUtil, FileUtil, LogUtil } from "@pura/harmony-utils"
 import { getLyric } from "../../../api/LyricApi"
 import { EmitterConstants } from "../../constants/EmitterConstants"
 import { StorageConstants } from "../../constants/StorageConstants"
-import { Lyric, LyricResult, LyricResultClass } from "../../entities/song/Lyric"
+import { EmptyLrcItem, Lyric, LyricResult, LyricResultClass } from "../../entities/song/Lyric"
 import { Song } from "../../entities/song/Song"
 import FileUtils from "../file/FileUtils"
 import { fileIo, ReadOptions } from "@kit.CoreFileKit"
@@ -28,25 +28,30 @@ class LyricUtils {
 
   async setLyric(song: Song) {
     this.resetLyric()
-    AppStorage.setOrCreate(StorageConstants.CURRENT_LYRIC, '')
+    AppStorage.setOrCreate(StorageConstants.CURRENT_LYRIC, `《${song.name}》`)
     this.currentLyricIndex = 0
     let lyricArr: string[] = []
-    if(song.artists[0].id == 0) {
-      this.lyric.lrc.lyric = '[00:00:00] 暂无歌词'
-      lyricArr = ['[00:00:00] 暂无歌词']
-    } else {
-      try {
+    try {
+      if(song.artists[0].id == 0) {
+        this.lyric.lrc.lyric = '[00:00:00] 暂无歌词'
+        lyricArr = ['[00:00:00] 暂无歌词']
+      } else {
         this.lyric = await getLyric(song.id)
-      } catch (e) {
-        LogUtil.error(TAG, 'Get Lyric Error: ' + e.message)
+        lyricArr = this.lyric.lrc.lyric.split('\n')
       }
-      lyricArr = this.lyric.lrc.lyric.split('\n')
+      this.lyricObjects = await this.parseLyricArray(lyricArr)
+      if(this.lyric.tlyric.lyric) { // 翻译
+        this.tLyricObjects = await this.parseLyricArray(this.lyric.tlyric.lyric.split('\n'))
+      }
+    } catch (e) {
+      LogUtil.error(TAG, 'Set Lyric Error: ' + e.message)
+      this.lyric = {
+        code: 200, lrc: EmptyLrcItem, tlyric: EmptyLrcItem, klyric: EmptyLrcItem, romalrc: EmptyLrcItem
+      }
+      this.lyricObjects = [{ time: 0, content: '暂无歌词' }]
+    } finally {
+      EmitterUtil.post(EmitterConstants.EMITTER_LYRIC_UPDATE, 'Lyric Updated')
     }
-    this.lyricObjects = await this.parseLyricArray(lyricArr)
-    if(this.lyric.tlyric.lyric) { // 翻译
-      this.tLyricObjects = await this.parseLyricArray(this.lyric.tlyric.lyric.split('\n'))
-    }
-    EmitterUtil.post(EmitterConstants.EMITTER_LYRIC_UPDATE, 'Lyric Updated')
   }
 
   async getLyricObjects(): Promise<Lyric[]> {

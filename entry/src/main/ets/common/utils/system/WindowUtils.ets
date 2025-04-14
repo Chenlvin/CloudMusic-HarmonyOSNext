@@ -96,6 +96,26 @@ class WindowUtils {
       return 0
     }
   }
+
+  getScreenPercentageX(resX: number): number {
+    try {
+      const screenWidth = display.getDefaultDisplaySync().width
+      return (resX / screenWidth) * 100
+    } catch (e) {
+      LogUtil.error(TAG + 'getScreenPercentageX error: ' + e.message)
+      return 0
+    }
+  }
+
+  getScreenPercentageY(resY: number): number {
+    try {
+      const screenHeight = display.getDefaultDisplaySync().height
+      return (resY / screenHeight) * 100
+    } catch (e) {
+      LogUtil.error(TAG + 'getScreenPercentageY error: ' + e.message)
+      return 0
+    }
+  }
 }
 
 const windowUtils: WindowUtils = new WindowUtils()

@@ -40,3 +40,7 @@ export const LyricResultClass: LyricResult = {
     lyric: ''
   },
 }
+
+export const EmptyLrcItem: Lrc = {
+  lyric: '[00:00:00] 暂无歌词'
+}

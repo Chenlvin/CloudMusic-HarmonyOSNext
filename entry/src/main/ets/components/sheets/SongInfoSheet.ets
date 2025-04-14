@@ -128,7 +128,7 @@ export struct SongInfoSheet {
         }
       }
       if(this.playmode !== 3) {
-        if(this.song.id !== 0) {
+        if(this.song.id !== 0 && this.song?.artists[0].id !== 0) {
           this.Item($r('app.media.ic_public_message'), '歌曲评论', () => {
             let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
               id: this.song.id,
@@ -138,7 +138,7 @@ export struct SongInfoSheet {
             EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
           })
         }
-        if(this.allowToArtist) {
+        if(this.allowToArtist && this.song?.artists[0].id !== 0) {
           ListItem() {
             this.Item($r('app.media.ic_user_portrait'), '查看歌手', () => { this.isShowArtistsSheet = true })
           }
@@ -157,7 +157,7 @@ export struct SongInfoSheet {
             })
           }
         }
-        if(this.song.artists[0].id !== 0) {
+        if(this.song?.artists[0].id !== 0) {
           ListItem() {
             this.Item($r('app.media.ic_files_new_folder'), '添加到歌单', () => { this.isShowAddSheet = true })
           }

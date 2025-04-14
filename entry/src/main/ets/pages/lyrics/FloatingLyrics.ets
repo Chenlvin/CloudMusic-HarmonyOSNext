@@ -4,56 +4,59 @@ import Constants from "../../common/constants/Constants";
 import { LogUtil } from "@pura/harmony-utils";
 import { FloatLyric, FloatLyricItem, LyricPosition } from "../../common/entities/local/Settings";
 import WindowUtils from "../../common/utils/system/WindowUtils";
+import { changeSettings } from "../../common/functions/app/settings";
 
-const TAG = "FloatingLyrics";
-const BOTTOM_MARGIN = vp2px(60);
-const THRESHOLD = vp2px(20);
+const TAG = 'FloatingLyrics'
+const BOTTOM_MARGIN = vp2px(60)
+const THRESHOLD = vp2px(20)
 
 class FloatingLyricsController {
   win: window.Window | null = null;
-  public displayH = display.getDefaultDisplaySync().height;
-  public displayW = display.getDefaultDisplaySync().width;
-  private leftMargin = px2vp(0.1 * this.displayW);
-  windowPosition: LyricPosition = { x: 0, y: 0 };
+  public displayH = display.getDefaultDisplaySync().height
+  public displayW = display.getDefaultDisplaySync().width
+  windowPosition: LyricPosition = { x: 0, y: 0 }
+  floatLyricStyle = AppStorage.link<FloatLyric>(StorageConstants.FLOAT_LYRIC_STYLE)
 
   public init() {
     try {
-      this.win = window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME);
+      this.win = window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME)
       this.win.setWindowBackgroundColor("#00000000") // transparent
-      this.win.setWindowFocusable(false);
+      this.win.setWindowFocusable(false)
     } catch (err) {
-      LogUtil.error(TAG, "init err");
+      LogUtil.error(TAG, "init err")
     }
   }
 
   public destroyWindow = () => {
     try {
-      this.win?.destroyWindow();
+      this.win?.destroyWindow()
     } catch (err) {
-      LogUtil.error(TAG, "destroyWindow err");
+      LogUtil.error(TAG, "destroyWindow err")
     }
   }
   public handlePanGestureStart = (event: GestureEvent): void => {
     if (!this.win) {
-      return;
+      return
     }
-    this.windowPosition = { x: this.windowPosition.x, y: this.win.getGlobalRect().top };
+    this.windowPosition = { x: this.windowPosition.x, y: this.win.getGlobalRect().top }
   }
 
   public handlePanGestureUpdate = (event: GestureEvent): void => {
-    if (Math.abs(event.offsetY) < 1) {
-      return;
-    }
-    let resY = this.windowPosition.y + event.offsetY
-    if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD) {
-      return;
-    }
-    this.windowPosition.y = resY;
-    this.moveWindowTo(this.windowPosition.x, resY);
-  }
+    // if (Math.abs(event.offsetY) < 1 || Math.abs(event.offsetX) < 1)
+    //   return
 
-  public getLeftMarin(): number {
-    return this.leftMargin;
+    let resY = this.windowPosition.y + event.offsetY
+    let resX = this.windowPosition.x + event.offsetX
+    if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD ||
+      resX < 0 || resX > this.displayW)
+      return
+
+    this.windowPosition.y = resY
+    this.windowPosition.x = resX
+    this.floatLyricStyle.get().position.y = WindowUtils.getScreenPercentageY(resY)
+    this.floatLyricStyle.get().position.x = WindowUtils.getScreenPercentageX(resX)
+    changeSettings(StorageConstants.FLOAT_LYRIC_STYLE, this.floatLyricStyle.get())
+    this.moveWindowTo(resX, resY)
   }
 
   public onTouchableChange(floatTouchable: boolean) {
@@ -98,7 +101,6 @@ export struct FloatingLyrics {
         .textStyle(this.floatLyricStyle.size)
         .textAlign(this.floatLyricStyle.align === 'center' ? TextAlign.Center : TextAlign.Start)
     }
-    // .margin({ left: this.controller.getLeftMarin() })
     .width(`${this.floatLyricStyle.width}%`)
     .backgroundColor(Color.Transparent)
     .opacity(this.floatLyricStyle.opacity)
@@ -107,7 +109,7 @@ export struct FloatingLyrics {
     .parallelGesture(GestureGroup(GestureMode.Exclusive,
       // TapGesture({ count: 2, fingers: 1 })
       //   .onAction(this.controller.destroyWindow),
-      PanGesture({ direction: PanDirection.Vertical })
+      PanGesture({ direction: PanDirection.All })
         .onActionStart(this.controller.handlePanGestureStart)
         .onActionUpdate(this.controller.handlePanGestureUpdate)
     ))
