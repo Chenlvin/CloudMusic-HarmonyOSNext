@@ -15,7 +15,7 @@ class FloatingLyricsController {
   public displayH = display.getDefaultDisplaySync().height
   public displayW = display.getDefaultDisplaySync().width
   windowPosition: LyricPosition = { x: 0, y: 0 }
-  floatLyricStyle = AppStorage.link<FloatLyric>(StorageConstants.FLOAT_LYRIC_STYLE)
+  floatLyricStyle = AppStorage.prop<FloatLyric>(StorageConstants.FLOAT_LYRIC_STYLE)
 
   public init() {
     try {
@@ -29,7 +29,9 @@ class FloatingLyricsController {
 
   public destroyWindow = () => {
     try {
-      this.win?.destroyWindow()
+      WindowUtils.destoryLyricFloatWindow()
+      this.floatLyricStyle.get().on = false
+      changeSettings(StorageConstants.FLOAT_LYRIC_STYLE, this.floatLyricStyle.get())
     } catch (err) {
       LogUtil.error(TAG, "destroyWindow err")
     }
@@ -47,13 +49,13 @@ class FloatingLyricsController {
 
     let resY = this.windowPosition.y + event.offsetY
     let resX = this.windowPosition.x + event.offsetX
-    // if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD ||
-    //   resX < 0 || resX > this.displayW)
-    //   return
+    let limitX = this.displayW * this.floatLyricStyle.get().width / 100
     if(resY < 0) resY = 0
-    else if(resY > this.displayH - BOTTOM_MARGIN + THRESHOLD) resY = this.displayH - BOTTOM_MARGIN + THRESHOLD
+    else if(resY > this.displayH - BOTTOM_MARGIN + THRESHOLD )
+      resY = this.displayH - BOTTOM_MARGIN + THRESHOLD
     if(resX < 0) resX = 0
-    else if(resX > this.displayW) resX = this.displayW
+    else if(resX > this.displayW - limitX)
+      resX = this.displayW - limitX
 
     this.windowPosition.y = resY
     this.windowPosition.x = resX
@@ -114,8 +116,8 @@ export struct FloatingLyrics {
     .backdropBlur(this.floatLyricStyle.bgBlur ? 50 : 0)
     .borderRadius(Constants.RADIUS_IMG)
     .parallelGesture(GestureGroup(GestureMode.Exclusive,
-      // TapGesture({ count: 2, fingers: 1 })
-      //   .onAction(this.controller.destroyWindow),
+      TapGesture({ count: 2, fingers: 1 })
+        .onAction(this.controller.destroyWindow),
       PanGesture({ direction: PanDirection.All })
         .onActionStart(this.controller.handlePanGestureStart)
         .onActionUpdate(this.controller.handlePanGestureUpdate)

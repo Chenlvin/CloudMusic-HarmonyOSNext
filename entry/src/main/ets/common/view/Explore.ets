@@ -10,6 +10,7 @@ import { PersonalizedCard } from "../../components/cards/PersonalizedCard";
 import { AppInfo, AppInfoClass } from "../entities/local/AppInfo";
 import { RecommendDjRadio } from "../entities/dj/DjRecommend";
 import { IndexRecommend } from "./IndexRecommend";
+import { PersonalizedSkeletion } from "../../components/skeleton/Skeleton";
 
 @Component
 export struct Explore {
@@ -61,7 +62,7 @@ export struct Explore {
     else return
   }
 
-  private async refreshContent() {
+  private refreshContent = async () => {
     this.isRefreshing = true
     const currentTime = new Date().getTime()
     if (currentTime - this.lastRefreshTime < this.refreshCooldown) {
@@ -120,11 +121,15 @@ export struct Explore {
                 List() {
                   ListItem().width(5)
                   ListItem().width(5)
-                  ForEach(this.personalizedList, (item: PersonalListItem, index) => {
-                    ListItem() {
-                      PersonalizedCard({ item: item, breakpoint: this.breakpoint }).padding(5)
-                    }
-                  }, (item: PersonalListItem) => item.id.toString())
+                  if(this.isLoadingPersonalized || this.isRefreshing) {
+                    ForEach(Constants.ARRAY_LENGTH_10, (item: number) => {
+                      PersonalizedSkeletion()
+                    })
+                  } else {
+                    ForEach(this.personalizedList, (item: PersonalListItem, index) => {
+                      PersonalizedCard({ item: item }).padding(5)
+                    }, (item: PersonalListItem) => item.id.toString())
+                  }
                   ListItem().width(5)
                   ListItem().width(5)
                 }
@@ -223,9 +228,7 @@ export struct Explore {
         .backToTop(true)
       }
       .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
-      .onRefreshing(async () => {
-        await this.refreshContent()
-      })
+      .onRefreshing(this.refreshContent)
     }
     .width('100%')
     .height('100%')

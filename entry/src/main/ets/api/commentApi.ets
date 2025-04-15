@@ -22,6 +22,6 @@ export const getComment = async (
 ): Promise<CommentResult> => {
   return commonRequest({
     url: '/comment/new',
-    params: { id, type, pageNo, pageSize, sortType }
+    params: { id, type, pageNo, pageSize, sortType, cursor }
   })
 }

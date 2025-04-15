@@ -15,7 +15,35 @@ export struct PersonalizedCard {
     playCount: 0,
     trackCount: 0
   }
-  @Prop breakpoint: string = 'sm'
+
+  private clickAction = () => {
+    let playlistParam: PlayListPageParam = {
+      playList: {
+        userId: 0,
+        id: this.item.id,
+        name: this.item.name,
+        playCount: this.item.playCount,
+        coverImgUrl: this.item.picUrl,
+        trackCount: this.item.trackCount,
+        subscribedCount: 0,
+        subscribed: false,
+        creator: {
+          userId: 0,
+          nickname: '推荐歌单',
+          avatarUrl: ''
+        },
+        description: ''
+      },
+      isShowHeart: false,
+      useTimestamp: false
+    }
+    let param: CommonParam<PlayListPageParam> = {
+      pageName: 'PlayListPage',
+      param: playlistParam,
+      remove: true
+    }
+    EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
+  }
 
   build() {
     Row({ space: 10 }) {
@@ -46,34 +74,7 @@ export struct PersonalizedCard {
     .padding(Constants.PADDING_EDGE_DEFAULT)
     .width(250)
     .clickEffect({ level: ClickEffectLevel.HEAVY, scale: 0.9 })
-    .onClick(() => {
-      let playlistParam: PlayListPageParam = {
-        playList: {
-          userId: 0,
-          id: this.item.id,
-          name: this.item.name,
-          playCount: this.item.playCount,
-          coverImgUrl: this.item.picUrl,
-          trackCount: this.item.trackCount,
-          subscribedCount: 0,
-          subscribed: false,
-          creator: {
-            userId: 0,
-            nickname: '推荐歌单',
-            avatarUrl: ''
-          },
-          description: ''
-        },
-        isShowHeart: false,
-        useTimestamp: false
-      }
-      let param: CommonParam<PlayListPageParam> = {
-        pageName: 'PlayListPage',
-        param: playlistParam,
-        remove: true
-      }
-      EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
-    })
+    .onClick(this.clickAction)
   }
 }
 

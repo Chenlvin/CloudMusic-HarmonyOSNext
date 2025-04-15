@@ -13,16 +13,15 @@ import { TopListItem } from "../../entities/recommend/TopList"
 import { getLikeList } from "../../../api/songApi"
 import { PersonalListItem } from "../../entities/recommend/Personalized"
 import RelationalStoreUtils from "../../utils/data/RelationalStoreUtils"
-import App from "@system.app"
-import Constants from "../../constants/Constants"
 import AudioCacheUtils from "../../utils/play/AudioCacheUtils"
 import { DjRadio } from "../../entities/dj/DjResult"
 import { Album } from "../../entities/song/Album"
+import { checkValidUrl } from "../common/get"
 
 /**
  * App初始化
  */
-const TAG = '[appInit] '
+const TAG = 'AppInit'
 
 export async function appInit() {
   AppStorage.setOrCreate(StorageConstants.APP_LOADING, true)
@@ -32,8 +31,11 @@ export async function appInit() {
   loadSavedSong()
   initPermission()
   initLocalData()
-  await initUserInfo()
-  await getAppInfo()
+  getAppInfo()
+  let validApi = await checkValidUrl()
+  if(validApi) {
+    await initUserInfo()
+  }
   AppStorage.setOrCreate(StorageConstants.APP_LOADING, false)
 }
 

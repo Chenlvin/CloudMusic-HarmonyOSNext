@@ -7,8 +7,6 @@ import { StorageConstants } from "../../common/constants/StorageConstants"
 import Constants from "../../common/constants/Constants"
 import { ClickUtil } from "@pura/harmony-utils"
 import { PLAYMODE } from "../../common/model/Enum"
-import windowUtils from "../../common/utils/system/WindowUtils"
-import { window } from '@kit.ArkUI';
 
 /**
  * 底部播控组件
@@ -32,21 +30,10 @@ export struct BottomBarComponent {
     })
   }
 
-  private handleDoubleClick = () => {
-    try {
-      let win: window.Window = window.findWindow(Constants.FLOAT_LYRICS_WIN_NAME)
-      win.destroyWindow()
-    } catch (err) {
-      windowUtils.createLyricsFloatWindow()
-    }
-  }
-
   build() {
     Row() {
       Image(this.playmode === PLAYMODE.LOCAL ? this.picUrl : this.picUrl + '?param=512y512')
         .height(Constants.HEIGHT_MINI)
-        .gesture(TapGesture({ count: 2, fingers: 1 })
-          .onAction(this.handleDoubleClick))
         .aspectRatio(1)
         .borderRadius(Constants.RADIUS_IMG)
         .padding(5)

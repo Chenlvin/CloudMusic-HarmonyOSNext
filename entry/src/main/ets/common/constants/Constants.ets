@@ -115,6 +115,10 @@ export default class Constants {
    */
   static readonly PADDING_EDGE_TEXT: number = 30
   /**
+   * 中等边缘避让
+   */
+  static readonly PADDING_MEDIUM: number = 20
+  /**
    * Sheet 顶部默认避让尺寸
    */
   static readonly PADDING_SHEET_TOP_DEFAULT: number = 60

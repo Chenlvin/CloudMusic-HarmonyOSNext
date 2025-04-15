@@ -14,7 +14,6 @@ export const getLoginStatus = async (cookie: string): Promise<boolean> => {
       url: '/login/status',
       params: { timestamp: new Date().getTime() }
     })
-    AppStorage.setOrCreate(StorageConstants.VALID_API_URL, true)
     if (response.data.account.id && response.data.profile.nickname) {
       PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.USER, response)
       PreferencesUtils.putPreferenceValue(StorageConstants.USER_PREF, StorageConstants.COOKIE, cookie)

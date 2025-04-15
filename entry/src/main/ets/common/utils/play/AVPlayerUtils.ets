@@ -127,7 +127,7 @@ class AVPlayerUtils {
         if(this.errorFlag) return
         playQueue(PlayQueueUtils.currentQueueIndex)
         this.errorFlag = false
-      }, 100)
+      }, 1000)
     })
     avPlayer.on('audioOutputDeviceChangeWithInfo', async(changeInfo: audio.AudioStreamDeviceChangeInfo) => {
       if (changeInfo.changeReason == audio.AudioStreamDeviceChangeReason.REASON_OLD_DEVICE_UNAVAILABLE) {

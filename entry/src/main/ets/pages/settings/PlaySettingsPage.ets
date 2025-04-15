@@ -26,6 +26,18 @@ export struct PlaySettingsPage {
 @Component
 export struct PlaySettingSinglePage {
   @Provide('playSettingsPageInfos') playSettingsPageInfos: NavPathStack = new NavPathStack()
+  @StorageLink(StorageConstants.IS_PLAYER_SHOW) isPlayerShow: boolean = false
+  private flag: number = 0
+  aboutToAppear(): void {
+    if(this.isPlayerShow) {
+      this.isPlayerShow = false
+      this.flag = 1
+    }
+  }
+
+  aboutToDisappear(): void {
+    if(this.flag) this.isPlayerShow = true
+  }
 
   build() {
     Navigation(this.playSettingsPageInfos) {

@@ -4,6 +4,7 @@ import Constants from "../../common/constants/Constants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
 import { CommentParam } from "../../common/entities/local/PageParams"
 import { Comment } from "../../common/entities/song/Comment"
+import { ClickToLoadButton, LoadingMoreButton } from "../../components/buttons/LoadMoreButtons"
 import { CommentCard } from "../../components/cards/CommentCard"
 import { BottomBarComponent } from "../../components/play/BottomBarComponent"
 
@@ -18,6 +19,7 @@ export struct CommentPage {
   @State currentPage: number = 1
   @State sortType: 1 | 2 | 3 = 1 // 1-按推荐排序, 2-按热度排序, 3-按时间排序
   @State dataSource: LazyData<Comment> = new LazyData()
+  @State hasMore: boolean = true
   showMiniPlayer: boolean = true
   pageSize: number = 30
 
@@ -35,15 +37,26 @@ export struct CommentPage {
   }
 
   private async loadComments() {
-    if(this.currentPage > 0) this.isLoadingMore = true
-    this.comments = (await getComment(
+    const cursor = this.currentPage > 1 && this.comments.length > 0
+      ? this.comments[this.comments.length - 1].time
+      : undefined
+
+    if(this.currentPage > 1) this.isLoadingMore = true
+    let temp = (await getComment(
       this.param.id,
       this.param.type,
       this.currentPage,
       this.pageSize,
-      this.sortType
+      this.sortType,
+      cursor
     ))
       .data.comments
+
+    if(temp.length < this.pageSize) this.hasMore = false
+
+    this.comments = [...this.comments, ...temp]
+    this.dataSource.setData(this.comments)
+    this.dataSource.notifyDataReload()
 
     this.currentPage++
     this.isLoadingMore = false
@@ -61,11 +74,31 @@ export struct CommentPage {
           .padding({ bottom: px2vp(this.bottomRectHeight) })
           .justifyContent(FlexAlign.Center)
         } else {
-          List({ space: Constants.PADDING_EDGE_TEXT }) {
-            LazyForEach(this.dataSource, (item: Comment) => {
-              CommentCard({ comment: item })
-                .padding({ left: 20, right: 20 })
-            })
+          List({ space: Constants.PADDING_MEDIUM }) {
+            if(this.comments.length === 0) {
+              ListItem() {
+                Text('暂无评论')
+                  .width('100%')
+                  .fontSize(Constants.FONT_SIZE_COMMON)
+                  .fontColor(Color.Gray)
+                  .fontWeight(FontWeight.Bold)
+                  .textAlign(TextAlign.Center)
+                  .padding(Constants.PADDING_EDGE_TEXT)
+              }
+            } else {
+              LazyForEach(this.dataSource, (item: Comment) => {
+                CommentCard({ comment: item })
+                  .padding({ left: 20, right: 20 })
+              })
+            }
+
+            if(this.isLoadingMore) {
+              LoadingMoreButton()
+            } else if(this.hasMore) {
+              ClickToLoadButton().onClick(async () => {
+                await this.loadComments()
+              })
+            }
 
             ListItem().height(px2vp(this.bottomRectHeight) + Constants.HEIGHT_MINI)
           }

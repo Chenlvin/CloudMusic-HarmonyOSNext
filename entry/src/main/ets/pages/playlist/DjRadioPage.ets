@@ -1,15 +1,16 @@
 import { LazyData } from "@pie/lazy-data"
-import { ToastUtil } from "@pura/harmony-utils"
+import { EmitterUtil, ToastUtil } from "@pura/harmony-utils"
 import { getDjPrograms } from "../../api/djApi"
 import Constants from "../../common/constants/Constants"
+import { EmitterConstants } from "../../common/constants/EmitterConstants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
 import { DjRadioProgram } from "../../common/entities/dj/DjProgramResult"
 import { djRadioItem } from "../../common/entities/dj/DjResult"
-import { DjRadioParam } from "../../common/entities/local/PageParams"
+import { CommentParam, CommonParam, DjRadioParam } from "../../common/entities/local/PageParams"
 import { PlayQueue } from "../../common/entities/local/PlayQueue"
 import { djRadioToQueue } from "../../common/functions/play/djRadioOp"
 import { playQueue } from "../../common/functions/play/playControl"
-import { PLAYMODE } from "../../common/model/Enum"
+import { COMMENT_TYPE, PLAYMODE } from "../../common/model/Enum"
 import PlayQueueUtils from "../../common/utils/play/PlayQueueUtils"
 import { ClickToLoadButton, LoadingMoreButton, NoMoreButton } from "../../components/buttons/LoadMoreButtons"
 import { PlayAllButton } from "../../components/buttons/PlayAllButton"
@@ -31,6 +32,21 @@ export struct DjRadioPage {
   @State isLoading: boolean = false
   @State isLoadingMore: boolean = false
   @State hasMore: boolean = false
+
+  menus: NavigationMenuItem[] = [
+    {
+      value: 'Comment',
+      icon: $r('app.media.ic_public_message'),
+      action: () => {
+        let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
+          id: this.param.djRadio.id,
+          name: this.param.djRadio.name,
+          type: COMMENT_TYPE.RADIO
+        }, remove: true }
+        EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
+      }
+    }
+  ]
 
   async aboutToAppear(): Promise<void> {
     this.isLoading = true
@@ -79,7 +95,7 @@ export struct DjRadioPage {
         else {
           List() {
             ListItem()
-              .height(px2vp(this.topRectHeight) + Constants.PADDING_EDGE_TEXT)
+              .height(px2vp(this.topRectHeight) + 35)
             ListItem() {
               if(this.isPlayerLoading) {
                 BarLoading()
@@ -145,5 +161,6 @@ export struct DjRadioPage {
     }
     .title(this.param.djRadio.name, { barStyle: BarStyle.STACK, backgroundColor: Color.Transparent, backgroundBlurStyle: BlurStyle.Regular })
     .backgroundColor($r('app.color.background'))
+    .menus(this.menus)
   }
 }

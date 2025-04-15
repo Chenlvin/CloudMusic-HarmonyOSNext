@@ -76,7 +76,9 @@ export struct DailyListPage {
           }
           if(this.isLoading) {
             ForEach(Constants.ARRAY_LENGTH_10, (index: number) => {
-              PlayListSkeleton()
+              ListItem() {
+                PlayListSkeleton()
+              }
             })
           } else {
             ListItem() {

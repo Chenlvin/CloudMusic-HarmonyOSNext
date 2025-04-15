@@ -7,7 +7,7 @@ import { formatNumber } from '../../common/functions/common/convert'
 import { cleanLastPlayInfo } from '../../common/functions/play/playListOp'
 import Constants from '../../common/constants/Constants'
 import { LoadingMoreButton, NoMoreButton } from '../../components/buttons/LoadMoreButtons'
-import { PlayListPageParam } from '../../common/entities/local/PageParams'
+import { CommentParam, CommonParam, PlayListPageParam } from '../../common/entities/local/PageParams'
 import { StorageConstants } from '../../common/constants/StorageConstants'
 import { PlayListSong } from '../../common/entities/playlist/PlayListSongs'
 import { User, UserItem } from '../../common/entities/user/User'
@@ -16,7 +16,7 @@ import { EmitterConstants } from '../../common/constants/EmitterConstants'
 import PlayQueueUtils from '../../common/utils/play/PlayQueueUtils'
 import { PlayQueue } from '../../common/entities/local/PlayQueue'
 import { playQueue } from '../../common/functions/play/playControl'
-import { PLAYMODE } from '../../common/model/Enum'
+import { COMMENT_TYPE, PLAYMODE } from '../../common/model/Enum'
 import { PlayAllButton } from '../../components/buttons/PlayAllButton'
 import { BarLoading } from '../../components/cards/Loading'
 import { PlayListSkeleton } from '../../components/skeleton/Skeleton'
@@ -56,14 +56,19 @@ export struct PlayListPage {
   @State trackCount: number = -1
   @State showTitleBar: boolean = false
   @State isPageActive: boolean = false
-  @State menuItem: NavigationMenuItem[] = [
-    // {
-    //   value: 'help',
-    //   icon: $r('app.media.ic_public_select_all'),
-    //   action: () => {
-    //     this.selectButtonAction()
-    //   }
-    // }
+  menus: NavigationMenuItem[] = [
+    {
+      value: 'Comment',
+      icon: $r('app.media.ic_public_message'),
+      action: () => {
+        let param: CommonParam<CommentParam> = { pageName: 'CommentPage', param: {
+          id: this.param.playList.id,
+          name: this.param.playList.name,
+          type: COMMENT_TYPE.PLAYLIST
+        }, remove: true }
+        EmitterUtil.post(EmitterConstants.PUSH_PAGE, param)
+      }
+    }
   ]
   private currentOffset: number = 0 // 歌曲偏移量
   private useTimestamp: boolean = true
@@ -129,16 +134,21 @@ export struct PlayListPage {
                 if(this.isPlayerLoading) {
                   BarLoading()
                 } else {
-                  PlayAllButton({
-                    count: this.list.length,
-                    clickAction: () => {
-                      if (this.isPlayerLoading) {
-                        ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
-                      } else {
-                        this.playSong(0)
+                  Row() {
+                    PlayAllButton({
+                      count: this.list.length,
+                      clickAction: () => {
+                        if (this.isPlayerLoading) {
+                          ToastUtil.showToast('当前有正在加载的播放任务，请稍后再试')
+                        } else {
+                          this.playSong(0)
+                        }
                       }
-                    }
-                  })
+                    })
+                    LoadingProgress()
+                      .width(Constants.SIZE_ICON_BUTTON_BAR)
+                      .visibility(this.isLoading ? Visibility.Visible : Visibility.None)
+                  }
                 }
               }
               .justifyContent(FlexAlign.SpaceBetween)
@@ -219,7 +229,7 @@ export struct PlayListPage {
         barStyle: BarStyle.STACK,
         backgroundBlurStyle: this.showTitleBar ? BlurStyle.Regular : BlurStyle.NONE
       })
-    .menus(this.menuItem)
+    .menus(this.menus)
     .backgroundColor($r('app.color.background'))
   }
 

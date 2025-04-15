@@ -19,6 +19,8 @@ export struct CommentCard {
           .fontColor($r('app.color.reverse'))
           .fontWeight(FontWeight.Medium)
           .fontSize(Constants.FONT_SIZE_COMMON)
+          .copyOption(CopyOptions.LocalDevice)
+          .textSelectable(TextSelectableMode.SELECTABLE_FOCUSABLE)
         Text(`${this.comment.likedCount} 赞`)
           .fontColor(Color.Gray)
           .fontWeight(FontWeight.Medium)
@@ -31,6 +33,8 @@ export struct CommentCard {
         .lineHeight(25)
         .fontSize(Constants.FONT_SIZE_COMMON)
         .width('100%')
+        .copyOption(CopyOptions.LocalDevice)
+        .textSelectable(TextSelectableMode.SELECTABLE_FOCUSABLE)
       //Time
       Text(this.comment.timeStr)
         .fontColor(Color.Gray)

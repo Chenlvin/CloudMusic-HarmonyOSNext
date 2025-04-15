@@ -10,7 +10,6 @@ export struct CommonSettingsCard {
     Button() {
       Row() {
         Text(this.title)
-          .fontColor($r('app.color.reverse'))
           .fontSize(Constants.FONT_SIZE_COMMON)
           .fontWeight(Constants.FONT_WEIGHT_BOLD)
         if (!this.text) {
@@ -19,7 +18,6 @@ export struct CommonSettingsCard {
             .fillColor($r('app.color.reverse'))
         } else {
           Text(this.text)
-            .fontColor($r('app.color.reverse'))
             .fontSize(Constants.FONT_SIZE_COMMON)
             .fontWeight(FontWeight.Bold)
         }

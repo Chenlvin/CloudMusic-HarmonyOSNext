@@ -4,7 +4,6 @@ import { pauseMusic, playNext, playPre, resumeMusic, seekMusic } from "../functi
 import { AddToPlayListCircleButton } from "../../components/buttons/play/AddToPlayListButton"
 import { LoopModeButton } from "../../components/buttons/play/LoopModeButton"
 import { PlayQueueButton } from "../../components/buttons/play/PlayQueueButton"
-import { DownloadDialog } from "../../components/dialog/DownloadDialog"
 import { LyricComponent } from "../../components/play/LyricComponent"
 import { AVCastPicker } from "@kit.AVSessionKit"
 import { TimerButton } from "../../components/buttons/play/TimerButton"
@@ -54,18 +53,10 @@ export struct Player {
   @State isShowSettings: boolean = false
   @State isLikeProcessing: boolean = false
   @State totalOpacity: number = 0
-  private dialogController: CustomDialogController = new CustomDialogController({
-    builder: DownloadDialog({
-      song: this.song,
-      picUrl: this.picUrl,
-      artists: this.artists,
-      duration: changeDuration(this.song.duration)
-    }),
-  })
 
   private settingsSheetOptions: SheetOptions = {
     backgroundColor: Color.Transparent,
-    showClose: true,
+    showClose: false,
     height: SheetSize.LARGE,
     dragBar: false,
     blurStyle: BlurStyle.Regular,
@@ -87,7 +78,7 @@ export struct Player {
     this.isPlayerShow = true
     setTimeout(() => {
       animateTo({ duration: 300, curve: Curve.EaseInOut }, () => {
-        this.totalOpacity = 0.7
+        this.totalOpacity = 0.5
       })
       EmitterUtil.onSubscribe(EmitterConstants.PLAYING_COVER_TOGGLE, (toggle: boolean) => {
         this.isShow = toggle
@@ -163,62 +154,53 @@ export struct Player {
    * 功能栏
    */
   @Builder
-  ToolBar(size: number = 25, width: number | string = '100%') {
+  ToolBar(size: number = 20, width: number | string = '100%') {
     Row() {
       /**
-       * Clock-Timer
+       * Heart
        */
+      Image(this.isLiked || this.playmode === PLAYMODE.LOCAL ? $r('app.media.ic_public_favor_filled') : $r('app.media.ic_public_favor'))
+        .fillColor(Color.White)
+        .height(size)
+        .aspectRatio(1)
+        .draggable(false)
+        .backgroundColor(Color.Transparent)
+        .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
+        .onClick(async () => {
+          if(this.isLikeProcessing) return
+          else if(this.song.id === 0 || this.playmode === PLAYMODE.DJRADIO) {
+            ToastUtil.showToast('当前播放歌曲不支持该操作')
+            return
+          }
+          this.isLikeProcessing = true
+          try {
+            await likeThisSong()
+          } finally {
+            this.isLikeProcessing = false
+          }
+        })
+
       TimerButton({ isTimerWorking: this.isTimerWorking, isShow: this.isShowTimer })
         .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
-      if (this.song.id !== 0) {
-        /**
-         * Download
-         */
-        Image($r('app.media.ic_arrow_down_o_icon'))
-          .fillColor(Color.White)
-          .height(size)
-          .aspectRatio(1)
-          .draggable(false)
-          .backgroundColor(Color.Transparent)
-          .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
-          .onClick(() => {
-            this.dialogController.open()
-          })
+        .visibility(Visibility.Hidden)
 
-        /**
-         * AddToPlayList
-         */
-        AddToPlayListCircleButton({
-          song: this.song,
-          imgColor: Color.White,
-          imgHeight: size + 4,
-          isShowAddSheet: this.isShowAddSheet,
-          isLarge: (this.widBp === 'md' && this.heightBp === 'sm')
-        })
-          .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
-          .visibility(this.playmode !== 3 ? Visibility.Visible : Visibility.None)
-
-        /**
-         * Heart
-         */
-        Image(this.isLiked ? $r('app.media.ic_public_favor_filled') : $r('app.media.ic_public_favor'))
-          .fillColor(Color.White)
-          .height(size)
-          .aspectRatio(1)
-          .draggable(false)
-          .backgroundColor(Color.Transparent)
-          .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
-          .visibility(this.playmode !== 3 ? Visibility.Visible : Visibility.None)
-          .onClick(async () => {
-            if(this.isLikeProcessing) return
-            this.isLikeProcessing = true
-            try {
-              await likeThisSong()
-            } finally {
-              this.isLikeProcessing = false
-            }
-          })
+      Row({ space: 15 }) {
+        if(this.isLocalFile || this.playmode == 0) { Text('本地文件播放中').fontSize(10).fontColor(Color.Gray) }
+        if(this.isTimerWorking) { Text('已设置定时关闭').fontSize(10).fontColor(Color.Gray) }
       }
+
+      /**
+       * AddToPlayList
+       */
+      AddToPlayListCircleButton({
+        song: this.song,
+        imgColor: Color.White,
+        imgHeight: size + 4,
+        isShowAddSheet: this.isShowAddSheet,
+        isLarge: (this.widBp === 'md' && this.heightBp === 'sm')
+      })
+        .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.7 })
+        .visibility(Visibility.Hidden)
 
       /**
        * More
@@ -233,7 +215,7 @@ export struct Player {
         .bindSheet(this.isShowMenu, this.PlayerActionSheet(), {
           backgroundColor: Color.Transparent,
           showClose: false,
-          height: (this.widBp === 'md' && this.heightBp === 'sm') ? SheetSize.LARGE : SheetSize.MEDIUM,
+          height: this.heightBp === 'sm' ? SheetSize.LARGE : '60%',
           dragBar: false,
           blurStyle: BlurStyle.Regular,
           preferType: SheetType.CENTER,
@@ -243,12 +225,13 @@ export struct Player {
           this.isShowMenu = true
         })
     }
-    .justifyContent(FlexAlign.SpaceEvenly)
+    .justifyContent(FlexAlign.SpaceBetween)
     .width(width)
     .height(size + 5)
-    .opacity(0.6)
+    .opacity(0.5)
     .animation({ duration: 300, curve:Curve.Ease })
     .visibility(this.tabPageIndex == 0 ? Visibility.Visible : Visibility.None)
+    .padding({ left: 25, right: 25 })
   }
 
   /**
@@ -263,7 +246,6 @@ export struct Player {
           .fontSize(isPhoneLarge ? 12 : Constants.FONT_SIZE_COMMON)
           .textAlign(TextAlign.Start)
           .fontColor(Color.White)
-          .opacity(this.tabPageIndex == 0 ? 0.7 : 0.1)
           .alignSelf(ItemAlign.Start)
           .layoutWeight(1)
 
@@ -283,7 +265,6 @@ export struct Player {
           .fontSize(isPhoneLarge ? 12 : Constants.FONT_SIZE_COMMON)
           .textAlign(TextAlign.End)
           .fontColor(Color.White)
-          .opacity(this.tabPageIndex == 0 ? 0.7 : 0.1)
           .alignSelf(ItemAlign.End)
           .layoutWeight(1)
       }
@@ -303,10 +284,10 @@ export struct Player {
         .selectedColor(Color.White)
         .showSteps(false)
         .showTips(false)
-        .opacity(this.tabPageIndex == 0 ? 0.7 : 0.1)
         .onChange(this.handleSliderChange)
     }
     .width(isPhoneLarge ? '90%' : '100%')
+    .opacity(this.tabPageIndex == 0 ? 0.6 : 0.1)
   }
   /**
    * PlayButton
@@ -475,12 +456,12 @@ export struct Player {
   @Builder ControllButtons() {
     Row() {
       LoopModeButton({ imgWidth: 30, btnWidth: 30, imgColor: Color.White }).opacity(0.8)
-      this.PlayButton(45)
+      this.PlayButton(50)
       PlayQueueButton({ imgWidth: 30, imgColor: Color.White }).opacity(0.8)
     }
-    .opacity(this.tabPageIndex == 0 ? 0.8 : 0.2)
+    .opacity(this.tabPageIndex == 0 ? 0.6 : 0.1)
     .padding({ top: Constants.PADDING_EDGE_DEFAULT, bottom: Constants.PADDING_EDGE_DEFAULT })
-    .justifyContent(FlexAlign.SpaceEvenly)
+    .justifyContent(FlexAlign.SpaceBetween)
     .width('90%')
   }
 
@@ -507,21 +488,10 @@ export struct Player {
         })
       })
 
-      Column({ space: 10 }) {
+      Column() {
         this.SliderContent()
-        this.ToolBar()
         this.ControllButtons()
-
-        if(this.tabPageIndex == 0) {
-          Row({ space: 15 }) {
-            if(this.isLocalFile || this.playmode == 0) { Text('本地文件播放中').fontSize(10).fontColor(Color.Gray) }
-            if(this.isTimerWorking) { Text('已设置定时关闭').fontSize(10).fontColor(Color.Gray) }
-          }
-          .justifyContent(FlexAlign.Center)
-          .width('100%')
-          .height(20)
-          .backgroundColor(Color.Transparent)
-        }
+        this.ToolBar()
       }
       .constraintSize({
         minWidth: 200,
@@ -543,16 +513,8 @@ export struct Player {
 
         Column({ space: 10 }) {
           this.SliderContent()
-          this.ToolBar()
           this.ControllButtons()
-          Row({ space: 15 }) {
-            if(this.isLocalFile || this.playmode == 0) { Text('本地文件播放中').fontSize(10).fontColor(Color.Gray) }
-            if(this.isTimerWorking) { Text('已设置定时关闭').fontSize(10).fontColor(Color.Gray) }
-          }
-          .justifyContent(FlexAlign.Center)
-          .width('100%')
-          .height(10)
-          .backgroundColor(Color.Transparent)
+          this.ToolBar()
         }
         .width(this.deviceType === resourceManager.DeviceType.DEVICE_TYPE_TABLET ? '70%' : '90%')
       }
@@ -562,57 +524,48 @@ export struct Player {
         .width('100%')
         .layoutWeight(1)
     }
-    .width('100%')
+    .width(this.widBp === 'md' ? '100%' : '90%')
     .height('100%')
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
     .onAppear(() => { this.tabPageIndex = 0 })
   }
 
   @Builder PhoneLargeUI() {
-    Row() {
-      Column() {
-        Row({ space: 15 }) {
-          if(this.isLocalFile || this.playmode == 0) { Text('本地文件播放中').fontSize(10).fontColor(Color.Gray) }
-          if(this.isTimerWorking) { Text('已设置定时关闭').fontSize(10).fontColor(Color.Gray) }
+    Column() {
+      Row() {
+        Column() {
+          this.PhoneLargeSongInfo()
+          Column() {
+            this.SliderContent(true)
+            Row() {
+              LoopModeButton({ imgWidth: 25, btnWidth: 25, imgColor: Color.White }).opacity(0.8)
+              this.PlayButton(35)
+              PlayQueueButton({ imgWidth: 25, imgColor: Color.White }).opacity(0.8)
+            }
+            .opacity(0.6)
+            .justifyContent(FlexAlign.SpaceBetween)
+            .width('80%')
+          }
+          .width('90%')
         }
-        .padding({ top: 5 })
-        .justifyContent(FlexAlign.Center)
+        .padding({ bottom: 5 })
         .width('100%')
-        .height(10)
-        .backgroundColor(Color.Transparent)
-        this.PhoneLargeSongInfo()
-        Column({ space: 5 }) {
-          this.SliderContent(true)
-          this.ToolBar(20, '90%')
-        }
-        .width('90%')
-      }
-      .padding({ bottom: 5 })
-      .width('100%')
-      .layoutWeight(1)
+        .layoutWeight(1)
 
-      Stack({ alignContent: Alignment.Bottom }) {
         LyricComponent()
-          .width('100%')
           .layoutWeight(1)
-        Row() {
-          LoopModeButton({ imgWidth: 25, btnWidth: 25, imgColor: Color.White }).opacity(0.8)
-          this.PlayButton(35)
-          PlayQueueButton({ imgWidth: 25, imgColor: Color.White }).opacity(0.8)
-        }
-        .opacity(0.6)
-        .justifyContent(FlexAlign.SpaceEvenly)
-        .width('80%')
       }
-      .layoutWeight(1)
+      .padding({ left: Constants.PADDING_EDGE_TEXT, right: Constants.PADDING_EDGE_TEXT })
+      .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
+      .onAppear(() => { this.tabPageIndex = 0 })
+      Column() {
+        this.ToolBar(20, '100%')
+      }.padding({ left: 15, right: 15, bottom: Constants.PADDING_EDGE_DEFAULT })
     }
-    .padding({ left: Constants.PADDING_EDGE_TEXT, right: Constants.PADDING_EDGE_TEXT })
-    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
-    .onAppear(() => { this.tabPageIndex = 0 })
   }
 
   @Builder PersonalFmButton() {
-    Button(PlayConstants.PERSONAL_FM_MODE_NAME[this.personalFmMode])
+    Button(this.heightBp === 'sm' ? PlayConstants.PERSONAL_FM_MODE_NAME[this.personalFmMode] : `私人FM - ${PlayConstants.PERSONAL_FM_MODE_NAME[this.personalFmMode]}`)
       .fontColor(Color.White)
       .fontSize(Constants.FONT_SIZE_COMMON)
       .backgroundColor(Color.Transparent)
