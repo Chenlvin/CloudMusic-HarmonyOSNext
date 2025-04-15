@@ -15,6 +15,8 @@ const instance = axios.create({
 instance.interceptors.request.use(async (request: InternalAxiosRequestConfig ) => {
   // baseUrl
   request.baseURL = !request.params.baseUrl ? await getApiUrl() : request.params.baseUrl
+  // timeout
+  request.timeout = request.params.timeout ?? 15000
   // Cookie
   if(!request.params.noCookie) {
     const cookie = await getCookie()

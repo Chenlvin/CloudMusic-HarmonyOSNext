@@ -111,3 +111,10 @@ export function SettingsPageMap(name: string, param: Object) {
     DebugPage()
   }
 }
+
+@Builder
+export function PlaySettingsPageMap(name: string, param: Object) {
+  if(name === 'FloatLyricPage') {
+    FloatLyricPage()
+  }
+}

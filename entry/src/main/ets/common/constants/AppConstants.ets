@@ -14,5 +14,5 @@ export class AppConstants {
   /**
    * AG
    */
-  static readonly AG_VERSION: boolean = true
+  static readonly AG_VERSION: boolean = false
 }

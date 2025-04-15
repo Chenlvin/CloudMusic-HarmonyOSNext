@@ -47,9 +47,13 @@ class FloatingLyricsController {
 
     let resY = this.windowPosition.y + event.offsetY
     let resX = this.windowPosition.x + event.offsetX
-    if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD ||
-      resX < 0 || resX > this.displayW)
-      return
+    // if (resY < 0 || resY > this.displayH - BOTTOM_MARGIN + THRESHOLD ||
+    //   resX < 0 || resX > this.displayW)
+    //   return
+    if(resY < 0) resY = 0
+    else if(resY > this.displayH - BOTTOM_MARGIN + THRESHOLD) resY = this.displayH - BOTTOM_MARGIN + THRESHOLD
+    if(resX < 0) resX = 0
+    else if(resX > this.displayW) resX = this.displayW
 
     this.windowPosition.y = resY
     this.windowPosition.x = resX

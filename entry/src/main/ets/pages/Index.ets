@@ -25,6 +25,7 @@ struct Index {
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) widBp: string = 'sm'
   @StorageProp(StorageConstants.DEFAULT_PAGE_INDEX) index: number = 0
   @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) floatLyric: FloatLyric = FloatLyricItem
+  @StorageProp(StorageConstants.BREAKPOINT_WIDTH) breakpointWD: string = 'sm'
   @State currentHour: number = 0
   @State tabCurrentIndex: number = 0
   @State categoryTabIndex: number = 0
@@ -68,6 +69,15 @@ struct Index {
         action: () => {
           this.pageInfos.clear()
           this.pageInfos.pushPathByName('SearchPage', null, (this.widBp === 'lg') && this.pageInfos.size() === 0 ? false : true)
+        }
+      })
+    }
+    if(this.pageInfos.size() > 0 && this.breakpointWD === 'lg') {
+      items.push({
+        value: 'Clear',
+        icon: $r('app.media.ic_public_cancel'),
+        action: () => {
+          this.pageInfos.clear()
         }
       })
     }

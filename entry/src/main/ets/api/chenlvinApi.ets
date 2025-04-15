@@ -11,11 +11,11 @@ export async function getAppInfo() {
   try {
     const response = await commonRequest<AppInfo>({
       url: '/api/cloudmusic/app',
-      params: { baseUrl: Constants.API_URL }
+      params: { baseUrl: Constants.API_URL, timeout: 3000, noCookie: true }
     })
     AppStorage.setOrCreate(StorageConstants.APP_INFO, response ?? AppInfoClass)
   } catch (e) {
     LogUtil.error('get app info error: ' + e.message())
-    ToastUtil.showToast('获取应用信息出错')
+    ToastUtil.showToast('获取应用信息失败')
   }
 }

@@ -16,7 +16,7 @@ export const getComment = async (
   id: number,
   type: COMMENT_TYPE,
   pageNo: number = 1,
-  pageSize: number = 20,
+  pageSize: number = 30,
   sortType: COMMENT_SORT_TYPE,
   cursor?: number
 ): Promise<CommentResult> => {

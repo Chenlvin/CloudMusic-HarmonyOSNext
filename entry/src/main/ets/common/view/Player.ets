@@ -18,11 +18,11 @@ import { PlayConstants } from "../constants/PlayConstants"
 import { ArtistsSheet } from "../../components/sheets/ArtistsSheet"
 import { window } from "@kit.ArkUI"
 import OrientationUtils from "../utils/system/WindowUtils"
-import { PlaySettingsPage } from "../../pages/settings/PlaySettingsPage"
 import { EmitterConstants } from "../constants/EmitterConstants"
 import { PLAYMODE } from "../model/Enum"
 import { PersonalFmMenu } from "../../components/menu/PersonalFmMenu"
 import { BreakpointType } from "../model/Breakpoint"
+import { PlaySettingSinglePage } from "../../pages/settings/PlaySettingsPage"
 
 @Component
 export struct Player {
@@ -641,7 +641,7 @@ export struct Player {
   }
 
   @Builder SettingsSheet() {
-    PlaySettingsPage()
+    PlaySettingSinglePage()
   }
 }
 

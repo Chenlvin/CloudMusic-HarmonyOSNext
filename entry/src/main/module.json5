@@ -43,15 +43,15 @@
           "name": "ohos.permission.INTERNET",
           "reason": '$string:REASON_INTERNET_PERMISSION'
         },
-//        {
-//          "name" : "ohos.permission.SYSTEM_FLOAT_WINDOW",
-//          "usedScene": {
-//            "abilities": [
-//              "EntryAbility"
-//            ],
-//            "when":"inuse"
-//          }
-//        },
+        {
+          "name" : "ohos.permission.SYSTEM_FLOAT_WINDOW",
+          "usedScene": {
+            "abilities": [
+              "EntryAbility"
+            ],
+            "when":"inuse"
+          }
+        },
         {
           "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
           "reason": '$string:REASON_KEEP_BACKGROUND_RUNNING'
