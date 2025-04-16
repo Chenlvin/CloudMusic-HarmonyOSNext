@@ -22,6 +22,7 @@ struct Index {
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
   @StorageProp('topRectHeight') topRectHeight: number = 0
   @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
+  @StorageProp(StorageConstants.VALID_API_URL) validApiUrl: boolean = true
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) widBp: string = 'sm'
   @StorageProp(StorageConstants.DEFAULT_PAGE_INDEX) index: number = 0
   @StorageProp(StorageConstants.FLOAT_LYRIC_STYLE) floatLyric: FloatLyric = FloatLyricItem
@@ -148,7 +149,9 @@ struct Index {
   @Builder ToolBar() {
     Row() {
       this.ToolBarItem(0, $r('app.media.ic_gallery_discover'), $r('app.media.ic_gallery_discover_filled'), $r('app.string.Explore'))
-      this.ToolBarItem(1, $r('app.media.ic_public_drawer'), $r('app.media.ic_public_drawer_filled'), $r('app.string.Lists'))
+      if(this.validApiUrl) {
+        this.ToolBarItem(1, $r('app.media.ic_public_drawer'), $r('app.media.ic_public_drawer_filled'), $r('app.string.Lists'))
+      }
       this.ToolBarItem(2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts_filled'), $r('app.string.Me'))
     }
     .backgroundColor(Color.Transparent)

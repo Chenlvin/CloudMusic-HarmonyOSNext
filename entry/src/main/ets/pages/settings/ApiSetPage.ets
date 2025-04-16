@@ -1,6 +1,7 @@
 import { ToastUtil } from "@pura/harmony-utils"
 import Constants from "../../common/constants/Constants"
 import { StorageConstants } from "../../common/constants/StorageConstants"
+import { Api, EmptyApi } from "../../common/entities/local/Api"
 import { checkValidUrl } from "../../common/functions/common/get"
 import PreferencesUtils from "../../common/utils/data/PreferencesUtils"
 import { ExplainButton } from "../../components/buttons/ExplainButton"
@@ -16,14 +17,17 @@ export struct ApiSetPage {
   @StorageProp(StorageConstants.API_URL) customApiUrl: string = ''
   @StorageProp(StorageConstants.VALID_API_URL) validApiUrl: boolean = false
   @StorageProp(StorageConstants.BREAKPOINT_WIDTH) breakpoint: string = 'sm'
-  @StorageProp('bottomRectHeight') bottomRectHeight: number = 0
+  @StorageProp(StorageConstants.API_SETTINGS) apiSettings: Api = EmptyApi
+  @StorageProp(StorageConstants.BOTTOM_RECT_HEIGHT) bottomRectHeight: number = 0
+  @State selected: number = 0
 
   build() {
     NavDestination() {
       Scroll() {
         Column({ space: 20 }) {
+          Text('用户可以搭建私有网盘与API\n设置连接信息后可与其连接')
           Text() {
-            Span(`用户云服务状态: `)
+            Span(`配置连通性: `)
             Span(`${this.validApiUrl ? '正常' : '不可用'}`)
               .fontWeight(FontWeight.Bold)
               .fontColor(this.validApiUrl ? Color.Green : $r('app.color.app_red'))
@@ -54,26 +58,79 @@ export struct ApiSetPage {
 
   @Builder SetApiUrl() {
     Column({ space: 10 }) {
-      Row() {
-        Row({ space: 5 }) {
-          Text($r('app.string.SET_CLOUDSERVICE')).LeftText()
+
+      Text() {
+        Span('当前设置: ')
+        Span(this.customApiUrl)
+      }
+
+      Row({ space: 10 }) {
+        Text('主机').LeftText()
+        TextInput({ text: this.apiSettings.domain })
+          .layoutWeight(1)
+          .onChange((text) => this.apiSettings.domain = text)
+          .borderRadius(Constants.RADIUS_IMG)
+      }
+
+      Row({ space: 10 }) {
+        Text('端口').LeftText()
+        TextInput({ text: this.apiSettings.port.toString() })
+          .layoutWeight(1)
+          .type(InputType.Number)
+          .onChange((text) => this.apiSettings.port = Number(text))
+          .borderRadius(Constants.RADIUS_IMG)
+      }
+
+      Row({ space: 10 }) {
+        Text('请求').LeftText()
+        Row() {
+          Text('HTTP')
+            .padding({ right: 5 })
+          Radio({ value: 'http', group: 'HTTP' })
+            .checked(this.selected == 0)
+            .radioStyle({ checkedBackgroundColor: $r('app.color.app_red') })
+            .onClick(() => { this.apiSettings.https = false })
+            .padding({ right: 30 })
+          Text('HTTPS')
+            .padding({ right: 5 })
+          Radio({ value: 'https', group: 'HTTP' })
+            .checked(this.selected == 1)
+            .radioStyle({ checkedBackgroundColor: $r('app.color.app_red') })
+            .onClick(() => { this.apiSettings.https = true })
         }
       }
       .width('100%')
-      .justifyContent(FlexAlign.SpaceBetween)
+      .justifyContent(FlexAlign.Start)
 
-      Column({ space: 10 }) {
-        TextInput({ text: this.customApiUrl })
-          .width('100%')
-          .onChange((text) => this.customApiUrl = text)
+      Row({ space: 10 }) {
+        Text('路径').LeftText()
+        TextInput({ text: this.apiSettings.path,  })
+          .layoutWeight(1)
+          .onChange((text) => this.apiSettings.path = text)
           .borderRadius(Constants.RADIUS_IMG)
-        Button('保存配置')
-          .setButton()
-          .onClick(() => {
-            this.setCustomApiUrl()
-          })
       }
-      .width('100%')
+
+      Row({ space: 10 }) {
+        Text('用户').LeftText()
+        TextInput({ text: this.apiSettings.user,  })
+          .layoutWeight(1)
+          .onChange((text) => this.apiSettings.user = text)
+          .borderRadius(Constants.RADIUS_IMG)
+      }
+
+      Row({ space: 10 }) {
+        Text('密码').LeftText()
+        TextInput({ text: this.apiSettings.password,  })
+          .layoutWeight(1)
+          .onChange((text) => this.apiSettings.password = text)
+          .borderRadius(Constants.RADIUS_IMG)
+      }
+
+      Button('保存配置')
+        .setButton()
+        .onClick(() => {
+          this.saveApiSettings()
+        })
     }
     .itemStyle()
   }
@@ -130,10 +187,14 @@ export struct ApiSetPage {
     PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF, StorageConstants.IS_CUSTOM_COOKIE, this.isCustomCookie)
   }
 
-  setCustomApiUrl() {
-    AppStorage.setOrCreate(StorageConstants.API_URL,this.customApiUrl)
-    PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF ,StorageConstants.API_URL,this.customApiUrl)
-    ToastUtil.showToast('配置已保存, 正在检查云服务是否可用...')
+  saveApiSettings() {
+    const https = this.apiSettings.https ? 'https://' : 'http://'
+    const API_URL = https + this.apiSettings.domain + ':' + this.apiSettings.port + this.apiSettings.path
+    AppStorage.setOrCreate(StorageConstants.API_SETTINGS,this.apiSettings)
+    PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF, StorageConstants.API_SETTINGS, this.apiSettings)
+    AppStorage.setOrCreate(StorageConstants.API_URL, API_URL)
+    PreferencesUtils.putPreferenceValue(StorageConstants.SET_PERF, StorageConstants.API_URL, API_URL)
+    ToastUtil.showToast('配置已保存, 正在检查服务是否可用...')
     checkValidUrl()
   }
 
@@ -156,6 +217,7 @@ export struct ApiSetPage {
 }
 
 @Extend(Text) function LeftText() {
+  .textAlign(TextAlign.Start)
   .fontSize(Constants.FONT_SIZE_COMMON)
   .fontWeight(FontWeight.Bold)
 }

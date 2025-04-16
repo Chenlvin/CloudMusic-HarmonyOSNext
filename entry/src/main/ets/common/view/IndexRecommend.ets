@@ -125,7 +125,7 @@ export struct IndexRecommend {
     {
       imgUrl: $r('app.media.index_local'),
       title: $r('app.string.LocalSongs'),
-      desc: '随时随地畅听',
+      desc: '支持上传本机音频',
       action: this.localSongAction
     },
   ]

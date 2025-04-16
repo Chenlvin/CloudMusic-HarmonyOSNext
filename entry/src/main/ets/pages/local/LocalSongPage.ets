@@ -174,7 +174,7 @@ export struct LocalSongPage {
                   }
                   else {
                     Column({ space: 20 }) {
-                      Text('本地文件列表为空').width('100%').textAlign(TextAlign.Center).padding({ left: 30, right: 30, top: 10 })
+                      Text('本地文件列表为空\n\n右上方入口支持上传本地音频').width('100%').textAlign(TextAlign.Center).padding({ left: 30, right: 30, top: 10 })
                       if(this.filesList.length > 0) {
                         Button('迁移旧版本数据').padding({ left: 10, right: 10, top: 5, bottom: 5 })
                           .onClick(() => { this.isShowMigration = true })

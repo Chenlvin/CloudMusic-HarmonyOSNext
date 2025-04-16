@@ -28,16 +28,29 @@
         }
       },
       {
-        "name": "2",
+        "name": "sbwy",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
+          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\sbwy_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A97DCEB8B853B4F325B5AA9D06317423BC385519C19B2E285C8827A9F27B30ACA1C755B3AEFE9",
-          "profile": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
+          "keyPassword": "0000001BC952FAB226D63B8A568C1F729927807D849359CDCAB5971D5425D4FC30B5846BA00647BFEBB7D6",
+          "profile": "C:\\Users\\zcy01\\.ohos\\config\\sbwy_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\2_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
-          "storePassword": "0000001A060277B1D91C1BB4238983A50F40926AC0B20000C43CE61FE843A2C11B6DBBE172C2AC999724"
+          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\sbwy_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
+          "storePassword": "0000001BD358959921785795E1532E826BB32C0FDC1212D5A5B67FEF58F15DBFA75619C6AA50E26808D7EB"
+        }
+      },
+      {
+        "name": "test",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\zcy01\\.ohos\\config\\test_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A85D5A9297FBCD0BEC04801E1CF635D8212150AA5E21DAB1DCB9F323C2291D66D166EFE836CFF",
+          "profile": "C:\\Users\\zcy01\\.ohos\\config\\test_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\zcy01\\.ohos\\config\\test_CloudMusic-HMOS_49Cx5ZkdoyjQADe6JwU6Rz-R50i5AkaXO1mOEwbzolc=.p12",
+          "storePassword": "0000001A9E3E73ED36AEEBF31DA50BD530E13A45EB5B84B1D0DAB9BD1D0C155912DA80DAD818D43D38FE"
         }
       }
     ],

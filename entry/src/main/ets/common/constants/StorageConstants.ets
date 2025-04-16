@@ -302,4 +302,9 @@ export class StorageConstants {
    * @description AppStorage & Preference
    */
   static readonly FLOAT_LYRIC_STYLE: string = 'floatLyricStyle'
+  /**
+   * Api/Webdav设置
+   * @description AppStorage & Preference
+   */
+  static readonly API_SETTINGS: string = 'apiSettings'
 }

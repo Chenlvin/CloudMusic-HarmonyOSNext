@@ -11,6 +11,7 @@ import { AppInfo, AppInfoClass } from "../entities/local/AppInfo";
 import { RecommendDjRadio } from "../entities/dj/DjRecommend";
 import { IndexRecommend } from "./IndexRecommend";
 import { PersonalizedSkeletion } from "../../components/skeleton/Skeleton";
+import { ApiSetPage } from "../../pages/settings/ApiSetPage";
 
 @Component
 export struct Explore {
@@ -30,6 +31,7 @@ export struct Explore {
   @State lastRefreshTime: number = 0
   @Prop currentHour: number = 0
   @State totalOpacity: number = 0
+  @State isShowApiSettings: boolean = false
   @Consume('pageInfos') pageInfos: NavPathStack
   private refreshCooldown: number = 5000
 
@@ -213,6 +215,9 @@ export struct Explore {
             }
             .padding({ top: 20 })
           }
+          else {
+            this.inValidApiContent()
+          }
 
           GridItem()
             .height(px2vp(this.bottomRectHeight) + 115)
@@ -279,6 +284,35 @@ export struct Explore {
     .justifyContent(FlexAlign.Start)
     .clickEffect({ level: ClickEffectLevel.LIGHT, scale: 0.9 })
     .onClick(action)
+  }
+
+  @Builder inValidApiContent() {
+    Column({ space: 20 }) {
+      Text('如需连接在线内容\n请设置在线服务')
+        .fontWeight(Constants.FONT_WEIGHT_BOLD)
+        .fontSize(18)
+        .textAlign(TextAlign.Center)
+      Button('设置在线服务')
+        .alignSelf(ItemAlign.Center)
+        .onClick(() => { this.isShowApiSettings = true })
+        .bindSheet(this.isShowApiSettings, this.ApiSettingsSheet, this.settingsSheetOptions)
+    }
+    .justifyContent(FlexAlign.Center)
+    .width('100%')
+  }
+
+  @Builder ApiSettingsSheet() {
+    ApiSetPage()
+  }
+
+  private settingsSheetOptions: SheetOptions = {
+    preferType: SheetType.CENTER,
+    height: SheetSize.LARGE,
+    dragBar: false,
+    showClose: false,
+    scrollSizeMode: ScrollSizeMode.FOLLOW_DETENT,
+    backgroundColor: $r('app.color.background'),
+    onDisappear: () => { this.isShowApiSettings = false }
   }
 
   private getGreeting(hour: number): string {

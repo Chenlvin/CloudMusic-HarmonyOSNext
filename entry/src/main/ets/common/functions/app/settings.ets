@@ -5,6 +5,7 @@ import { CacheSet, CacheSetItem,
   FloatLyricItem, LyricStyle, LyricStyleItem } from "../../entities/local/Settings"
 import PreferencesUtils from "../../utils/data/PreferencesUtils"
 import { preferences } from "@kit.ArkData"
+import { Api, EmptyApi } from "../../entities/local/Api"
 
 /**
  * 设置项
@@ -20,7 +21,7 @@ export async function initSettings() {
   // 并行处理无依赖的配置项
   await Promise.all([
     // API
-    handleSetting<string>(StorageConstants.API_URL, ''),
+    handleSetting<string>(StorageConstants.API_URL, 'http://:80'),
     // Default Index
     handleSetting<number>(StorageConstants.DEFAULT_PAGE_INDEX, 0),
     // Play Quality
@@ -34,7 +35,9 @@ export async function initSettings() {
     // mixWithOthers
     handleSetting<boolean>(StorageConstants.MIX_WITH_OTHERS, false),
     // floatLyricStyle
-    handleSetting<FloatLyric>(StorageConstants.FLOAT_LYRIC_STYLE, FloatLyricItem)
+    handleSetting<FloatLyric>(StorageConstants.FLOAT_LYRIC_STYLE, FloatLyricItem),
+    // apiSettings
+    handleSetting<Api>(StorageConstants.API_SETTINGS, EmptyApi)
   ])
 
   // 处理关联配置项（API URL）
